@@ -19,3 +19,5 @@
 - [x] Update handoff with HEAD, changed files, test result, and P3 decision.
 - [x] Create `AICO_P3_CANON.md` without implementing P3 code.
 - [x] Update handoff for P3 Canon documentation work.
+- [x] Review `AICO_P3_CANON.md` before P3 implementation.
+- [x] Document P3 implementation entry decision.

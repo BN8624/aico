@@ -12,3 +12,4 @@
 - 2026-07-05: P2 hardening scope is limited to v0 dry-run harness behavior and tests; P3 API worker, actual API/LLM calls, semantic preflight, repair loops, network, web dashboard, repo clone, and GitHub Issue integration remain forbidden.
 - 2026-07-05: P2 hardening added direct Runtime Tests mapping for 42 V0 Canon tests and implemented `REPORT_ERROR` fallback for `ceo_report.md` write failures.
 - 2026-07-05: Created `AICO_P3_CANON.md` as a documentation-only extraction for P3 API Worker 4 scope; no P3 implementation, API client, provider connection, real key use, or model call was added.
+- 2026-07-05: P3 Canon review found P3 implementation should remain blocked until document priority, retry/reserve budget semantics, and malformed response artifact rules are clarified.
