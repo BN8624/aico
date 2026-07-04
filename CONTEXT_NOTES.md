@@ -1,0 +1,10 @@
+# CONTEXT_NOTES
+
+- 2026-07-05: `AICO_MASTER_CANON.md` has highest priority, followed by `AICO_V0_CANON.md`.
+- 2026-07-05: v0 must stay fully offline with zero API calls and zero LLM calls.
+- 2026-07-05: `semantic_preflight`, repair loops, worker file edits, and worker shell execution are explicitly out of scope.
+- 2026-07-05: Dry-run scenarios will be deterministic fixtures instead of provider-backed execution.
+- 2026-07-05: Failure paths must still attempt `ceo_report.md`; if report generation fails, `REPORT_ERROR` must be logged.
+- 2026-07-05: Implemented the harness with a flat `aico_v0` Python package and standard-library-only runtime code.
+- 2026-07-05: Scenario fixtures cover pass, conditional, fail, needs_decision, budget_exceeded, and mid_flight_failure; config_error is handled before fixture execution.
+- 2026-07-05: `runs/` is ignored so default harness output does not become source-controlled state.
