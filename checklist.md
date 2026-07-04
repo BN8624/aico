@@ -17,3 +17,5 @@
 - [x] Implement `REPORT_ERROR` fallback for `ceo_report.md` write failures.
 - [x] Re-run P2 review after test hardening.
 - [x] Update handoff with HEAD, changed files, test result, and P3 decision.
+- [x] Create `AICO_P3_CANON.md` without implementing P3 code.
+- [x] Update handoff for P3 Canon documentation work.

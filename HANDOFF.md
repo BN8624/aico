@@ -2,40 +2,33 @@
 
 ## Current Status
 
+- Current HEAD before this documentation commit: `19e6015`.
 - P2 V0 dry-run harness hardening is complete.
-- Current HEAD: latest pushed `main` commit for this handoff. Use `git rev-parse --short HEAD` for the exact local hash after checkout.
-- Previous review HEAD before hardening: `3fa43e9`.
-- P3 entry decision: YES.
+- P3 Canon 작성 여부: YES.
+- P3 구현 여부: NO.
 
 ## Completed
 
-- Added direct Runtime Tests mapping for AICO V0 Canon tests 1 through 42.
-- Implemented `ceo_report.md` write failure fallback.
-- `REPORT_ERROR` is logged to `run_log.jsonl` when `ceo_report.md` cannot be written.
-- Original failure type remains traceable through the original failure event and `REPORT_ERROR.parent_event_id`.
-- Rechecked mid-flight failure behavior.
-- Confirmed API call count remains 0.
-- Confirmed LLM call count remains 0.
-- Confirmed no `semantic_preflight` trace is emitted.
-- Confirmed repair loop is not executed.
-- Confirmed `AGENTS.md` and `CLAUDE.md` remain byte-identical.
-- P2 hardening changes were committed and pushed to `main`.
+- Created `AICO_P3_CANON.md` by extracting the P3 scope from `AICO_MASTER_CANON.md` and preserving P2 safety rules.
+- Documented P3 included scope, excluded scope, API key/secret policy, failure type separation, budget defaults, run_log rules, masked_raw_output rules, mid-flight failure rules, P3 Required Tests, and P3 completion conditions.
+- Did not implement API client, provider connection, real key usage, model call, P3 code, or P2 harness structure changes.
 
-## Changed Files
+## Created / Modified Files
 
-- `aico_v0/harness.py`
-- `aico_v0/fixtures.py`
-- `tests/test_v0_harness.py`
-- `P2_REVIEW.md`
+- `AICO_P3_CANON.md`
 - `HANDOFF.md`
-- `CONTEXT_NOTES.md`
-- `checklist.md`
 
 ## Test Result
 
-- `pytest -q` passed with `42 passed`.
+- Tests were not run for this documentation-only change.
+- No source code or test code was changed.
+
+## Git Status
+
+- Status before editing: clean at `19e6015`.
+- Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Before starting P3, keep v0 offline guards in place.
-- P3 may begin only after confirming the pushed HEAD and clean worktree.
+- Wait for explicit P3 API worker implementation instruction.
+- Before P3 implementation, confirm `git status` is clean and `main == origin/main`.

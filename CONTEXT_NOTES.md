@@ -11,3 +11,4 @@
 - 2026-07-05: P2 review found no current external API/LLM/network/dashboard/Issue path in `aico_v0`, but P3 remains blocked by missing Required Test coverage and missing `REPORT_ERROR` fallback when report generation fails.
 - 2026-07-05: P2 hardening scope is limited to v0 dry-run harness behavior and tests; P3 API worker, actual API/LLM calls, semantic preflight, repair loops, network, web dashboard, repo clone, and GitHub Issue integration remain forbidden.
 - 2026-07-05: P2 hardening added direct Runtime Tests mapping for 42 V0 Canon tests and implemented `REPORT_ERROR` fallback for `ceo_report.md` write failures.
+- 2026-07-05: Created `AICO_P3_CANON.md` as a documentation-only extraction for P3 API Worker 4 scope; no P3 implementation, API client, provider connection, real key use, or model call was added.
