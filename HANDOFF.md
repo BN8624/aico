@@ -2,7 +2,8 @@
 
 ## Current Status
 
-- Current HEAD before this documentation commit: `19e6015`.
+- P3 Canon creation commit: `cc9a34f`.
+- Previous HEAD before P3 Canon documentation: `19e6015`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon 작성 여부: YES.
 - P3 구현 여부: NO.
@@ -26,7 +27,8 @@
 ## Git Status
 
 - Status before editing: clean at `19e6015`.
-- Final git status must be checked after commit and push.
+- P3 Canon commit was pushed to `main`.
+- Final git status must be checked after the handoff update commit and push.
 
 ## Next Work
 
