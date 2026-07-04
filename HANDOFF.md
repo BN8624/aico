@@ -2,24 +2,39 @@
 
 ## Current Status
 
-- P2 V0 dry-run completion review is complete.
-- P3 entry decision: NO.
+- P2 V0 dry-run harness hardening is complete.
+- Current base HEAD before final hardening commit: `3fa43e9`.
+- P3 entry decision: YES.
 
 ## Completed
 
-- Public GitHub repository `BN8624/aico` exists.
-- Canon documents `AICO_MASTER_CANON.md` and `AICO_V0_CANON.md` are present.
-- Agent rule documents `AGENTS.md` and `CLAUDE.md` were created with identical content.
-- Python package `aico_v0` implements the deterministic dry-run harness.
-- Required scenarios pass tests: pass, conditional, fail, needs_decision, config_error, budget_exceeded, and mid_flight_failure.
-- CLI execution with mission input was verified in a temporary runs directory.
-- P2 review documented in `P2_REVIEW.md`.
-- Review confirmed no current API, LLM, semantic_preflight, repair loop, network, repo clone, web dashboard, or Issue integration path in `aico_v0`.
-- Review found missing Required Test coverage and missing `REPORT_ERROR` fallback for `ceo_report.md` write failure.
+- Added direct Runtime Tests mapping for AICO V0 Canon tests 1 through 42.
+- Implemented `ceo_report.md` write failure fallback.
+- `REPORT_ERROR` is logged to `run_log.jsonl` when `ceo_report.md` cannot be written.
+- Original failure type remains traceable through the original failure event and `REPORT_ERROR.parent_event_id`.
+- Rechecked mid-flight failure behavior.
+- Confirmed API call count remains 0.
+- Confirmed LLM call count remains 0.
+- Confirmed no `semantic_preflight` trace is emitted.
+- Confirmed repair loop is not executed.
+- Confirmed `AGENTS.md` and `CLAUDE.md` remain byte-identical.
+
+## Changed Files
+
+- `aico_v0/harness.py`
+- `aico_v0/fixtures.py`
+- `tests/test_v0_harness.py`
+- `P2_REVIEW.md`
+- `HANDOFF.md`
+- `CONTEXT_NOTES.md`
+- `checklist.md`
+
+## Test Result
+
+- `pytest -q` passed with `42 passed`.
 
 ## Next Work
 
-- Add the missing tests listed in `P2_REVIEW.md`.
-- Implement and verify `REPORT_ERROR` logging when report generation fails.
-- Add worker result validation paths for schema errors and bad output.
-- Re-run P2 completion review before entering P3.
+- Commit and push the P2 hardening changes on `main`.
+- Before starting P3, keep v0 offline guards in place.
+- P3 may begin only after confirming the pushed HEAD and clean worktree.

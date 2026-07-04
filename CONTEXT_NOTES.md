@@ -9,3 +9,5 @@
 - 2026-07-05: Scenario fixtures cover pass, conditional, fail, needs_decision, budget_exceeded, and mid_flight_failure; config_error is handled before fixture execution.
 - 2026-07-05: `runs/` is ignored so default harness output does not become source-controlled state.
 - 2026-07-05: P2 review found no current external API/LLM/network/dashboard/Issue path in `aico_v0`, but P3 remains blocked by missing Required Test coverage and missing `REPORT_ERROR` fallback when report generation fails.
+- 2026-07-05: P2 hardening scope is limited to v0 dry-run harness behavior and tests; P3 API worker, actual API/LLM calls, semantic preflight, repair loops, network, web dashboard, repo clone, and GitHub Issue integration remain forbidden.
+- 2026-07-05: P2 hardening added direct Runtime Tests mapping for 42 V0 Canon tests and implemented `REPORT_ERROR` fallback for `ceo_report.md` write failures.

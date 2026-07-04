@@ -45,6 +45,20 @@ FAILURE_TYPES = {
     "UNKNOWN_ERROR",
 }
 
+WORKER_RESULT_REQUIRED_FIELDS = {
+    "work_id",
+    "role",
+    "summary",
+    "findings",
+    "risks",
+    "recommendations",
+    "confidence",
+    "payload",
+    "masked_raw_output",
+    "raw_output_saved",
+    "mask_reason",
+}
+
 FORBIDDEN_KEYWORDS = (
     "final answer",
     "final_report",
@@ -98,15 +112,6 @@ def run_dry_run(
     mission = _load_mission(mission_text, mission_path)
     if mission is None:
         failure_type = "CONFIG_ERROR"
-        _write_ceo_report(
-            run_dir,
-            status="FAIL",
-            conclusion="Mission input or mission path was not provided.",
-            final_artifact=None,
-            warnings=[],
-            failure_type=failure_type,
-            decision_needed=False,
-        )
         _append_log(
             log_path,
             "RUN_FAILED",
@@ -114,6 +119,16 @@ def run_dry_run(
             "failure",
             failure_type=failure_type,
             error="mission input/path is required",
+        )
+        _try_write_ceo_report(
+            log_path,
+            run_dir,
+            status="FAIL",
+            conclusion="Mission input or mission path was not provided.",
+            final_artifact=None,
+            warnings=[],
+            failure_type=failure_type,
+            decision_needed=False,
         )
         return RunResult(resolved_run_id, run_dir, "CONFIG_ERROR", failure_type)
 
@@ -138,7 +153,8 @@ def run_dry_run(
             error=preflight["error"],
             artifact_path="preflight_audit.json",
         )
-        _write_ceo_report(
+        _try_write_ceo_report(
+            log_path,
             run_dir,
             status="FAIL",
             conclusion=preflight["error"],
@@ -151,22 +167,23 @@ def run_dry_run(
 
     _append_log(log_path, "PREFLIGHT_PASSED", "harness", "ok", artifact_path="preflight_audit.json")
 
-    worker_failure = _write_worker_results(run_dir, work_orders, fixture, log_path)
-    if worker_failure is not None:
-        failure_type = "WORKER_BAD_OUTPUT"
+    worker_failure_type, worker_failure_error = _write_worker_results(run_dir, work_orders, fixture, log_path)
+    if worker_failure_type is not None:
+        failure_type = worker_failure_type
         _append_log(
             log_path,
             "RUN_FAILED",
             "worker_pool",
             "failure",
             failure_type=failure_type,
-            error=worker_failure,
+            error=worker_failure_error,
             artifact_path="worker_results.jsonl",
         )
-        _write_ceo_report(
+        _try_write_ceo_report(
+            log_path,
             run_dir,
             status="FAIL",
-            conclusion=worker_failure,
+            conclusion=worker_failure_error or "worker failure",
             final_artifact=None,
             warnings=[],
             failure_type=failure_type,
@@ -186,7 +203,8 @@ def run_dry_run(
     decision_needed = final_status == "NEEDS_DECISION"
     warnings = list(audit_report["warnings"])
     final_artifact = "final_report.md" if (run_dir / "final_report.md").exists() else None
-    _write_ceo_report(
+    _try_write_ceo_report(
+        log_path,
         run_dir,
         status=final_status,
         conclusion=_status_conclusion(final_status),
@@ -195,7 +213,6 @@ def run_dry_run(
         failure_type=failure_type,
         decision_needed=decision_needed,
     )
-    _append_log(log_path, "CEO_REPORT_CREATED", "harness", "ok", artifact_path="ceo_report.md")
 
     if failure_type is None:
         _append_log(log_path, "RUN_COMPLETED", "harness", "ok")
@@ -329,7 +346,7 @@ def _write_worker_results(
     work_orders_doc: dict[str, Any],
     fixture: ScenarioFixture,
     log_path: Path,
-) -> str | None:
+) -> tuple[str | None, str | None]:
     result_path = run_dir / "worker_results.jsonl"
     orders = work_orders_doc["work_orders"]
     allowed_count = fixture.mid_flight_after if fixture.mid_flight_after is not None else len(orders)
@@ -342,18 +359,27 @@ def _write_worker_results(
                 "findings": [f"{order['work_id']} finding is fixture-derived."],
                 "risks": [],
                 "recommendations": ["Keep execution offline and deterministic."],
-                "confidence": 0.9,
+                "confidence": 0.4 if fixture.low_confidence else 0.9,
                 "payload": {"scenario": fixture.name, "used_external_calls": False},
-                "masked_raw_output": "deterministic mock output",
+                "masked_raw_output": _mask_secrets(fixture.raw_output_text),
                 "raw_output_saved": False,
                 "mask_reason": "raw output is not persisted in v0",
             }
+            if fixture.worker_result_mode == "schema_error":
+                result.pop("summary")
+            elif fixture.worker_result_mode == "bad_output":
+                result["summary"] = ""
+                result["findings"] = []
+                result["recommendations"] = []
+            validation_failure = _validate_worker_result(result)
             handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+            if validation_failure is not None:
+                return validation_failure
             _append_log(log_path, "WORKER_COMPLETED", "worker_pool", "ok", artifact_path="worker_results.jsonl")
 
     if fixture.mid_flight_after is not None:
-        return "mid_flight_failure after partial worker completion"
-    return None
+        return ("WORKER_BAD_OUTPUT", "mid_flight_failure after partial worker completion")
+    return (None, None)
 
 
 def _build_manager_summary(
@@ -362,13 +388,17 @@ def _build_manager_summary(
     fixture: ScenarioFixture,
 ) -> dict[str, Any]:
     used = [order["work_id"] for order in work_orders_doc["work_orders"]]
+    rejected: list[str] = []
+    if fixture.low_confidence:
+        rejected = used
+        used = []
     return {
         "mission_interpretation": {
             "scenario": fixture.name,
             "mission_excerpt": mission[:160],
         },
         "used_worker_results": used,
-        "rejected_worker_results": [],
+        "rejected_worker_results": rejected,
         "draft_report": fixture.draft_report,
         "ceo_decision_needed": fixture.manager_ceo_decision_needed,
         "manager_self_check": work_orders_doc["manager_self_check"],
@@ -463,6 +493,57 @@ def _write_ceo_report(
         ]
     )
     _write_text(run_dir / "ceo_report.md", body)
+
+
+def _try_write_ceo_report(
+    log_path: Path,
+    run_dir: Path,
+    *,
+    status: str,
+    conclusion: str,
+    final_artifact: str | None,
+    warnings: list[str],
+    failure_type: str | None,
+    decision_needed: bool,
+) -> bool:
+    try:
+        _write_ceo_report(
+            run_dir,
+            status=status,
+            conclusion=conclusion,
+            final_artifact=final_artifact,
+            warnings=warnings,
+            failure_type=failure_type,
+            decision_needed=decision_needed,
+        )
+    except Exception as exc:
+        previous = failure_type or "NONE"
+        _append_log(
+            log_path,
+            "REPORT_ERROR",
+            "harness",
+            "failure",
+            failure_type="REPORT_ERROR",
+            error=f"ceo_report.md write failed after {previous}: {exc}",
+            artifact_path="ceo_report.md",
+            parent_event_id=previous,
+        )
+        return False
+    _append_log(log_path, "CEO_REPORT_CREATED", "harness", "ok", artifact_path="ceo_report.md")
+    return True
+
+
+def _validate_worker_result(result: dict[str, Any]) -> tuple[str, str] | None:
+    missing = sorted(WORKER_RESULT_REQUIRED_FIELDS - set(result))
+    if missing:
+        return ("SCHEMA_ERROR", f"worker result missing fields: {', '.join(missing)}")
+    if not isinstance(result["summary"], str) or not isinstance(result["findings"], list):
+        return ("SCHEMA_ERROR", "worker result has invalid field types")
+    if not isinstance(result["recommendations"], list) or not isinstance(result["confidence"], (int, float)):
+        return ("SCHEMA_ERROR", "worker result has invalid field types")
+    if not result["summary"].strip() or (not result["findings"] and not result["recommendations"]):
+        return ("WORKER_BAD_OUTPUT", "worker result is schema-valid but empty or irrelevant")
+    return None
 
 
 def _status_conclusion(status: str) -> str:

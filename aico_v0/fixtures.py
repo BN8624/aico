@@ -1,7 +1,7 @@
 # AICO v0 deterministic scenario fixture를 정의한다.
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -16,6 +16,9 @@ class ScenarioFixture:
     draft_report: str = "AICO v0 dry-run draft report."
     blocking: bool = False
     mid_flight_after: int | None = None
+    worker_result_mode: str = "valid"
+    raw_output_text: str = "deterministic mock output"
+    low_confidence: bool = False
 
 
 SCENARIOS: dict[str, ScenarioFixture] = {
@@ -56,6 +59,58 @@ SCENARIOS: dict[str, ScenarioFixture] = {
         audit_status="fail",
         mid_flight_after=2,
         draft_report="",
+    ),
+    "fail_no_draft": ScenarioFixture(
+        name="fail_no_draft",
+        audit_status="fail",
+        required_fixes=("Resolve the deterministic audit blocker.",),
+        blocking=True,
+        draft_report="",
+    ),
+    "required_fixes_needs_decision": ScenarioFixture(
+        name="required_fixes_needs_decision",
+        audit_status="fail",
+        required_fixes=("Resolve the blocker after representative decision.",),
+        audit_ceo_decision_needed=True,
+        blocking=True,
+        draft_report="Draft retained for required fix decision.",
+    ),
+    "manager_decision_only": ScenarioFixture(
+        name="manager_decision_only",
+        audit_status="conditional",
+        manager_ceo_decision_needed=True,
+        draft_report="Draft retained for manager decision.",
+    ),
+    "audit_decision_only": ScenarioFixture(
+        name="audit_decision_only",
+        audit_status="conditional",
+        audit_ceo_decision_needed=True,
+        draft_report="Draft retained for audit decision.",
+    ),
+    "worker_schema_error": ScenarioFixture(
+        name="worker_schema_error",
+        audit_status="fail",
+        worker_result_mode="schema_error",
+        draft_report="",
+    ),
+    "worker_bad_output": ScenarioFixture(
+        name="worker_bad_output",
+        audit_status="fail",
+        worker_result_mode="bad_output",
+        draft_report="",
+    ),
+    "secret_raw_output": ScenarioFixture(
+        name="secret_raw_output",
+        audit_status="pass",
+        raw_output_text="token=ghp_abcdefghijklmnopqrstuvwxyz123456",
+        draft_report="Secret raw output was masked before persistence.",
+    ),
+    "low_confidence": ScenarioFixture(
+        name="low_confidence",
+        audit_status="fail",
+        required_fixes=("Low confidence worker output cannot support promotion.",),
+        low_confidence=True,
+        draft_report="Low confidence draft is not promoted.",
     ),
 }
 
