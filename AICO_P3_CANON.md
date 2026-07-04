@@ -28,15 +28,15 @@ P3는 구성 요소를 실제 API 호출 가능한 구조로 확장한다.
 
 ```text
 1. AICO_MASTER_CANON.md
-2. AICO_V0_CANON.md
-3. AICO_P3_CANON.md
-4. P2_REVIEW.md
-5. HANDOFF.md
-6. AGENTS.md / CLAUDE.md
-7. CONTEXT_NOTES.md
+2. AICO_P3_CANON.md
+3. AICO_V0_CANON.md
+4. HANDOFF.md
+5. AGENTS.md / CLAUDE.md
+6. CONTEXT_NOTES.md
 ```
 
-P3 구현 중 충돌이 있으면 상위 문서를 따른다.
+P3 구현 중 V0 dry-run 규칙과 P3 API worker 규칙이 충돌하면 `AICO_P3_CANON.md`가 우선한다.
+단, `AICO_MASTER_CANON.md`와 충돌하면 `AICO_MASTER_CANON.md`가 우선한다.
 
 ---
 
@@ -300,7 +300,7 @@ P3 budget 값은 Phase Canon에서 조정 가능하다.
 ```text
 max_workers = 4
 max_repair_loops = 0
-max_model_calls = 6
+max_model_calls = 7
 max_input_tokens = Phase Canon에서 조정 가능
 max_output_tokens = Phase Canon에서 조정 가능
 max_runtime_seconds = Phase Canon에서 조정 가능
@@ -314,10 +314,37 @@ max_consecutive_model_errors = 2
 1. max_workers는 worker slot 수와 일치하는 4를 기본값으로 한다.
 2. max_repair_loops는 P3에서 0이다.
 3. semantic_preflight는 P3에서 실행하지 않는다.
-4. max_model_calls는 manager 1 + worker 4 + auditor 1 = 6을 기본값으로 한다.
-5. reserve_1 사용은 max_model_calls와 retry budget 안에서만 가능하다.
-6. token count를 알 수 없으면 run_log field는 null을 허용한다.
-7. budget 초과 시 BUDGET_EXCEEDED로 중단한다.
+4. max_model_calls = 7은 manager 1 + worker 4 + auditor 1 + reserve/retry 1을 기본 상한으로 둔 값이다.
+5. token count를 알 수 없으면 run_log field는 null을 허용한다.
+6. budget 초과 시 BUDGET_EXCEEDED로 중단한다.
+```
+
+model call 산정:
+
+```text
+1. initial manager call = 1 model call.
+2. worker calls = 최대 4 model calls.
+3. auditor call = 1 model call.
+4. reserve call = 사용 시 1 model call.
+5. retry call = max_retries_per_call 한도 안에서 model call에 포함한다.
+6. 모든 retry와 reserve 사용은 max_model_calls에 포함한다.
+7. max_model_calls 초과 시 BUDGET_EXCEEDED로 중단한다.
+```
+
+retry / reserve 규칙:
+
+```text
+1. reserve_1은 일반 worker가 아니다.
+2. reserve_1은 worker API failure 복구용 예비 슬롯이다.
+3. reserve_1은 기본 실행에 참여하지 않는다.
+4. worker_1~worker_4 중 MODEL_ERROR가 발생한 경우에만 reserve_1 사용 가능하다.
+5. schema-valid but bad content는 reserve로 재시도하지 않고 WORKER_BAD_OUTPUT으로 처리한다.
+6. SCHEMA_ERROR는 provider 응답 파싱/형식 문제일 때만 retry 대상이 될 수 있다.
+7. forbidden/security 위반은 retry하지 않고 SECURITY_BLOCKED로 중단한다.
+8. retry 후에도 복구되지 않으면 원래 terminal failure_type을 유지한다.
+9. retry event는 parent_event_id로 원래 API call event와 연결한다.
+10. max_consecutive_model_errors는 run 전체 기준으로 계산한다.
+11. max_consecutive_model_errors 초과 시 BUDGET_EXCEEDED로 중단한다.
 ```
 
 ---
@@ -407,6 +434,26 @@ mask_reason
 7. mask_reason에는 masking 또는 raw output 미저장 사유를 기록한다.
 ```
 
+provider response artifact 규칙:
+
+```text
+1. provider 응답 자체가 없거나 timeout이면 MODEL_ERROR.
+2. provider HTTP/API error, 429, 500, provider unavailable은 MODEL_ERROR.
+3. provider 응답은 왔지만 JSON 파싱 불가이면 SCHEMA_ERROR.
+4. JSON 파싱은 됐지만 필수 필드 누락/타입 불일치이면 SCHEMA_ERROR.
+5. schema는 맞지만 내용이 비어 있거나 역할 밖이면 WORKER_BAD_OUTPUT.
+6. MODEL_ERROR 발생 시 해당 worker의 WorkerResult는 생성하지 않을 수 있다.
+7. retry/reserve로 복구되면 복구된 WorkerResult만 worker_results.jsonl에 기록한다.
+8. retry/reserve로 복구되지 않으면 mid-flight failure로 처리한다.
+9. SCHEMA_ERROR 발생 시 malformed 응답은 masked_raw_output에 저장할 수 있다.
+10. secret 감지 시 masking 또는 SECURITY_BLOCKED로 처리한다.
+11. malformed response 원문을 raw_output으로 저장하지 않는다.
+12. worker_results.jsonl에 기록하지 못하는 실패는 run_log.jsonl에 failure_type과 error로 기록한다.
+13. timeout처럼 response body가 없는 실패는 run_log.jsonl에만 sanitized error를 기록한다.
+14. 429/500 error body가 있으면 secret scan 후 sanitized/masked error만 기록할 수 있다.
+15. empty response는 JSON 파싱 불가 또는 필수 필드 부재로 SCHEMA_ERROR 처리한다.
+```
+
 ---
 
 # 11. Mid-flight Failure
@@ -477,48 +524,59 @@ P3 final_report 승격 조건은 P2 규칙을 유지한다.
 P3 구현 전후에 최소 다음 테스트를 작성해야 한다.
 
 ```text
-1. API key raw value never appears in logs/reports/artifacts
-2. key_slot is logged instead of raw key
-3. API timeout becomes MODEL_ERROR
-4. provider 429 becomes MODEL_ERROR
-5. provider 500 becomes MODEL_ERROR
-6. provider unavailable becomes MODEL_ERROR
-7. malformed provider response becomes MODEL_ERROR before schema stage
-8. malformed provider response becomes SCHEMA_ERROR at schema stage
-9. worker JSON parse failure becomes SCHEMA_ERROR
-10. missing required worker field becomes SCHEMA_ERROR
-11. worker field type mismatch becomes SCHEMA_ERROR
-12. schema-valid but empty worker output becomes WORKER_BAD_OUTPUT
-13. role-out-of-scope worker output becomes WORKER_BAD_OUTPUT
-14. WorkOrder-out-of-scope output becomes WORKER_BAD_OUTPUT
-15. low confidence assertion is not used as sole final_report support
-16. masked_raw_output is saved by default
-17. raw_output_saved is false by default
-18. secret in provider output is masked or SECURITY_BLOCKED
-19. raw key in provider output becomes SECURITY_BLOCKED
-20. final_report and failed_draft remain mutually exclusive
-21. ceo_report exists or REPORT_ERROR is logged
-22. REPORT_ERROR preserves original failure trace
-23. semantic_preflight is still not executed
-24. repair loop is still not executed
-25. worker cannot request shell/file edit
-26. worker cannot request network access
-27. external URL remains blocked
-28. web search remains blocked
-29. repo clone remains blocked
-30. mid-flight API failure preserves partial worker_results
-31. mid-flight API failure does not execute remaining workers
-32. mid-flight API failure skips unavailable downstream artifacts
-33. budget max_model_calls exceeded becomes BUDGET_EXCEEDED
-34. budget max_input_tokens exceeded becomes BUDGET_EXCEEDED
-35. budget max_output_tokens exceeded becomes BUDGET_EXCEEDED
-36. budget max_runtime_seconds exceeded becomes BUDGET_EXCEEDED
-37. max_retries_per_call is enforced
-38. max_consecutive_model_errors is enforced
-39. API call events record model and key_slot
-40. API call events record input_tokens and output_tokens or null fields
-41. failure events include failure_type
-42. AGENTS.md and CLAUDE.md remain byte-identical
+1. P3 document priority places AICO_P3_CANON.md above AICO_V0_CANON.md
+2. API key raw value never appears in logs/reports/artifacts
+3. key_slot is logged instead of raw key
+4. reserve_1 is not used on happy path
+5. reserve_1 is used only after worker MODEL_ERROR
+6. retry and reserve calls count toward max_model_calls
+7. max_model_calls exceeded becomes BUDGET_EXCEEDED
+8. API timeout becomes MODEL_ERROR
+9. provider 429 becomes MODEL_ERROR
+10. provider 500 becomes MODEL_ERROR
+11. provider unavailable becomes MODEL_ERROR
+12. no provider response creates no WorkerResult and logs MODEL_ERROR
+13. non-json provider response becomes SCHEMA_ERROR
+14. schema-invalid json response becomes SCHEMA_ERROR
+15. malformed provider response becomes MODEL_ERROR before schema stage only when no parseable response exists
+16. malformed provider response becomes SCHEMA_ERROR at schema stage when response parsing/schema fails
+17. worker JSON parse failure becomes SCHEMA_ERROR
+18. missing required worker field becomes SCHEMA_ERROR
+19. worker field type mismatch becomes SCHEMA_ERROR
+20. schema-valid empty response becomes WORKER_BAD_OUTPUT
+21. schema-valid but empty worker output becomes WORKER_BAD_OUTPUT
+22. role-out-of-scope worker output becomes WORKER_BAD_OUTPUT
+23. WorkOrder-out-of-scope output becomes WORKER_BAD_OUTPUT
+24. low confidence assertion is not used as sole final_report support
+25. masked_raw_output is saved by default
+26. raw_output_saved is false by default
+27. malformed response raw output is not saved unmasked
+28. secret in provider output is masked or SECURITY_BLOCKED
+29. raw key in provider output becomes SECURITY_BLOCKED
+30. forbidden/security violation does not retry and becomes SECURITY_BLOCKED
+31. final_report and failed_draft remain mutually exclusive
+32. ceo_report exists or REPORT_ERROR is logged
+33. REPORT_ERROR preserves original failure trace
+34. semantic_preflight is still not executed
+35. repair loop is still not executed
+36. worker cannot request shell/file edit
+37. worker cannot request network access
+38. external URL remains blocked
+39. web search remains blocked
+40. repo clone remains blocked
+41. mid-flight API failure preserves partial worker_results
+42. mid-flight API failure does not execute remaining workers
+43. mid-flight API failure skips unavailable downstream artifacts
+44. unrecovered worker API failure preserves partial worker_results and stops downstream artifacts
+45. budget max_input_tokens exceeded becomes BUDGET_EXCEEDED
+46. budget max_output_tokens exceeded becomes BUDGET_EXCEEDED
+47. budget max_runtime_seconds exceeded becomes BUDGET_EXCEEDED
+48. max_retries_per_call is enforced
+49. max_consecutive_model_errors is enforced
+50. API call events record model and key_slot
+51. API call events record input_tokens and output_tokens or null fields
+52. failure events include failure_type
+53. AGENTS.md and CLAUDE.md remain byte-identical
 ```
 
 ---

@@ -188,3 +188,7 @@ Recommendation:
 P3 implementation entry: **NO**
 
 Blocking reason: `AICO_P3_CANON.md` currently places `AICO_V0_CANON.md` above P3 Canon, which can override P3 API-worker behavior with V0 dry-run constraints. Retry/reserve budget and malformed response artifact behavior also need clarification before code is written.
+
+## Correction Note
+
+2026-07-05: The blocking items were addressed in `AICO_P3_CANON.md`: document priority was corrected, retry/reserve budget rules were clarified, malformed response artifact handling was specified, and P3 Required Tests were expanded. After this correction, P3 implementation entry is **YES**, subject to a clean worktree and explicit implementation instruction.

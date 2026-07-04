@@ -13,3 +13,4 @@
 - 2026-07-05: P2 hardening added direct Runtime Tests mapping for 42 V0 Canon tests and implemented `REPORT_ERROR` fallback for `ceo_report.md` write failures.
 - 2026-07-05: Created `AICO_P3_CANON.md` as a documentation-only extraction for P3 API Worker 4 scope; no P3 implementation, API client, provider connection, real key use, or model call was added.
 - 2026-07-05: P3 Canon review found P3 implementation should remain blocked until document priority, retry/reserve budget semantics, and malformed response artifact rules are clarified.
+- 2026-07-05: Corrected `AICO_P3_CANON.md` priority, retry/reserve budget semantics, malformed provider response artifact rules, and P3 Required Tests; no P3 code was implemented.
