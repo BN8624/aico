@@ -8,3 +8,4 @@
 - 2026-07-05: Implemented the harness with a flat `aico_v0` Python package and standard-library-only runtime code.
 - 2026-07-05: Scenario fixtures cover pass, conditional, fail, needs_decision, budget_exceeded, and mid_flight_failure; config_error is handled before fixture execution.
 - 2026-07-05: `runs/` is ignored so default harness output does not become source-controlled state.
+- 2026-07-05: P2 review found no current external API/LLM/network/dashboard/Issue path in `aico_v0`, but P3 remains blocked by missing Required Test coverage and missing `REPORT_ERROR` fallback when report generation fails.

@@ -10,3 +10,6 @@
 - [x] Verify API/LLM call count stays zero.
 - [x] Verify report and failure logging rules.
 - [x] Update handoff for the next session.
+- [x] Complete P2 V0 dry-run implementation review.
+- [x] Document missing V0 Required Tests.
+- [x] Record P3 entry decision.
