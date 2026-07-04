@@ -3,7 +3,8 @@
 ## Current Status
 
 - P2 V0 dry-run harness hardening is complete.
-- Current base HEAD before final hardening commit: `3fa43e9`.
+- Current HEAD: latest pushed `main` commit for this handoff. Use `git rev-parse --short HEAD` for the exact local hash after checkout.
+- Previous review HEAD before hardening: `3fa43e9`.
 - P3 entry decision: YES.
 
 ## Completed
@@ -18,6 +19,7 @@
 - Confirmed no `semantic_preflight` trace is emitted.
 - Confirmed repair loop is not executed.
 - Confirmed `AGENTS.md` and `CLAUDE.md` remain byte-identical.
+- P2 hardening changes were committed and pushed to `main`.
 
 ## Changed Files
 
@@ -35,6 +37,5 @@
 
 ## Next Work
 
-- Commit and push the P2 hardening changes on `main`.
 - Before starting P3, keep v0 offline guards in place.
 - P3 may begin only after confirming the pushed HEAD and clean worktree.
