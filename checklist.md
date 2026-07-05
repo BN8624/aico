@@ -58,3 +58,11 @@
 - [x] Define artifact safety scan requirements.
 - [x] Preserve default pytest offline-only policy.
 - [x] Defer actual live smoke to P3F or later approval phase.
+- [x] Implement P3E approval schema.
+- [x] Test live gate failure mapping.
+- [x] Keep provider allowlist default empty in code.
+- [x] Implement artifact safety scan.
+- [x] Verify artifact safety scan tests pass.
+- [x] Keep default pytest offline-only.
+- [x] Keep live_provider marker default-skip/non-executing.
+- [x] Defer actual live smoke to P3F or later approval phase after P3E.

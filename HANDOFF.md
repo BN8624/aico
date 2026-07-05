@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this policy fix commit: `a8ce1c5`.
+- Current HEAD before this P3E commit: `7890f71`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -19,37 +19,43 @@
 - P3D policy fix is complete.
 - P3E entry decision after policy fix: YES.
 - P3E scope: activation preparation only.
-- P3D implementation status: NO code implementation.
+- P3E activation preparation implementation is complete.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
 - Actual key usage during this work: NO.
 - Provider SDK import during this work: NO.
 - Network calls during this work: NO.
+- Live smoke during this work: NO.
 
 ## This Work
 
-- Fixed `P3D_LIVE_CALL_POLICY.md` blockers identified by `P3D_COMPLETION_REVIEW.md`.
-- Added live-call gate failure condition to canonical `failure_type` mapping.
-- Set P3D policy fix provider allowlist default to empty and recorded `google_gemini` only as a non-authorizing P3E candidate.
-- Clarified P3E scope as activation preparation only, with actual live smoke deferred to P3F or a later explicitly approved phase.
-- Added artifact safety scan test requirements and connected stop conditions to the failure mapping.
-- Confirmed no code, harness, provider adapter, live-call flag, key loading, SDK import, or network implementation was added.
+- Implemented P3E activation preparation only.
+- Added live approval object/schema, live gate validator, live gate failure mapping, first live smoke budget validation, key availability skeleton checks, provider allowlist structure with empty default, artifact safety scanner, and live provider marker policy helper.
+- Added P3E tests for approval failures, runtime flags, allowlist behavior, budget validation, artifact safety scanning, offline-only default policy, marker default-skip behavior, forbidden runtime imports, and byte-identical agent docs.
+- Registered the `live_provider` pytest marker without enabling live tests by default.
+- Confirmed no actual provider activation, API call, LLM call, raw key usage, provider SDK import, network call, live smoke, semantic_preflight, or repair loop was added.
 
 ## Changed Files
 
-- `P3D_LIVE_CALL_POLICY.md`
-- `P3D_COMPLETION_REVIEW.md`
+- `aico_v0/live_gate.py`
+- `aico_v0/provider_allowlist.py`
+- `aico_v0/artifact_safety.py`
+- `aico_v0/live_test_policy.py`
+- `tests/test_p3e_live_gate.py`
+- `tests/test_p3e_artifact_safety.py`
+- `tests/test_p3e_offline_policy.py`
+- `pyproject.toml`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
 
 ## Test Result
 
-- `pytest -q` passed with `109 passed`.
+- P3E targeted tests passed: `45 passed`.
+- Full `pytest -q` passed with `154 passed`.
 - AGENTS/CLAUDE byte-identical check: SHA256 matched.
-- Runtime forbidden import check for `requests`, `httpx`, `urllib.request`, `socket`, `google`, `openai`, `anthropic`, `genai`, `dotenv`, `os.environ`, and `getenv` in `aico_v0`: no matches.
-- Code changes during this work: none.
+- Runtime forbidden import AST check for provider SDK/network/env-value imports in `aico_v0`: no violations.
 
 ## P3 Implementation Progress
 
@@ -67,19 +73,20 @@
 - P3D policy fix: complete.
 - P3E entry: YES.
 - P3E scope: activation preparation only.
-- P3D implementation: NO.
+- P3E activation preparation: complete.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
-- Network/provider adapter tests: not started.
+- Network/provider adapter live tests: not started.
+- Live smoke: not started.
 
 ## Git Status
 
-- Status before editing: clean at `a8ce1c5`.
+- Status before editing: clean at `7890f71`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Begin P3E as activation preparation only.
-- Implement or document approval object/schema, provider allowlist structure, artifact safety scan, default-skip live marker policy, and key loading isolation skeleton without live calls.
+- Review P3E activation preparation before P3F.
+- Decide whether P3F can be first live smoke policy/approval work or needs another preparation pass.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
 - Do not make live API calls, use real keys, import provider SDKs, or add network transport until P3F or a later explicitly approved phase authorizes it.
