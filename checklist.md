@@ -223,3 +223,20 @@
 - [x] Keep network call count 0 in P3N.
 - [x] Keep live smoke count 0 in P3N.
 - [x] Defer actual first call to P3O or a later explicit approval phase.
+- [x] Write P3O execution plan review.
+- [x] Document explicit approval gate.
+- [x] Document approval phrase intake policy.
+- [x] Document `approval_package.json` plan.
+- [x] Document provider, model, and key_slot final decision plan.
+- [x] Document `final_live_gate_result` linkage plan.
+- [x] Keep `live_call_allowed=false` in P3O.
+- [x] Keep `model_call_count=0` in P3O.
+- [x] Keep SDK import forbidden in P3O.
+- [x] Keep key loading forbidden in P3O.
+- [x] Keep provider activation forbidden in P3O.
+- [x] Keep API call count 0 in P3O.
+- [x] Keep LLM call count 0 in P3O.
+- [x] Keep key read count 0 in P3O.
+- [x] Keep network call count 0 in P3O.
+- [x] Keep live smoke count 0 in P3O.
+- [x] Defer actual first call to P3P or a later explicit approval phase.

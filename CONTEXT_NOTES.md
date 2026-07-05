@@ -52,3 +52,6 @@
 - 2026-07-06: P3N is dry authorization review documentation only, not actual live smoke. It defines how a future approval package should link to `final_live_gate_result.json` without creating live artifacts or executing a call.
 - 2026-07-06: P3N records provider/model/key_slot as dry candidates only. All-gates pass is not live authorization; `live_call_allowed=false` and `model_call_count=0` remain required.
 - 2026-07-06: P3N keeps provider allowlist actual activation, SDK import activation, key loading activation, API calls, LLM calls, network calls, and live smoke forbidden. Actual first call is deferred to P3O or a later explicit approval phase.
+- 2026-07-06: P3O is execution plan review / explicit approval gate documentation only, not actual live smoke execution.
+- 2026-07-06: P3O documents approval phrase intake, the future `approval_package.json` plan, provider/model/key_slot final decision plan, and `final_live_gate_result.json` linkage plan.
+- 2026-07-06: P3O keeps `live_call_allowed=false` and `model_call_count=0`. SDK import, key loading, provider allowlist activation, API calls, LLM calls, network calls, and live smoke remain forbidden. Actual first call is deferred to P3P or a later explicit approval phase.
