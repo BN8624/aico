@@ -81,3 +81,7 @@
 - [x] Require artifact safety scan before and after future first live smoke.
 - [x] Preserve default pytest offline-only policy.
 - [x] Defer actual live smoke to P3G or a later explicit approval phase.
+- [x] Complete P3F completion review.
+- [x] Record P3G entry decision.
+- [ ] Fix P3F document priority before P3G.
+- [ ] Add missing P3F failure/stop mappings before P3G.

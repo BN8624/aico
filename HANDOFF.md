@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this P3F policy commit: `acd378b`.
+- Current HEAD before this P3F completion review commit: `fb534d6`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -26,6 +26,9 @@
 - P3F meaning if later approved: first live smoke policy/preparation only unless separately approved.
 - P3F first live smoke policy documentation is complete.
 - P3F implementation: NO. This work is documentation only.
+- P3F completion review is complete.
+- P3G entry decision: NO.
+- P3G meaning if later approved: live smoke implementation skeleton or policy/preparation only, unless separately approved.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
@@ -36,16 +39,15 @@
 
 ## This Work
 
-- Created `P3F_FIRST_LIVE_SMOKE_POLICY.md`.
-- Defined first live smoke as policy/preparation only, not execution approval.
-- Limited any future first live smoke to one provider candidate, one key_slot, one model call, zero retries, no reserve, and no full-run artifacts.
-- Kept provider allowlist default empty and `google_gemini` as non-authorizing candidate metadata only.
-- Required artifact safety scans before and after any future first live smoke.
-- Defined failure mapping, stop conditions, rollback policy, live test isolation, required tests before any live smoke, and P3G entry requirements.
+- Created `P3F_COMPLETION_REVIEW.md`.
+- Reviewed `P3F_FIRST_LIVE_SMOKE_POLICY.md` against P3 Canon, P3D/P3E policy, current provider boundary code, and tests.
+- Confirmed P3F is policy/preparation only and does not authorize live smoke.
+- Found required P3G blockers in P3F document priority and incomplete failure/stop mapping table coverage.
+- Set P3G entry to NO until the P3F policy is corrected.
 
 ## Changed Files
 
-- `P3F_FIRST_LIVE_SMOKE_POLICY.md`
+- `P3F_COMPLETION_REVIEW.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
@@ -78,8 +80,9 @@
 - P3F entry: YES.
 - P3F first live smoke policy: complete.
 - P3F implementation: NO.
+- P3F completion review: complete.
+- P3G entry: NO.
 - Actual live smoke: not started.
-- P3G entry: not reviewed.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
 - Network/provider adapter live tests: not started.
@@ -87,12 +90,15 @@
 
 ## Git Status
 
-- Status before editing: clean at `acd378b`.
+- Status before editing: clean at `fb534d6`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Review `P3F_FIRST_LIVE_SMOKE_POLICY.md` before any P3G work.
-- Treat P3G as policy/preparation unless a later explicit approval phase authorizes implementation.
+- Fix `P3F_FIRST_LIVE_SMOKE_POLICY.md` before P3G.
+- Add P3F itself to P3F document priority above `P3D_LIVE_CALL_POLICY.md`.
+- Add the P3F-vs-P3D conflict rule for first-live-smoke-specific rules.
+- Add missing `unknown endpoint requested` and `artifact safety scan failed` failure/stop mappings.
+- Re-review P3G entry after the P3F policy fix.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
 - Do not make live API calls, use real keys, import provider SDKs, add network transport, implement live smoke tests, or run live smoke until a later explicitly approved phase authorizes it.
