@@ -173,3 +173,18 @@
 - [x] Record P3L entry decision.
 - [x] Limit P3L recommendation to SDK/key-loading boundary skeleton.
 - [x] Record that P3L entry does not authorize live smoke.
+- [x] Implement SDK boundary skeleton.
+- [x] Implement key loading boundary skeleton.
+- [x] Keep SDK import forbidden in P3L.
+- [x] Keep actual key read forbidden in P3L.
+- [x] Keep env var value read forbidden in P3L.
+- [x] Limit key existence checks to boolean skeleton metadata.
+- [x] Document and test provider adapter isolation rule.
+- [x] Ensure candidate allowlist does not authorize SDK, key, or live call access.
+- [x] Keep API call count 0 in P3L.
+- [x] Keep LLM call count 0 in P3L.
+- [x] Keep key read count 0 in P3L.
+- [x] Keep SDK import count 0 in P3L.
+- [x] Keep network call count 0 in P3L.
+- [x] Keep live smoke count 0 in P3L.
+- [x] Defer actual first call to P3M or a later explicit approval phase.

@@ -26,6 +26,9 @@ _RAW_PROVIDER_OUTPUT_PATTERN = re.compile(
 )
 _RAW_OUTPUT_SAVED_TRUE_PATTERN = re.compile(r'(?i)"?raw_output_saved"?\s*[:=]\s*true')
 _RAW_OUTPUT_FIELD_PATTERN = re.compile(r'(?i)"raw_output"\s*:')
+_VALUE_LOADED_TRUE_PATTERN = re.compile(r'(?i)"?value_loaded"?\s*[:=]\s*true')
+_RAW_KEY_PRESENT_FIELD_PATTERN = re.compile(r'(?i)"raw_key_present"\s*:|raw_key_present\s*=')
+_ENV_VAR_VALUE_FIELD_PATTERN = re.compile(r'(?i)"env_var_value"\s*:|env_var_value\s*=')
 _BLOCKED_PROVIDER_DOMAIN_PATTERNS = (
     r"op" + r"enai\.com",
     r"anth" + r"ropic\.com",
@@ -126,6 +129,9 @@ def _scan_text(artifact_path: str, text: str) -> list[ArtifactSafetyFinding]:
         (bool(_RAW_PROVIDER_OUTPUT_PATTERN.search(text)), "unmasked raw provider output marker detected"),
         (bool(_RAW_OUTPUT_SAVED_TRUE_PATTERN.search(text)), "raw_output_saved=True detected"),
         (bool(_RAW_OUTPUT_FIELD_PATTERN.search(text)), "raw_output field detected"),
+        (bool(_VALUE_LOADED_TRUE_PATTERN.search(text)), "value_loaded=True detected"),
+        (bool(_RAW_KEY_PRESENT_FIELD_PATTERN.search(text)), "raw_key_present field detected"),
+        (bool(_ENV_VAR_VALUE_FIELD_PATTERN.search(text)), "env var value field detected"),
         (bool(_ENDPOINT_URL_PATTERN.search(text)), "endpoint URL detected"),
     )
     for matched, reason in checks:
