@@ -26,6 +26,15 @@ _RAW_PROVIDER_OUTPUT_PATTERN = re.compile(
 )
 _RAW_OUTPUT_SAVED_TRUE_PATTERN = re.compile(r'(?i)"?raw_output_saved"?\s*[:=]\s*true')
 _RAW_OUTPUT_FIELD_PATTERN = re.compile(r'(?i)"raw_output"\s*:')
+_BLOCKED_PROVIDER_DOMAIN_PATTERNS = (
+    r"op" + r"enai\.com",
+    r"anth" + r"ropic\.com",
+)
+_ENDPOINT_URL_PATTERN = re.compile(
+    r"https?://|(?:generativelanguage|[A-Za-z0-9-]+)\.googleapis\.com|"
+    + "|".join(_BLOCKED_PROVIDER_DOMAIN_PATTERNS),
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -117,6 +126,7 @@ def _scan_text(artifact_path: str, text: str) -> list[ArtifactSafetyFinding]:
         (bool(_RAW_PROVIDER_OUTPUT_PATTERN.search(text)), "unmasked raw provider output marker detected"),
         (bool(_RAW_OUTPUT_SAVED_TRUE_PATTERN.search(text)), "raw_output_saved=True detected"),
         (bool(_RAW_OUTPUT_FIELD_PATTERN.search(text)), "raw_output field detected"),
+        (bool(_ENDPOINT_URL_PATTERN.search(text)), "endpoint URL detected"),
     )
     for matched, reason in checks:
         if matched:

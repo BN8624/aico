@@ -155,3 +155,17 @@
 - [x] Record P3K entry decision.
 - [x] Limit P3K recommendation to live provider activation skeleton / allowlist opening skeleton.
 - [x] Record that P3K entry does not authorize live smoke.
+- [x] Implement live provider activation skeleton for P3K.
+- [x] Implement allowlist candidate skeleton for P3K.
+- [x] Keep `google_gemini` candidate-only.
+- [x] Keep endpoint URL forbidden in P3K.
+- [x] Allow provider name only in candidate allowlist.
+- [x] Ensure candidate does not authorize live call.
+- [x] Keep SDK import forbidden in P3K.
+- [x] Keep key loading forbidden in P3K.
+- [x] Keep API call count 0 in P3K.
+- [x] Keep LLM call count 0 in P3K.
+- [x] Keep key read count 0 in P3K.
+- [x] Keep network call count 0 in P3K.
+- [x] Keep live smoke count 0 in P3K.
+- [x] Defer actual first call to P3L or a later explicit approval phase.

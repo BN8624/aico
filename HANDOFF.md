@@ -52,6 +52,10 @@
 - P3K entry decision: YES.
 - P3K recommended meaning: live provider activation skeleton / allowlist opening skeleton only, unless separately approved.
 - Current HEAD before this review commit: `d5cadbf`.
+- Current HEAD before this P3K skeleton commit: `3cd8202`.
+- P3K live provider activation skeleton / allowlist opening skeleton is complete.
+- P3K scope: skeleton/allowlist candidate only.
+- Provider allowlist actual activation during this work: NO.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
@@ -62,26 +66,32 @@
 
 ## This Work
 
-- Completed P3J completion review.
-- Reviewed P3J live smoke execution skeleton / artifact write integration against P3I/P3H/P3F/P3D policy.
-- Confirmed P3J remained skeleton/artifact integration only and did not execute live smoke.
-- Confirmed no actual API call, LLM call, key use, provider SDK import, network call, provider allowlist opening, SDK activation, or key loading activation.
-- Judged P3K entry YES only for live provider activation skeleton / allowlist opening skeleton preparation.
-- Recommended that P3K still not execute actual live smoke unless a separate explicit approval phase later authorizes it.
+- Completed P3K live provider activation skeleton / allowlist opening skeleton.
+- Added provider allowlist state model with `empty`, `candidate`, and `disabled` states.
+- Added `google_gemini` candidate entry schema with endpoint URL, SDK import, key loading, and live call permissions disabled.
+- Added provider-name validation that blocks URLs, endpoint-like strings, raw key-like values, bearer-like values, and unknown providers.
+- Added P3K activation-disabled skeleton that blocks actual activation and candidate provider live-call attempts.
+- Preserved SDK import, key loading, API call, LLM call, network call, and live smoke counts at zero.
 
 ## Changed Files
 
-- `P3J_COMPLETION_REVIEW.md`
+- `aico_v0/artifact_safety.py`
+- `aico_v0/live_activation.py`
+- `aico_v0/live_smoke.py`
+- `aico_v0/provider_allowlist.py`
+- `tests/test_p3k_provider_allowlist_skeleton.py`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
 
 ## Test Result
 
-- Full `pytest -q` passed with `236 passed`.
-- `git status --short --branch` showed `## main...origin/main` with only expected P3J completion review documentation changes before commit.
+- P3K targeted `pytest -q tests/test_p3k_provider_allowlist_skeleton.py` passed with `41 passed`.
+- Full `pytest -q` passed with `277 passed`.
+- `git status --short --branch` showed `## main...origin/main` with only expected P3K skeleton, tests, and tracking document changes before commit.
 - AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
 - Runtime forbidden import AST check for provider SDK/network/env-value imports in `aico_v0` passed with no violations.
+- Runtime forbidden external capability string scan for V0 policy passed with no matches in `aico_v0`.
 
 ## P3 Implementation Progress
 
@@ -129,6 +139,9 @@
 - P3J completion review: complete.
 - P3K entry: YES.
 - P3K recommended meaning: live provider activation skeleton / allowlist opening skeleton only, unless separately approved.
+- P3K live provider activation skeleton / allowlist opening skeleton: complete.
+- P3K scope: skeleton/allowlist candidate only.
+- Provider allowlist actual activation: not started.
 - Actual live smoke: not started.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
@@ -137,13 +150,13 @@
 
 ## Git Status
 
-- Status before editing: clean at `d5cadbf`.
-- Current review worktree before commit contains only P3J completion review documentation changes.
+- Status before editing: clean at `3cd8202`.
+- Current P3K worktree before commit contains P3K skeleton, tests, and tracking document changes.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Proceed only to P3K live provider activation skeleton / allowlist opening skeleton if requested.
+- Proceed only to P3K completion review if requested.
 - Treat any later live smoke phase as separately approved work only.
 - Keep actual live smoke forbidden until a later explicit approval phase, passing tests, clean git state, and all gates are satisfied.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
