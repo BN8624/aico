@@ -136,3 +136,18 @@
 - [x] Record P3J entry decision.
 - [x] Limit P3J recommendation to live smoke execution skeleton / artifact write integration.
 - [x] Record that P3J entry does not authorize live smoke.
+- [x] Implement live smoke execution skeleton for P3J.
+- [x] Implement artifact write integration for P3J.
+- [x] Keep `live_smoke_result.json` write helper safe.
+- [x] Keep `artifact_safety_report.json` write helper safe.
+- [x] Enforce run_dir path guard.
+- [x] Block forbidden artifacts.
+- [x] Connect pre/post artifact safety scan skeleton.
+- [x] Keep disabled runner writing only allowed artifacts.
+- [x] Keep live smoke unexecuted in P3J.
+- [x] Keep actual API call count 0 in P3J.
+- [x] Keep actual LLM call count 0 in P3J.
+- [x] Keep key read count 0 in P3J.
+- [x] Keep provider SDK import count 0 in P3J.
+- [x] Keep network call count 0 in P3J.
+- [x] Defer actual live smoke to P3K or a later explicit approval phase.
