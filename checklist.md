@@ -49,3 +49,5 @@
 - [x] Document provider allowlist requirement.
 - [x] Document live-call budget requirement.
 - [x] Document default tests offline-only requirement.
+- [x] Complete P3D completion review.
+- [x] Record P3E entry decision.
