@@ -30,3 +30,5 @@
 - [x] Implement P3B provider boundary skeleton without real API calls.
 - [x] Add P3B provider boundary tests.
 - [x] Verify V0, P3A, and P3B tests pass.
+- [x] Complete P3B completion review.
+- [x] Record P3C entry decision.
