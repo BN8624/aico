@@ -71,3 +71,13 @@
 - [x] Implement LiveApproval recursive secret guard.
 - [x] Test LiveApproval raw key, bearer token, private key, env value, and URL blocking.
 - [x] Re-record P3F entry decision after P3E blocker fix.
+- [x] Write first live smoke policy.
+- [x] Keep live smoke unexecuted.
+- [x] Limit future first live smoke to a single key_slot.
+- [x] Fix future first live smoke `max_model_calls = 1`.
+- [x] Fix future first live smoke retry count to 0.
+- [x] Disable reserve for future first live smoke.
+- [x] Keep raw output forbidden for future first live smoke.
+- [x] Require artifact safety scan before and after future first live smoke.
+- [x] Preserve default pytest offline-only policy.
+- [x] Defer actual live smoke to P3G or a later explicit approval phase.

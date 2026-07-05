@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this blocker fix commit: `0c6dd42`.
+- Current HEAD before this P3F policy commit: `acd378b`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -24,6 +24,8 @@
 - P3E blocker fix is complete.
 - P3F entry decision after blocker fix: YES.
 - P3F meaning if later approved: first live smoke policy/preparation only unless separately approved.
+- P3F first live smoke policy documentation is complete.
+- P3F implementation: NO. This work is documentation only.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
@@ -34,26 +36,22 @@
 
 ## This Work
 
-- Fixed P3E blocker identified by `P3E_COMPLETION_REVIEW.md`.
-- Added recursive `LiveApproval` secret guard using shared artifact safety scan logic.
-- Blocked raw key-like values, bearer tokens, private key blocks, env var value patterns, and arbitrary URLs in approval fields as `SECURITY_BLOCKED`.
-- Kept env var names, key_slot strings, and `[MASKED_SECRET]` placeholders allowed.
-- Added direct LiveApproval secret guard tests.
-- Updated `P3E_COMPLETION_REVIEW.md` with blocker fix result and P3F entry reassessment.
+- Created `P3F_FIRST_LIVE_SMOKE_POLICY.md`.
+- Defined first live smoke as policy/preparation only, not execution approval.
+- Limited any future first live smoke to one provider candidate, one key_slot, one model call, zero retries, no reserve, and no full-run artifacts.
+- Kept provider allowlist default empty and `google_gemini` as non-authorizing candidate metadata only.
+- Required artifact safety scans before and after any future first live smoke.
+- Defined failure mapping, stop conditions, rollback policy, live test isolation, required tests before any live smoke, and P3G entry requirements.
 
 ## Changed Files
 
-- `aico_v0/live_gate.py`
-- `aico_v0/artifact_safety.py`
-- `tests/test_p3e_live_gate.py`
-- `P3E_COMPLETION_REVIEW.md`
+- `P3F_FIRST_LIVE_SMOKE_POLICY.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
 
 ## Test Result
 
-- P3E live gate and artifact safety targeted tests passed: `51 passed`.
 - Full `pytest -q` passed with `165 passed`.
 - AGENTS/CLAUDE byte-identical check passed. SHA256 matched.
 - Runtime forbidden import AST check for provider SDK/network/env-value imports in `aico_v0` passed with no violations.
@@ -78,6 +76,10 @@
 - P3E completion review: complete.
 - P3E blocker fix: complete.
 - P3F entry: YES.
+- P3F first live smoke policy: complete.
+- P3F implementation: NO.
+- Actual live smoke: not started.
+- P3G entry: not reviewed.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
 - Network/provider adapter live tests: not started.
@@ -85,12 +87,12 @@
 
 ## Git Status
 
-- Status before editing: clean at `0c6dd42`.
+- Status before editing: clean at `acd378b`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Begin P3F only as first live smoke policy/preparation.
-- Write P3F live smoke policy before any live smoke.
+- Review `P3F_FIRST_LIVE_SMOKE_POLICY.md` before any P3G work.
+- Treat P3G as policy/preparation unless a later explicit approval phase authorizes implementation.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
-- Do not make live API calls, use real keys, import provider SDKs, add network transport, or run live smoke until a later explicitly approved phase authorizes it.
+- Do not make live API calls, use real keys, import provider SDKs, add network transport, implement live smoke tests, or run live smoke until a later explicitly approved phase authorizes it.
