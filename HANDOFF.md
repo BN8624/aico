@@ -1,5 +1,42 @@
 # HANDOFF
 
+## P3P Code Activation Skeleton Update
+
+- Current HEAD before this P3P code activation skeleton commit: `f191525`.
+- This work implemented the P3P code activation skeleton / no-call implementation.
+- Created/modified files:
+  - `aico_v0/approval_phrase.py`
+  - `aico_v0/approval_package.py`
+  - `aico_v0/activation_guards.py`
+  - `aico_v0/artifact_safety.py`
+  - `tests/test_p3p_approval_package.py`
+  - `tests/test_p3p_activation_guards.py`
+  - `tests/test_p3p_no_call_safety.py`
+  - `HANDOFF.md`
+  - `CONTEXT_NOTES.md`
+  - `checklist.md`
+- P3P code activation skeleton / no-call implementation complete: YES.
+- Approval phrase parser skeleton complete: YES.
+- Approval package safe schema/helper complete: YES.
+- Activation guards complete: YES.
+- P3P scope: no-call implementation only.
+- approval_package.json default/runtime creation during this work: NO.
+- Actual API calls during this work: NO.
+- Actual LLM calls during this work: NO.
+- Actual key usage during this work: NO.
+- Provider SDK import during this work: NO.
+- Network calls during this work: NO.
+- Live smoke during this work: NO.
+- live_call_allowed during this work: NO.
+- model_call_count during this work: 0.
+- Test result: P3P targeted `pytest -q tests/test_p3p_approval_package.py tests/test_p3p_activation_guards.py tests/test_p3p_no_call_safety.py` passed with `82 passed`.
+- Regression check: `pytest -q tests/test_p3e_artifact_safety.py tests/test_p3j_live_smoke_artifacts.py tests/test_p3m_final_live_gate.py` passed with `120 passed`.
+- Full test result: `pytest -q` passed with `473 passed`.
+- AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
+- Runtime forbidden SDK/network/env-value import AST check for `aico_v0` passed with no violations.
+- Git status before commit: only expected P3P code, tests, and tracking documentation changes.
+- Next work: P3P completion review, unless separately redirected. Treat P3Q as a later explicit phase only. Do not run live smoke, activate providers, import provider SDKs, read real keys, enable network transport, set `live_call_allowed=true`, set `model_call_count=1`, call APIs, or call LLMs without a later explicit approval phase.
+
 ## P3O Completion Review Update
 
 - Current HEAD before this P3O completion review commit: `4d3fa33`.

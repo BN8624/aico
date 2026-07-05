@@ -240,3 +240,24 @@
 - [x] Keep network call count 0 in P3O.
 - [x] Keep live smoke count 0 in P3O.
 - [x] Defer actual first call to P3P or a later explicit approval phase.
+- [x] Implement P3P approval phrase parser skeleton.
+- [x] Implement P3P approval package safe schema/helper.
+- [x] Implement P3P approval phrase hash helper.
+- [x] Implement P3P final gate linkage skeleton.
+- [x] Implement P3P provider/model/key_slot validators.
+- [x] Implement P3P provider activation guard and keep it disabled.
+- [x] Implement P3P SDK import activation guard and keep it disabled.
+- [x] Implement P3P key loading activation guard and keep it disabled.
+- [x] Implement P3P live call activation guard and keep it disabled.
+- [x] Keep `approval_package.json` default/runtime creation at 0.
+- [x] Keep `live_call_allowed=false` in P3P.
+- [x] Keep `model_call_count=0` in P3P.
+- [x] Keep SDK import forbidden in P3P.
+- [x] Keep key loading forbidden in P3P.
+- [x] Keep provider activation forbidden in P3P.
+- [x] Keep API call count 0 in P3P.
+- [x] Keep LLM call count 0 in P3P.
+- [x] Keep key read count 0 in P3P.
+- [x] Keep network call count 0 in P3P.
+- [x] Keep live smoke count 0 in P3P.
+- [x] Defer actual first call to P3Q or a later explicit approval phase.

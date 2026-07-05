@@ -29,6 +29,12 @@ _RAW_OUTPUT_FIELD_PATTERN = re.compile(r'(?i)"raw_output"\s*:')
 _VALUE_LOADED_TRUE_PATTERN = re.compile(r'(?i)"?value_loaded"?\s*[:=]\s*true')
 _RAW_KEY_PRESENT_FIELD_PATTERN = re.compile(r'(?i)"raw_key_present"\s*:|raw_key_present\s*=')
 _ENV_VAR_VALUE_FIELD_PATTERN = re.compile(r'(?i)"env_var_value"\s*:|env_var_value\s*=')
+_LIVE_CALL_ALLOWED_TRUE_PATTERN = re.compile(r'(?i)"?live_call_allowed"?\s*[:=]\s*true')
+_MODEL_CALL_COUNT_NONZERO_PATTERN = re.compile(r'(?i)"?model_call_count(?:_before_execution)?"?\s*[:=]\s*[1-9][0-9]*')
+_SUCCESS_LIKE_STATUS_PATTERN = re.compile(
+    r'(?i)"?status"?\s*[:=]\s*"?'
+    r"(?:success|live_success|api_success|provider_success|executed|called|completed_live_call)"
+)
 _BLOCKED_PROVIDER_DOMAIN_PATTERNS = (
     r"op" + r"enai\.com",
     r"anth" + r"ropic\.com",
@@ -132,6 +138,9 @@ def _scan_text(artifact_path: str, text: str) -> list[ArtifactSafetyFinding]:
         (bool(_VALUE_LOADED_TRUE_PATTERN.search(text)), "value_loaded=True detected"),
         (bool(_RAW_KEY_PRESENT_FIELD_PATTERN.search(text)), "raw_key_present field detected"),
         (bool(_ENV_VAR_VALUE_FIELD_PATTERN.search(text)), "env var value field detected"),
+        (bool(_LIVE_CALL_ALLOWED_TRUE_PATTERN.search(text)), "live_call_allowed=True detected"),
+        (bool(_MODEL_CALL_COUNT_NONZERO_PATTERN.search(text)), "model_call_count > 0 detected"),
+        (bool(_SUCCESS_LIKE_STATUS_PATTERN.search(text)), "success-like status detected"),
         (bool(_ENDPOINT_URL_PATTERN.search(text)), "endpoint URL detected"),
     )
     for matched, reason in checks:
