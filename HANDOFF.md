@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this P3G completion review commit: `c3afc47`.
+- Current HEAD before this P3H approval package commit: `05b286a`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -35,6 +35,8 @@
 - P3G completion review is complete.
 - P3H entry decision: YES.
 - P3H meaning if later approved: live smoke approval package or policy/preparation only, unless separately approved.
+- P3H live smoke approval package documentation is complete.
+- P3H implementation: NO. This work is documentation only.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
@@ -45,15 +47,16 @@
 
 ## This Work
 
-- Completed P3G first live smoke skeleton review.
-- Reviewed `aico_v0/live_smoke.py`, P3G tests, provider boundary helpers, P3F/P3D policy documents, and handoff context.
-- Confirmed P3G stayed skeleton-only and did not enable live smoke.
-- Confirmed P3H entry is YES only for live smoke approval package or policy/preparation work.
-- Recorded non-blocking P3H risk around hardening `live_smoke_result` helper values before actual artifact writes.
+- Created P3H live smoke approval package documentation.
+- Fixed the exact approval phrase template for future first live smoke review.
+- Defined provider, model, and key_slot candidate recording policy without activating provider allowlist.
+- Reaffirmed `max_model_calls = 1`, `max_retries_per_call = 0`, `allow_raw_output=false`, raw key ban, raw output ban, and artifact safety pre/post scan requirements.
+- Separated provider SDK import and key loading decisions into P3I or a later explicit approval phase.
+- Documented stop conditions, rollback package, pre-live checklist, validation checklist, and P3I entry requirements.
 
 ## Changed Files
 
-- `P3G_COMPLETION_REVIEW.md`
+- `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
@@ -61,7 +64,7 @@
 ## Test Result
 
 - Full `pytest -q` passed with `200 passed`.
-- `git status --short --branch` was checked during review and showed only the expected review document changes before commit.
+- `git status --short --branch` was checked during review and showed only the expected P3H documentation changes before commit.
 - AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
 - Runtime forbidden import AST check for provider SDK/network/env-value imports in `aico_v0` passed with no violations.
 
@@ -95,6 +98,8 @@
 - P3G completion review: complete.
 - P3H entry: YES.
 - P3H meaning: live smoke approval package or policy/preparation only, unless separately approved.
+- P3H approval package documentation: complete.
+- P3H implementation: NO.
 - Actual live smoke: not started.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
@@ -103,13 +108,14 @@
 
 ## Git Status
 
-- Status before editing: clean at `c3afc47`.
-- Current review worktree before commit contains only `P3G_COMPLETION_REVIEW.md`, `HANDOFF.md`, `CONTEXT_NOTES.md`, and `checklist.md`.
+- Status before editing: clean at `05b286a`.
+- Current review worktree before commit contains only `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md`, `HANDOFF.md`, `CONTEXT_NOTES.md`, and `checklist.md`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Prepare P3H live smoke approval package or policy/preparation work only.
+- Review P3H live smoke approval package before any P3I work.
+- Treat P3I entry, if later approved, as review/preparation unless a separate explicit phase authorizes live smoke.
 - Keep actual live smoke forbidden until a later explicit approval phase, passing tests, clean git state, and all gates are satisfied.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
 - Do not make live API calls, use real keys, import provider SDKs, add network transport, implement live smoke tests, or run live smoke until a later explicitly approved phase authorizes it.

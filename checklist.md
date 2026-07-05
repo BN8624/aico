@@ -104,3 +104,14 @@
 - [x] Complete P3G completion review.
 - [x] Record P3H entry decision.
 - [x] Keep P3H limited to approval package or policy/preparation unless separately approved.
+- [x] Write P3H approval package.
+- [x] Keep live smoke unexecuted in P3H.
+- [x] Keep provider, model, and key_slot as candidate-only values in P3H.
+- [x] Require exact future approval phrase.
+- [x] Keep `max_model_calls = 1` for future first live smoke.
+- [x] Keep retry count 0 for future first live smoke.
+- [x] Keep `allow_raw_output=false`.
+- [x] Keep raw key forbidden.
+- [x] Keep raw output forbidden.
+- [x] Require artifact safety pre/post scan.
+- [x] Defer actual live smoke to P3I or later approval phase.
