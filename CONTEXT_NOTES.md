@@ -49,3 +49,6 @@
 - 2026-07-06: P3M final gate pass means ready_for_review only. `live_call_allowed` remains false and `model_call_count` remains 0 even when all gates pass.
 - 2026-07-06: P3M adds a safe `final_live_gate_result.json` schema/write helper. Actual API calls, LLM calls, key reads, provider SDK imports, network calls, provider activation, and live smoke remain forbidden.
 - 2026-07-06: Actual first call remains deferred to P3N or a later explicit approval phase.
+- 2026-07-06: P3N is dry authorization review documentation only, not actual live smoke. It defines how a future approval package should link to `final_live_gate_result.json` without creating live artifacts or executing a call.
+- 2026-07-06: P3N records provider/model/key_slot as dry candidates only. All-gates pass is not live authorization; `live_call_allowed=false` and `model_call_count=0` remain required.
+- 2026-07-06: P3N keeps provider allowlist actual activation, SDK import activation, key loading activation, API calls, LLM calls, network calls, and live smoke forbidden. Actual first call is deferred to P3O or a later explicit approval phase.

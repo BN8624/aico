@@ -207,3 +207,19 @@
 - [x] Keep network call count 0 in P3M.
 - [x] Keep live smoke count 0 in P3M.
 - [x] Defer actual first call to P3N or a later explicit approval phase.
+- [x] Write P3N dry authorization review.
+- [x] Define approval phrase recording policy.
+- [x] Document provider, model, and key_slot dry candidates.
+- [x] Document `final_live_gate_result` linkage.
+- [x] Record that all-gates pass is not live authorization.
+- [x] Keep `live_call_allowed=false` in P3N.
+- [x] Keep `model_call_count=0` in P3N.
+- [x] Keep SDK import forbidden in P3N.
+- [x] Keep key loading forbidden in P3N.
+- [x] Keep provider activation forbidden in P3N.
+- [x] Keep API call count 0 in P3N.
+- [x] Keep LLM call count 0 in P3N.
+- [x] Keep key read count 0 in P3N.
+- [x] Keep network call count 0 in P3N.
+- [x] Keep live smoke count 0 in P3N.
+- [x] Defer actual first call to P3O or a later explicit approval phase.
