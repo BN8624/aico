@@ -35,3 +35,6 @@
 - [x] Fix P3B invalid key_slot blocker.
 - [x] Harden ProviderResult safety policy.
 - [x] Re-record P3C entry decision after blocker fix.
+- [x] Implement P3C guarded disabled-by-default provider work.
+- [x] Add P3C real provider guard tests.
+- [x] Verify V0, P3A, P3B, and P3C tests pass.

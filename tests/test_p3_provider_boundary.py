@@ -25,7 +25,7 @@ def test_fake_provider_and_real_provider_share_provider_interface() -> None:
 def test_real_provider_skeleton_is_disabled_and_performs_no_api_call() -> None:
     provider = RealProvider(KeyRegistry({"worker_1": True}))
 
-    with pytest.raises(ProviderDisabledError, match="disabled in P3B skeleton"):
+    with pytest.raises(ProviderDisabledError, match="disabled"):
         provider.call_model("worker_1", "disabled-model", "prompt", {"kind": "worker"}, "happy")
 
 
