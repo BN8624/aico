@@ -41,24 +41,27 @@ For P3H approval-package work, document priority is:
 
 1. `AICO_MASTER_CANON.md`
 2. `AICO_P3_CANON.md`
-3. `P3F_FIRST_LIVE_SMOKE_POLICY.md`
-4. `P3G_COMPLETION_REVIEW.md`
-5. `P3F_COMPLETION_REVIEW.md`
-6. `P3D_LIVE_CALL_POLICY.md`
-7. `P3E_COMPLETION_REVIEW.md`
-8. `P3D_COMPLETION_REVIEW.md`
-9. `P3C_COMPLETION_REVIEW.md`
-10. `P3B_COMPLETION_REVIEW.md`
-11. `P3A_COMPLETION_REVIEW.md`
-12. `AICO_V0_CANON.md`
-13. `HANDOFF.md`
-14. `AGENTS.md` / `CLAUDE.md`
-15. `CONTEXT_NOTES.md`
-16. `checklist.md`
+3. `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md`
+4. `P3F_FIRST_LIVE_SMOKE_POLICY.md`
+5. `P3G_COMPLETION_REVIEW.md`
+6. `P3F_COMPLETION_REVIEW.md`
+7. `P3D_LIVE_CALL_POLICY.md`
+8. `P3E_COMPLETION_REVIEW.md`
+9. `P3D_COMPLETION_REVIEW.md`
+10. `P3C_COMPLETION_REVIEW.md`
+11. `P3B_COMPLETION_REVIEW.md`
+12. `P3A_COMPLETION_REVIEW.md`
+13. `AICO_V0_CANON.md`
+14. `HANDOFF.md`
+15. `AGENTS.md` / `CLAUDE.md`
+16. `CONTEXT_NOTES.md`
+17. `checklist.md`
 
 If this document conflicts with `AICO_MASTER_CANON.md` or `AICO_P3_CANON.md`, the higher-priority Canon document wins.
 
-If this document conflicts with `P3D_LIVE_CALL_POLICY.md`, the P3F first-live-smoke-specific policy remains the controlling policy for first live smoke scope. P3H only defines an approval package format and does not authorize execution.
+If `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` conflicts with `P3F_FIRST_LIVE_SMOKE_POLICY.md`, the P3H approval-package-specific rule wins for approval package format and review conditions.
+
+This conflict rule does not authorize live smoke execution. `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` is not an actual live smoke approval document. P3H is approval-package documentation only. Actual live smoke remains forbidden until P3I or a later explicit approval phase, and only after passing tests, clean git state, and all gates are satisfied.
 
 ## Current Safety Baseline
 

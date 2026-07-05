@@ -1,11 +1,9 @@
 # P3H Completion Review
 ## Verdict
 
-P3I entry: NO
+P3I entry: YES
 
-P3H is correctly scoped as approval-package documentation only, but P3I should remain blocked until `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` fixes its Document Priority. The P3H document currently omits itself from its priority list, which leaves the approval package's authority unclear relative to P3F/P3D review documents.
-
-This NO does not authorize any live smoke, API call, LLM call, real key usage, provider SDK import, network transport, or provider activation.
+This YES is only for P3I final preflight / approval review package entry. It is not live smoke approval. Actual live smoke, API calls, LLM calls, real key usage, provider SDK imports, network transport, and provider activation remain forbidden unless a later explicit approval phase separately authorizes them.
 
 ## Reviewed Documents and Files
 
@@ -47,22 +45,21 @@ This NO does not authorize any live smoke, API call, LLM call, real key usage, p
 
 ## Summary
 
-`P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` substantially captures the required approval package content. It keeps P3H as documentation-only, explicitly forbids live smoke execution, preserves the exact future approval phrase, keeps provider/model/key_slot candidate-only, maintains `max_model_calls = 1`, retry 0, `allow_raw_output=false`, raw key/raw output bans, artifact safety requirements, stop conditions, rollback rules, and P3I entry requirements.
+`P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` captures the required approval package content. It keeps P3H as documentation-only, explicitly forbids live smoke execution, preserves the exact future approval phrase, keeps provider/model/key_slot candidate-only, maintains `max_model_calls = 1`, retry 0, `allow_raw_output=false`, raw key/raw output bans, artifact safety requirements, stop conditions, rollback rules, and P3I entry requirements.
 
-The blocker is limited but important: the document priority section does not list `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` itself. Because P3H is the phase-specific approval package document, it should appear in its own priority list below `AICO_MASTER_CANON.md` and `AICO_P3_CANON.md`, and its relationship to `P3F_FIRST_LIVE_SMOKE_POLICY.md` should be explicit. Without that, P3I entry remains too ambiguous.
+The prior blocker has been fixed: the Document Priority now includes `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` itself below `AICO_MASTER_CANON.md` and `AICO_P3_CANON.md`, and the P3H/P3F conflict rule is explicit. The document also states that this priority does not authorize live smoke execution.
 
 ## Critical Issues
 
-1. `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` omits itself from Document Priority.
+None remaining after the P3H policy fix.
 
-The current priority list starts with `AICO_MASTER_CANON.md`, `AICO_P3_CANON.md`, then `P3F_FIRST_LIVE_SMOKE_POLICY.md`, but does not include `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md`. This can make P3H approval-package-specific rules appear subordinate to prior-phase review documents or leave their precedence undefined.
+The previous Document Priority blocker is resolved.
 
 ## Required Fixes Before P3I
 
-1. Add `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` to the P3H Document Priority list.
-2. Place it below `AICO_MASTER_CANON.md` and `AICO_P3_CANON.md`.
-3. State explicitly how conflicts are resolved between `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` and `P3F_FIRST_LIVE_SMOKE_POLICY.md`.
-4. Preserve the rule that P3H is not a live smoke authorization and that actual execution still requires a later explicit approval phase, passing tests, clean git state, and all gates satisfied.
+No required fixes remain before P3I final preflight / approval review package entry.
+
+P3I entry must still not be interpreted as actual live smoke approval.
 
 ## Non-blocking Recommendations
 
@@ -87,17 +84,18 @@ No scope blocker beyond document priority was found.
 
 ## Document Priority Review
 
-This section has the blocking issue.
+The Document Priority blocker has been fixed.
 
 Findings:
 
-- `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` does not include itself in Document Priority.
-- Master Canon and P3 Canon are correctly stated as higher priority.
-- The relationship to `P3D_LIVE_CALL_POLICY.md` is partially covered.
-- The relationship between P3H approval-package rules and `P3F_FIRST_LIVE_SMOKE_POLICY.md` is not explicit enough because P3H is missing from the list.
-- The omission does not directly authorize live smoke, but it makes P3H-specific authority ambiguous.
+- `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` now includes itself in Document Priority.
+- It appears below `AICO_MASTER_CANON.md` and `AICO_P3_CANON.md`.
+- Master Canon and P3 Canon remain higher priority.
+- The P3H/P3F conflict rule is explicit: P3H wins for approval package format and review conditions.
+- The document states that this conflict rule does not authorize live smoke execution.
+- P3H remains approval-package documentation only.
 
-Required correction: add P3H itself to Document Priority and state that P3H controls approval package format while P3F controls first live smoke safety scope unless a higher Canon says otherwise.
+No blocker remains in this section.
 
 ## Approval Package Definition Review
 
@@ -319,7 +317,7 @@ The P3I entry requirements include all requested items:
 
 The document also states that P3I entry YES is not actual live smoke approval and that actual execution requires later explicit approval, passing tests, clean git state, and all gates satisfied.
 
-However, P3I entry should remain NO until the Document Priority blocker is fixed.
+No blocker remains in this section after the P3H policy fix.
 
 ## P3I Entry Risk Review
 
@@ -338,6 +336,17 @@ Recommended P3I boundaries:
 
 ## Final Decision
 
-P3I entry: NO
+P3I entry: YES
 
-P3H is broadly sound but must fix its Document Priority before P3I can begin. This decision does not authorize live smoke execution, API calls, LLM calls, real key usage, provider SDK imports, network transport, provider activation, or real key loading.
+P3H is complete enough to enter P3I final preflight / approval review package work. This decision does not authorize live smoke execution, API calls, LLM calls, real key usage, provider SDK imports, network transport, provider activation, or real key loading.
+
+## Policy Fix Reassessment
+
+- P3H Document Priority missing self-reference: fixed.
+- `P3H_LIVE_SMOKE_APPROVAL_PACKAGE.md` is listed below Master Canon and P3 Canon: fixed.
+- P3H/P3F conflict rule: fixed.
+- Master/P3 Canon priority: preserved.
+- P3H not live smoke authorization: preserved.
+- P3I entry reassessment: YES.
+
+This YES is only for P3I final preflight / approval review package entry. Actual live smoke still requires a later explicit approval phase.

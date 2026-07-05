@@ -115,3 +115,7 @@
 - [x] Keep raw output forbidden.
 - [x] Require artifact safety pre/post scan.
 - [x] Defer actual live smoke to P3I or later approval phase.
+- [x] Ensure P3H document priority includes P3H approval package itself.
+- [x] Make P3H/P3F conflict rule explicit.
+- [x] Record that P3H approval package is not live smoke authorization.
+- [x] Record that P3I entry does not authorize live smoke.
