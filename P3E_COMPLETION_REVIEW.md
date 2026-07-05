@@ -2,11 +2,11 @@
 
 ## Verdict
 
-P3F entry: NO
+P3F entry: YES
 
-P3E successfully implements activation-preparation structures without enabling live calls. However, P3F should not begin yet because the live approval object can still carry raw secret-like values in free-form fields, and no direct test currently blocks that path.
+P3E implements activation-preparation structures without enabling live calls. The original P3F blocker was that `LiveApproval` could carry raw secret-like values in free-form fields. That blocker has been fixed by adding recursive approval-field secret scanning and direct tests.
 
-This NO does not invalidate the P3E preparation work. It identifies a narrow blocker to fix before any P3F first-live-smoke policy or preparation step.
+This YES is only for P3F first live smoke policy/preparation work. It is not approval to run live smoke, use real keys, import provider SDKs, enable network transport, or call a provider.
 
 ## Reviewed Documents and Files
 
@@ -53,38 +53,15 @@ No actual API call path, LLM call path, key value read, provider SDK import, net
 
 ## Critical Issues
 
-1. `LiveApproval` does not block raw secret-like values in approval fields.
+None remaining after the blocker fix.
 
-`LiveApproval` includes free-form fields such as `provider`, `model`, `reason`, `run_id`, `expires_at`, and `approval_phrase`. `validate_approval` blocks missing fields, ambiguous phrases, invalid scope, and URL-like provider/endpoint values, but it does not scan the approval object for raw key-like or token-like values.
-
-This conflicts with the P3E requirement that the approval object must not contain raw keys. A raw key in `reason` or `model` could be represented in memory and in `repr` unless another layer catches it.
-
-2. No direct test asserts that raw secrets in `LiveApproval` become `SECURITY_BLOCKED`.
-
-P3E tests cover artifact secrets and provider boundary secret masking, but not approval-object secret ingress.
+The original issue was that `LiveApproval` free-form fields were not scanned for raw secret-like values. The current implementation now blocks raw key-like values, bearer tokens, private key blocks, env var value patterns, and arbitrary URLs as `SECURITY_BLOCKED`.
 
 ## Required Fixes Before P3F
 
-1. Add approval object secret scanning.
+No required code or test fixes remain before P3F policy/preparation entry.
 
-`validate_approval` or a dedicated approval sanitizer should reject any raw key-like value, bearer token, env var value pattern, or private key block in all approval fields.
-
-2. Map approval-object secret ingress to canonical failure.
-
-Recommended mapping: `raw key leaked -> SECURITY_BLOCKED`.
-
-3. Add direct tests.
-
-Required tests before P3F:
-
-- raw key-like value in approval `reason` becomes `SECURITY_BLOCKED`.
-- bearer token in approval `approval_phrase` becomes `SECURITY_BLOCKED`.
-- env var value pattern in approval free-form field becomes `SECURITY_BLOCKED`.
-- approval object `repr` or loggable rendering does not expose raw secret after validation path.
-
-4. Consider removing or constraining `LiveApproval.endpoint`.
-
-The current code blocks URL-like endpoint values, which is good. Before P3F, decide whether endpoint should remain a symbolic allowlist key or be removed from the approval object entirely.
+P3F must still be limited to first live smoke policy/preparation unless a later explicit approval phase authorizes actual live smoke.
 
 ## Non-blocking Recommendations
 
@@ -154,7 +131,7 @@ Mappings are present:
 
 The validator is classification-only. It returns `LiveGateResult` and does not call a provider.
 
-Blocking gap: the `raw key leaked` mapping exists in the table but is not applied to `LiveApproval` fields.
+The `raw key leaked` mapping is now applied to `LiveApproval` fields through recursive approval scanning.
 
 ## Approval Object and Schema Review
 
@@ -183,7 +160,7 @@ The default approval scope is `this_run_only`. If `approved_by_user` is not true
 
 URL-like provider or endpoint values become `SECURITY_BLOCKED` through `arbitrary URL requested`.
 
-Blocking gap: raw key-like values in approval free-form fields are not scanned or rejected.
+Raw key-like values in approval free-form fields are now scanned and rejected as `SECURITY_BLOCKED`.
 
 ## Provider Allowlist Review
 
@@ -328,28 +305,60 @@ P3D completion blockers are largely resolved, except approval-object raw-secret 
 | existing P3A tests pass | `tests/test_p3_fake_provider.py` | Direct |
 | existing V0 tests pass | `tests/test_v0_harness.py` | Direct |
 | AGENTS.md and CLAUDE.md remain byte-identical | P3E/P3B/P3C/V0 tests and SHA256 check | Direct |
+| LiveApproval raw key-like value becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval bearer token becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval private key block becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval env var value pattern becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval arbitrary URL becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval nested free-form secret becomes SECURITY_BLOCKED | `test_live_approval_secret_guard_blocks_unsafe_free_form_values` | Direct |
+| LiveApproval allows key_slot, env var name, and masked placeholder | `test_live_approval_allows_key_slots_env_var_names_and_masked_placeholders` | Direct |
+| LiveApproval blocked values are not exposed through validation result/repr | `test_live_approval_secret_guard_result_does_not_expose_raw_secret`, `test_live_approval_repr_masks_other_blocked_values` | Direct |
 
-Coverage gap before P3F: raw secret in `LiveApproval` fields is not directly tested.
+The original coverage gap for raw secrets in `LiveApproval` fields is now covered by direct P3E live gate tests.
 
 ## P3F Entry Risk Review
 
-P3F should not go directly to live smoke yet.
+P3F may proceed only as first live smoke policy/preparation.
 
-Required before P3F:
+Required before any actual live smoke:
 
-1. Fix approval object secret scanning.
-2. Add a direct test for raw secret-like values inside `LiveApproval`.
-3. Write `P3F_LIVE_SMOKE_POLICY.md` or equivalent before any live smoke.
-4. Decide whether `google_gemini` remains only a candidate or becomes an approved allowlist entry.
-5. Decide whether provider SDK import is allowed in P3F or deferred to another preparation phase.
-6. Decide whether actual key loading is allowed in P3F or requires a separate key isolation review.
-7. Limit any first live smoke to one key slot and `max_model_calls = 1`, retry 0.
-8. Define live smoke artifacts before execution.
-9. Prove raw provider response cannot persist unmasked.
-10. Preserve default `pytest -q` offline-only after any P3F work.
+1. Write `P3F_LIVE_SMOKE_POLICY.md` or equivalent.
+2. Decide whether `google_gemini` remains only a candidate or becomes an approved allowlist entry.
+3. Decide whether provider SDK import is allowed in P3F or deferred to another preparation phase.
+4. Decide whether actual key loading is allowed in P3F or requires a separate key isolation review.
+5. Limit any first live smoke to one key slot and `max_model_calls = 1`, retry 0.
+6. Define live smoke artifacts before execution.
+7. Prove raw provider response cannot persist unmasked.
+8. Preserve default `pytest -q` offline-only after any P3F work.
 
 ## Final Decision
 
-P3F entry: NO
+P3F entry: YES
 
-P3E activation preparation is useful and mostly complete, but P3F should wait until approval-object secret ingress is blocked and tested. Actual live smoke, provider SDK import, network transport, and real key loading remain forbidden.
+P3E activation preparation is complete enough to enter P3F policy/preparation work. Actual live smoke, provider SDK import, network transport, and real key loading remain forbidden until a later explicit approval phase.
+
+## Blocker Fix Reassessment
+
+LiveApproval free-form secret guard blocker fix is complete.
+
+Changes made:
+
+- `LiveApproval` validation now recursively scans all approval fields through shared artifact safety scan logic.
+- Raw key-like values in approval fields become `SECURITY_BLOCKED`.
+- Bearer token patterns in approval fields become `SECURITY_BLOCKED`.
+- Private key blocks in approval fields become `SECURITY_BLOCKED`.
+- Env var value patterns in approval fields become `SECURITY_BLOCKED`.
+- Arbitrary URL or provider endpoint URL in approval fields becomes `SECURITY_BLOCKED`.
+- Env var names, key_slot strings, and `[MASKED_SECRET]` placeholders remain allowed.
+- `LiveApproval.__repr__` masks raw key-like values to reduce accidental log exposure.
+
+Additional tests:
+
+- `test_live_approval_secret_guard_blocks_unsafe_free_form_values`
+- `test_live_approval_allows_key_slots_env_var_names_and_masked_placeholders`
+- `test_live_approval_secret_guard_result_does_not_expose_raw_secret`
+- `test_live_approval_repr_masks_other_blocked_values`
+
+P3F entry after blocker fix: YES.
+
+This YES is only for first live smoke policy/preparation work. It is not approval to run a live smoke, use real keys, import provider SDKs, enable network transport, or call a provider.

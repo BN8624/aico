@@ -23,6 +23,8 @@ from aico_v0.provider_allowlist import (
     ProviderAllowlist,
 )
 
+RAW_SECRET = "sk-" + "p3e-approval-secret-value"
+
 
 def valid_approval(**overrides: object) -> LiveApproval:
     data = {
@@ -57,6 +59,53 @@ def assert_failure(result, failure_type: str) -> None:
 )
 def test_approval_failures_map_to_human_decision_required(approval: LiveApproval | None, failure_type: str) -> None:
     assert_failure(validate_approval(approval), failure_type)
+
+
+@pytest.mark.parametrize(
+    "approval",
+    [
+        valid_approval(reason=f"raw key {RAW_SECRET}"),
+        valid_approval(approval_phrase="Authorization: Bearer abcdefghijklmnopqrstuvwxyz"),
+        valid_approval(reason="-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----"),
+        valid_approval(model="https://provider.example/model"),
+        valid_approval(provider="https://provider.example"),
+        valid_approval(key_slots=("worker_1", f"secret={RAW_SECRET}")),
+        valid_approval(reason="AICO_WORKER_1_API_KEY=actual-secret-value"),
+        valid_approval(metadata={"nested": ["token=" + RAW_SECRET]}),
+    ],
+)
+def test_live_approval_secret_guard_blocks_unsafe_free_form_values(approval: LiveApproval) -> None:
+    result = validate_approval(approval)
+
+    assert_failure(result, "SECURITY_BLOCKED")
+    assert result.failure_type != "HUMAN_DECISION_REQUIRED"
+    assert result.failure_type != "CONFIG_ERROR"
+
+
+def test_live_approval_allows_key_slots_env_var_names_and_masked_placeholders() -> None:
+    approval = valid_approval(
+        key_slots=("worker_1", "auditor_1"),
+        reason="Uses AICO_WORKER_1_API_KEY and [MASKED_SECRET]",
+        model="user-approved later",
+    )
+
+    assert validate_approval(approval).ok is True
+
+
+def test_live_approval_secret_guard_result_does_not_expose_raw_secret() -> None:
+    approval = valid_approval(reason=f"raw key {RAW_SECRET}")
+    result = validate_approval(approval)
+
+    assert result.failure_type == "SECURITY_BLOCKED"
+    assert RAW_SECRET not in repr(result)
+    assert RAW_SECRET not in repr(approval)
+
+
+def test_live_approval_repr_masks_other_blocked_values() -> None:
+    approval = valid_approval(approval_phrase="Authorization: Bearer abcdefghijklmnopqrstuvwxyz")
+
+    assert "Bearer abcdefghijklmnopqrstuvwxyz" not in repr(approval)
+    assert "[BLOCKED_APPROVAL_VALUE]" in repr(approval)
 
 
 @pytest.mark.parametrize(

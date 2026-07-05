@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
-from typing import Mapping, Sequence
+from dataclasses import asdict, dataclass
+from typing import Any, Mapping
 
-from .artifact_safety import ArtifactSafetyResult
+from .artifact_safety import ArtifactSafetyResult, scan_value_for_unsafe_content
 from .key_registry import KeyRegistry
+from .provider_base import mask_secrets
 from .provider_allowlist import KNOWN_PROVIDER_CANDIDATES, ProviderAllowlist
 
 FAILURE_TYPE_BY_GATE_CONDITION = {
@@ -73,6 +74,12 @@ class LiveApproval:
     expires_at: str | None = None
     reason: str | None = None
     endpoint: str | None = None
+    metadata: Mapping[str, object] | None = None
+
+    def __repr__(self) -> str:
+        safe_fields = {key: _mask_approval_value(value) for key, value in asdict(self).items()}
+        rendered = ", ".join(f"{key}={safe_fields[key]!r}" for key in safe_fields)
+        return f"LiveApproval({rendered})"
 
 
 @dataclass(frozen=True)
@@ -213,14 +220,16 @@ def _gate_conditions(
 def _approval_conditions(approval: LiveApproval | None) -> tuple[str, ...]:
     if approval is None:
         return ("explicit approval missing",)
+    if _approval_has_unsafe_content(approval):
+        return ("raw key leaked",)
+    if _approval_has_url(approval):
+        return ("arbitrary URL requested",)
     if approval.approval_phrase and approval.approval_phrase.strip().lower() in {"continue", "proceed", "go ahead", "진행해", "계속해"}:
         return ("approval phrase ambiguous",)
     if not approval.approved_by_user:
         return ("explicit approval missing",)
     if not approval.provider:
         return ("provider not specified in approval",)
-    if _URL_PATTERN.search(approval.provider) or (approval.endpoint and _URL_PATTERN.search(approval.endpoint)):
-        return ("arbitrary URL requested",)
     if not approval.key_slots:
         return ("key slots not specified in approval",)
     if approval.max_model_calls is None:
@@ -230,6 +239,40 @@ def _approval_conditions(approval: LiveApproval | None) -> tuple[str, ...]:
     if approval.approval_scope != "this_run_only":
         return ("approval phrase ambiguous",)
     return ()
+
+
+def _approval_has_unsafe_content(approval: LiveApproval) -> bool:
+    return bool(scan_value_for_unsafe_content(asdict(approval), value_path="approval"))
+
+
+def _approval_has_url(approval: LiveApproval) -> bool:
+    return _value_has_url(asdict(approval))
+
+
+def _value_has_url(value: Any) -> bool:
+    if isinstance(value, str):
+        return bool(_URL_PATTERN.search(value))
+    if isinstance(value, Mapping):
+        return any(_value_has_url(key) or _value_has_url(item) for key, item in value.items())
+    if isinstance(value, (list, tuple, set)):
+        return any(_value_has_url(item) for item in value)
+    return False
+
+
+def _mask_approval_value(value: Any) -> Any:
+    if isinstance(value, str):
+        if scan_value_for_unsafe_content(value) or _URL_PATTERN.search(value):
+            return "[BLOCKED_APPROVAL_VALUE]"
+        return mask_secrets(value)
+    if isinstance(value, Mapping):
+        return {_mask_approval_value(key): _mask_approval_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_mask_approval_value(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_mask_approval_value(item) for item in value)
+    if isinstance(value, set):
+        return {_mask_approval_value(item) for item in value}
+    return value
 
 
 def _flag_conditions(flags: Mapping[str, str] | None) -> tuple[str, ...]:

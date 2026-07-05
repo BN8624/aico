@@ -68,3 +68,6 @@
 - [x] Defer actual live smoke to P3F or later approval phase after P3E.
 - [x] Complete P3E completion review.
 - [x] Record P3F entry decision.
+- [x] Implement LiveApproval recursive secret guard.
+- [x] Test LiveApproval raw key, bearer token, private key, env value, and URL blocking.
+- [x] Re-record P3F entry decision after P3E blocker fix.

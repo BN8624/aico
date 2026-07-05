@@ -82,6 +82,31 @@ def scan_artifact_text(artifact_path: str, text: str) -> ArtifactSafetyResult:
     return ArtifactSafetyResult(False, findings[0].failure_type, findings)
 
 
+def scan_value_for_unsafe_content(value: Any, *, value_path: str = "<value>") -> tuple[ArtifactSafetyFinding, ...]:
+    return tuple(_scan_value(value_path, value))
+
+
+def value_contains_unsafe_content(value: Any) -> bool:
+    return bool(scan_value_for_unsafe_content(value))
+
+
+def _scan_value(value_path: str, value: Any) -> list[ArtifactSafetyFinding]:
+    if isinstance(value, str):
+        return _scan_text(value_path, value)
+    if isinstance(value, Mapping):
+        findings: list[ArtifactSafetyFinding] = []
+        for key, item in value.items():
+            findings.extend(_scan_value(f"{value_path}.{key}", key))
+            findings.extend(_scan_value(f"{value_path}.{key}", item))
+        return findings
+    if isinstance(value, (list, tuple, set)):
+        findings = []
+        for index, item in enumerate(value):
+            findings.extend(_scan_value(f"{value_path}[{index}]", item))
+        return findings
+    return []
+
+
 def _scan_text(artifact_path: str, text: str) -> list[ArtifactSafetyFinding]:
     findings: list[ArtifactSafetyFinding] = []
     checks = (
