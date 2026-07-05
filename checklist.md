@@ -188,3 +188,22 @@
 - [x] Keep network call count 0 in P3L.
 - [x] Keep live smoke count 0 in P3L.
 - [x] Defer actual first call to P3M or a later explicit approval phase.
+- [x] Implement final all-gates validator.
+- [x] Integrate approval phrase gate.
+- [x] Integrate provider allowlist gate.
+- [x] Integrate SDK boundary gate.
+- [x] Integrate key loading boundary gate.
+- [x] Integrate runtime flags gate.
+- [x] Integrate budget gate.
+- [x] Integrate artifact safety gate.
+- [x] Keep final gate result schema safe.
+- [x] Keep final gate result write helper safe.
+- [x] Keep `live_call_allowed=false`.
+- [x] Keep `model_call_count=0`.
+- [x] Keep SDK import count 0 in P3M.
+- [x] Keep key read count 0 in P3M.
+- [x] Keep API call count 0 in P3M.
+- [x] Keep LLM call count 0 in P3M.
+- [x] Keep network call count 0 in P3M.
+- [x] Keep live smoke count 0 in P3M.
+- [x] Defer actual first call to P3N or a later explicit approval phase.

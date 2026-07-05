@@ -45,3 +45,7 @@
 - 2026-07-06: P3L key loading boundary location is defined as provider adapter internal minimal function only. Env var value reads and raw key reads remain forbidden; key existence checks are boolean skeletons based on injected safe metadata only.
 - 2026-07-06: P3L keeps candidate allowlist compatibility closed. A `google_gemini` candidate still does not authorize SDK import, key loading, live calls, API calls, LLM calls, network calls, or live smoke.
 - 2026-07-06: Actual first call remains deferred to P3M or a later explicit approval phase. P3L did not perform actual API calls, LLM calls, key usage, provider SDK imports, network calls, or live smoke.
+- 2026-07-06: P3M implements final live-call gate implementation skeleton only, not actual live smoke. The final gate composes approval, allowlist, provider candidate, SDK boundary, key loading boundary, key existence, runtime flags, budget, prompt safety, expected output schema, artifact write plan, artifact safety pre-scan, and live-call-disabled gates.
+- 2026-07-06: P3M final gate pass means ready_for_review only. `live_call_allowed` remains false and `model_call_count` remains 0 even when all gates pass.
+- 2026-07-06: P3M adds a safe `final_live_gate_result.json` schema/write helper. Actual API calls, LLM calls, key reads, provider SDK imports, network calls, provider activation, and live smoke remain forbidden.
+- 2026-07-06: Actual first call remains deferred to P3N or a later explicit approval phase.
