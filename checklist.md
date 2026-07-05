@@ -83,5 +83,10 @@
 - [x] Defer actual live smoke to P3G or a later explicit approval phase.
 - [x] Complete P3F completion review.
 - [x] Record P3G entry decision.
-- [ ] Fix P3F document priority before P3G.
-- [ ] Add missing P3F failure/stop mappings before P3G.
+- [x] Fix P3F document priority before P3G.
+- [x] Add missing P3F failure/stop mappings before P3G.
+- [x] Ensure P3F document priority includes P3F policy itself.
+- [x] Map unknown endpoint requested to SECURITY_BLOCKED.
+- [x] Map artifact safety scan missing to CONFIG_ERROR.
+- [x] Map artifact safety scan failed to SECURITY_BLOCKED.
+- [x] Record that P3G entry does not authorize live smoke.

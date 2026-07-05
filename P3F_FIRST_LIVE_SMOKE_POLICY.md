@@ -42,19 +42,24 @@ For P3F policy/preparation work, document priority is:
 
 1. `AICO_MASTER_CANON.md`
 2. `AICO_P3_CANON.md`
-3. `P3D_LIVE_CALL_POLICY.md`
-4. `P3E_COMPLETION_REVIEW.md`
-5. `P3D_COMPLETION_REVIEW.md`
-6. `P3C_COMPLETION_REVIEW.md`
-7. `P3B_COMPLETION_REVIEW.md`
-8. `P3A_COMPLETION_REVIEW.md`
-9. `AICO_V0_CANON.md`
-10. `HANDOFF.md`
-11. `AGENTS.md` / `CLAUDE.md`
-12. `CONTEXT_NOTES.md`
-13. `checklist.md`
+3. `P3F_FIRST_LIVE_SMOKE_POLICY.md`
+4. `P3D_LIVE_CALL_POLICY.md`
+5. `P3E_COMPLETION_REVIEW.md`
+6. `P3D_COMPLETION_REVIEW.md`
+7. `P3C_COMPLETION_REVIEW.md`
+8. `P3B_COMPLETION_REVIEW.md`
+9. `P3A_COMPLETION_REVIEW.md`
+10. `AICO_V0_CANON.md`
+11. `HANDOFF.md`
+12. `AGENTS.md` / `CLAUDE.md`
+13. `CONTEXT_NOTES.md`
+14. `checklist.md`
 
 If this policy conflicts with `AICO_MASTER_CANON.md` or `AICO_P3_CANON.md`, the higher-priority Canon document wins.
+
+If `P3F_FIRST_LIVE_SMOKE_POLICY.md` conflicts with the broader `P3D_LIVE_CALL_POLICY.md`, the P3F first-live-smoke-specific rule wins. This does not override `AICO_MASTER_CANON.md` or `AICO_P3_CANON.md`.
+
+`P3F_FIRST_LIVE_SMOKE_POLICY.md` is not a live smoke execution authorization. Actual first live smoke remains forbidden until P3G or a later explicit approval phase, and only after passing tests, clean git state, and all gates are satisfied.
 
 ## Current Safety Baseline
 
@@ -363,8 +368,10 @@ Required mappings:
 | budget missing | `CONFIG_ERROR` |
 | budget invalid | `CONFIG_ERROR` |
 | artifact safety scan missing | `CONFIG_ERROR` |
+| artifact safety scan failed | `SECURITY_BLOCKED` |
 | unknown provider requested | `SECURITY_BLOCKED` |
 | provider not in allowlist | `SECURITY_BLOCKED` |
+| unknown endpoint requested | `SECURITY_BLOCKED` |
 | arbitrary URL requested | `SECURITY_BLOCKED` |
 | raw key found | `SECURITY_BLOCKED` |
 | env var value found | `SECURITY_BLOCKED` |
@@ -404,6 +411,7 @@ The following stop the first live smoke path:
 - Raw output appears anywhere.
 - Artifact safety scan missing.
 - Artifact safety scan failed.
+- Unknown endpoint requested.
 - Budget missing.
 - Budget invalid.
 - Budget exceeded.
@@ -456,6 +464,8 @@ Recommended marker:
 - Any live smoke test file must require a separate command and approval document.
 
 ## P3G Entry Requirements
+
+P3G entry is not approval to run a live smoke. P3G may be a live smoke implementation skeleton or another policy/preparation step. Actual live smoke still requires a later explicit approval phase, passing tests, clean git state, and all gates satisfied.
 
 Before P3G:
 

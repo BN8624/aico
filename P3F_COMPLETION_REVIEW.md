@@ -2,14 +2,14 @@
 
 ## Verdict
 
-P3G entry: NO
+P3G entry: YES
 
-This NO is about P3G entry readiness. It is not related to live smoke approval. Actual live smoke, real API calls, real key use, provider SDK imports, and network calls remain forbidden.
+This YES is only for P3G live smoke implementation skeleton or policy/preparation entry. It is not live smoke approval. Actual live smoke, real API calls, real key use, provider SDK imports, and network calls remain forbidden.
 
-The P3F policy is directionally safe and strongly limits first live smoke scope, but it has document-level blockers that should be fixed before P3G:
+The P3F policy now addresses the blockers identified in the initial completion review:
 
-1. `P3F_FIRST_LIVE_SMOKE_POLICY.md` omits itself from its own Document Priority list, placing `P3D_LIVE_CALL_POLICY.md` above the P3F-specific policy.
-2. The P3F Failure Mapping and Stop Conditions sections do not explicitly carry every condition defined elsewhere in the same P3F policy, especially `unknown endpoint requested` and `artifact safety scan failed`.
+1. `P3F_FIRST_LIVE_SMOKE_POLICY.md` includes itself above `P3D_LIVE_CALL_POLICY.md` in Document Priority.
+2. `unknown endpoint requested`, `artifact safety scan missing`, and `artifact safety scan failed` are now explicitly mapped and connected to stop conditions.
 
 ## Reviewed Documents and Files
 
@@ -50,35 +50,19 @@ The P3F policy is directionally safe and strongly limits first live smoke scope,
 
 The policy defines first live smoke as a narrow future smoke with one provider candidate, one key_slot, one model call, zero retries, no reserve, no full-run artifacts, and mandatory artifact safety scans. It also preserves key_slot-only logging, raw key/raw output bans, offline default tests, and canonical failure types.
 
-The main issues are not implementation issues. They are policy precision issues that matter before P3G because P3G will need to convert this policy into skeletons or tests.
+The previous policy precision issues have been fixed. Remaining P3G work should still be limited to live smoke implementation skeleton or policy/preparation unless a later explicit approval phase authorizes actual live smoke.
 
 ## Critical Issues
 
-1. Document priority is internally inconsistent.
+None remaining after the P3F policy fix.
 
-`P3F_FIRST_LIVE_SMOKE_POLICY.md` lists `P3D_LIVE_CALL_POLICY.md` as priority 3 and omits `P3F_FIRST_LIVE_SMOKE_POLICY.md` from its own priority list. The current review priority places `P3F_FIRST_LIVE_SMOKE_POLICY.md` above `P3D_LIVE_CALL_POLICY.md`. Before P3G, the P3F policy should state that P3F-specific first-live-smoke rules outrank P3D general live-call policy when they conflict, while still remaining below `AICO_MASTER_CANON.md` and `AICO_P3_CANON.md`.
-
-2. Failure mapping and stop conditions are slightly incomplete relative to the same policy.
-
-The Provider Allowlist Policy states `unknown endpoint requested` is `SECURITY_BLOCKED`, but the Failure Mapping table and Stop Conditions section do not list it. The Artifact Safety Scan Policy states scan failure is `SECURITY_BLOCKED`, but the Failure Mapping table does not include `artifact safety scan failed`. These gaps are small but implementation-relevant.
+The earlier blockers were resolved in `P3F_FIRST_LIVE_SMOKE_POLICY.md`.
 
 ## Required Fixes Before P3G
 
-1. Update `P3F_FIRST_LIVE_SMOKE_POLICY.md` Document Priority to include itself at priority 3:
+No required fixes remain before P3G skeleton/policy entry.
 
-   `AICO_MASTER_CANON.md` > `AICO_P3_CANON.md` > `P3F_FIRST_LIVE_SMOKE_POLICY.md` > `P3D_LIVE_CALL_POLICY.md` > downstream review and handoff docs.
-
-2. Add a conflict rule:
-
-   P3F-specific first-live-smoke rules override broader P3D live-call policy when they conflict, unless either conflicts with `AICO_MASTER_CANON.md` or `AICO_P3_CANON.md`.
-
-3. Add `unknown endpoint requested -> SECURITY_BLOCKED` to P3F Failure Mapping.
-
-4. Add `artifact safety scan failed -> SECURITY_BLOCKED` to P3F Failure Mapping.
-
-5. Add `unknown endpoint requested` to P3F Stop Conditions.
-
-6. Ensure P3G entry remains limited to live smoke implementation skeleton or policy/preparation unless a later explicit approval phase separately authorizes actual live smoke.
+P3G entry remains limited to live smoke implementation skeleton or policy/preparation unless a later explicit approval phase separately authorizes actual live smoke.
 
 ## Non-blocking Recommendations
 
@@ -160,7 +144,7 @@ The allowlist policy is mostly complete:
 - Unknown endpoint is stated as `SECURITY_BLOCKED`.
 - P3F does not open the allowlist.
 
-Required fix: carry `unknown endpoint requested -> SECURITY_BLOCKED` into the Failure Mapping table and Stop Conditions section.
+`unknown endpoint requested -> SECURITY_BLOCKED` is now carried into the Failure Mapping table and Stop Conditions section.
 
 ## Key Slot Policy Review
 
@@ -269,7 +253,7 @@ The scan policy is strong:
 - Scan failure is `SECURITY_BLOCKED`.
 - Scan result is recorded in `artifact_safety_report.json`.
 
-Required fix: add `artifact safety scan failed -> SECURITY_BLOCKED` to the Failure Mapping table for completeness.
+`artifact safety scan failed -> SECURITY_BLOCKED` is now included in the Failure Mapping table.
 
 ## Logging and Failure Mapping Review
 
@@ -301,16 +285,16 @@ The failure mapping uses existing failure types only. The core mappings are pres
 - schema-valid empty -> `WORKER_BAD_OUTPUT`.
 - ceo/report artifact failures -> `REPORT_ERROR`.
 
-Required fixes:
+The P3F policy fix adds the previously missing mappings:
 
-- Add `unknown endpoint requested -> SECURITY_BLOCKED`.
-- Add `artifact safety scan failed -> SECURITY_BLOCKED`.
+- `unknown endpoint requested -> SECURITY_BLOCKED`.
+- `artifact safety scan failed -> SECURITY_BLOCKED`.
 
 ## Stop and Rollback Policy Review
 
 Stop conditions cover approval, allowlist, runtime flags, key absence, raw key/env value/raw output, scan missing/failure, budget problems, retry/reserve/second call, SDK import, default-test network call, default-pytest live call, and `ProviderResult` safety breakage.
 
-Required fix: add unknown endpoint requested as a stop condition.
+`unknown endpoint requested` is now included as a stop condition.
 
 Rollback policy is safe:
 
@@ -352,7 +336,7 @@ P3G entry requirements are present:
 9. First live smoke implementation scope fixed.
 10. P3G entry judged YES.
 
-Required fix: complete the P3F policy fixes above before P3G entry is YES.
+The P3F policy fixes are complete enough for P3G skeleton/policy entry.
 
 ## Required Tests Before Any Live Smoke Review
 
@@ -386,7 +370,7 @@ The required test list includes:
 - Default pytest does not run live smoke.
 - `live_smoke` marker is excluded by default.
 
-Non-blocking recommendation: add explicit test requirements for unknown endpoint rejection and artifact safety scan failure mapping when the P3F policy is fixed.
+Non-blocking recommendation: add explicit P3G tests for unknown endpoint rejection and artifact safety scan failure mapping.
 
 ## P3G Entry Risk Review
 
@@ -412,14 +396,26 @@ Risks before any actual live smoke:
 
 P3G should keep actual API calls, LLM calls, key usage, SDK imports, network calls, and live smoke forbidden unless a later explicit approval phase changes that.
 
+## Policy Fix Reassessment
+
+- P3F Document Priority correction: complete.
+- `P3F_FIRST_LIVE_SMOKE_POLICY.md` now places itself above `P3D_LIVE_CALL_POLICY.md`.
+- P3F-vs-P3D conflict rule: complete.
+- `unknown endpoint requested -> SECURITY_BLOCKED`: complete in failure mapping and stop conditions.
+- `artifact safety scan missing -> CONFIG_ERROR`: complete in failure mapping and stop conditions.
+- `artifact safety scan failed -> SECURITY_BLOCKED`: complete in failure mapping and stop conditions.
+- P3G entry reassessment: YES.
+
+This YES is only for live smoke implementation skeleton or policy/preparation. It is not approval to run a live smoke, use real keys, import provider SDKs, enable network transport, or call a provider.
+
 ## Final Decision
 
-P3G entry: NO
+P3G entry: YES
 
-P3F is close, but P3G should not start until the P3F policy fixes are made:
+P3F is complete enough to enter P3G live smoke implementation skeleton or policy/preparation work:
 
-1. Add P3F itself to the P3F document priority above P3D.
-2. Add the P3F-vs-P3D conflict rule.
-3. Add missing failure mappings and stop condition coverage for `unknown endpoint requested` and artifact safety scan failure.
+1. P3F itself is in the P3F document priority above P3D.
+2. The P3F-vs-P3D conflict rule is present.
+3. Missing failure mappings and stop condition coverage for `unknown endpoint requested` and artifact safety scan failure are fixed.
 
-After those fixes, P3G may be reconsidered for live smoke implementation skeleton or policy/preparation only. This review does not authorize live smoke.
+This YES does not authorize live smoke. P3G must remain live smoke implementation skeleton or policy/preparation unless a later explicit approval phase separately authorizes actual live smoke.
