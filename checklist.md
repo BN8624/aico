@@ -40,3 +40,12 @@
 - [x] Verify V0, P3A, P3B, and P3C tests pass.
 - [x] Complete P3C completion review.
 - [x] Record P3D entry decision.
+- [x] Document P3D live call default off.
+- [x] Document explicit approval requirement for live calls.
+- [x] Document runtime flags required before live calls.
+- [x] Document key_slot-only policy.
+- [x] Document raw key forbidden policy.
+- [x] Document raw output forbidden policy.
+- [x] Document provider allowlist requirement.
+- [x] Document live-call budget requirement.
+- [x] Document default tests offline-only requirement.
