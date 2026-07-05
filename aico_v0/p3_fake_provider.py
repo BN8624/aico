@@ -2,69 +2,25 @@
 from __future__ import annotations
 
 import json
-import re
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
 from .harness import deterministic_preflight
-
-KEY_SLOTS = (
-    "manager_1",
-    "worker_1",
-    "worker_2",
-    "worker_3",
-    "worker_4",
-    "auditor_1",
-    "reserve_1",
-)
-
-WORKER_SLOTS = ("worker_1", "worker_2", "worker_3", "worker_4")
-WORKER_ROLES = ("requirements_checker", "risk_finder", "structure_planner", "report_reviewer")
-
-FAILURE_BY_PROVIDER_STATUS = {
-    "timeout": "MODEL_ERROR",
-    "rate_limited_429": "MODEL_ERROR",
-    "server_error_500": "MODEL_ERROR",
-    "provider_unavailable": "MODEL_ERROR",
-    "no_response": "MODEL_ERROR",
-    "non_json_response": "SCHEMA_ERROR",
-    "schema_invalid_json": "SCHEMA_ERROR",
-    "schema_valid_empty": "WORKER_BAD_OUTPUT",
-    "security_leak": "SECURITY_BLOCKED",
-}
-
-SECRET_PATTERNS = (
-    re.compile(r"sk-[A-Za-z0-9_-]{10,}"),
-    re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}"),
-    re.compile(r"(?i)(api[_ -]?key|token|credential|secret)\s*[:=]\s*[A-Za-z0-9_.-]{8,}"),
+from .provider_base import (
+    FAILURE_BY_PROVIDER_STATUS,
+    KEY_SLOTS,
+    WORKER_SLOTS,
+    Provider,
+    ProviderResult,
+    contains_secret,
+    mask_secrets,
 )
 
 FORBIDDEN_REFERENCE_MARKERS = ("http://", "https://", "git://", "web search", "repo clone")
-
-
-@dataclass(frozen=True)
-class ProviderResult:
-    status: str
-    content: Any = None
-    raw_output: str | None = None
-    input_tokens: int | None = None
-    output_tokens: int | None = None
-    error: str | None = None
-
-
-class Provider(Protocol):
-    def call_model(
-        self,
-        key_slot: str,
-        model: str,
-        prompt: str,
-        expected_schema: dict[str, Any],
-        scenario: str,
-    ) -> ProviderResult:
-        ...
+WORKER_ROLES = ("requirements_checker", "risk_finder", "structure_planner", "report_reviewer")
 
 
 @dataclass(frozen=True)
@@ -114,7 +70,7 @@ class FakeProvider:
             return ProviderResult(
                 "success",
                 content={"plan": "deterministic p3a manager plan"},
-                raw_output='{"plan":"deterministic p3a manager plan"}',
+                masked_raw_output='{"plan":"deterministic p3a manager plan"}',
                 input_tokens=12,
                 output_tokens=8,
             )
@@ -122,7 +78,7 @@ class FakeProvider:
             return ProviderResult(
                 "success",
                 content={"status": "pass", "warnings": [], "required_fixes": [], "ceo_decision_needed": False},
-                raw_output='{"status":"pass","warnings":[],"required_fixes":[],"ceo_decision_needed":false}',
+                masked_raw_output='{"status":"pass","warnings":[],"required_fixes":[],"ceo_decision_needed":false}',
                 input_tokens=18,
                 output_tokens=10,
             )
@@ -163,25 +119,25 @@ class FakeProvider:
             return ProviderResult(
                 "success",
                 content=_valid_worker_payload(work_id, role, raw),
-                raw_output=raw,
+                masked_raw_output=_mask_secrets(raw),
                 input_tokens=24,
                 output_tokens=16,
             )
         if status == "non_json_response":
-            return ProviderResult(status, raw_output="not-json <<fixture>>", input_tokens=24, output_tokens=None)
+            return ProviderResult(status, masked_raw_output="not-json <<fixture>>", input_tokens=24, output_tokens=None)
         if status == "schema_invalid_json":
-            return ProviderResult(status, content={"summary": "missing required fields"}, raw_output='{"summary":"missing"}')
+            return ProviderResult(status, content={"summary": "missing required fields"}, masked_raw_output='{"summary":"missing"}')
         if status == "schema_valid_empty":
             empty = _valid_worker_payload(work_id, role, '{"summary":""}')
             empty["summary"] = ""
             empty["findings"] = []
             empty["recommendations"] = []
-            return ProviderResult(status, content=empty, raw_output='{"summary":"","findings":[]}')
+            return ProviderResult(status, content=empty, masked_raw_output='{"summary":"","findings":[]}')
         if status == "security_leak":
-            leaked = _valid_worker_payload(work_id, role, "token=sk-p3a-fake-secret-value")
-            leaked["payload"] = {"leak": "sk-p3a-fake-secret-value"}
-            return ProviderResult(status, content=leaked, raw_output="token=sk-p3a-fake-secret-value")
-        return ProviderResult(status, raw_output=None, input_tokens=24, output_tokens=None, error=status)
+            leaked = _valid_worker_payload(work_id, role, "token=[MASKED_SECRET]")
+            leaked["payload"] = {"leak": "[MASKED_SECRET]"}
+            return ProviderResult(status, content=leaked, masked_raw_output="token=[MASKED_SECRET]")
+        return ProviderResult(status, masked_raw_output=None, input_tokens=24, output_tokens=None, normalized_error=status)
 
 
 def run_p3a_fake_provider(
@@ -431,8 +387,6 @@ def _call_provider(
         artifact_path="worker_results.jsonl" if actor.startswith(("worker_", "reserve_")) else None,
         parent_event_id=parent_event_id,
     )
-    if result.raw_output and _contains_secret(result.raw_output):
-        return ("SECURITY_BLOCKED", "provider output contained a secret-like value", None)
     return (failure_type, error, None)
 
 
@@ -580,7 +534,7 @@ def _provider_error_message(result: ProviderResult) -> str:
         "schema_invalid_json": "provider response failed worker schema",
         "schema_valid_empty": "provider response was empty",
         "security_leak": "provider response contained a secret-like value",
-    }.get(result.status, result.error or result.status)
+    }.get(result.status, result.normalized_error or result.status)
 
 
 def _append_log(
@@ -630,14 +584,11 @@ def _write_text(path: Path, text: str) -> None:
 
 
 def _mask_secrets(text: str) -> str:
-    masked = text
-    for pattern in SECRET_PATTERNS:
-        masked = pattern.sub("[MASKED_SECRET]", masked)
-    return masked
+    return mask_secrets(text)
 
 
 def _contains_secret(text: str) -> bool:
-    return any(pattern.search(text) for pattern in SECRET_PATTERNS)
+    return contains_secret(text)
 
 
 def _contains_forbidden_reference(text: str) -> bool:

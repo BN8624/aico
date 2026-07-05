@@ -27,3 +27,6 @@
 - [x] Update handoff for P3A.
 - [x] Complete P3A completion review.
 - [x] Record P3B entry decision.
+- [x] Implement P3B provider boundary skeleton without real API calls.
+- [x] Add P3B provider boundary tests.
+- [x] Verify V0, P3A, and P3B tests pass.

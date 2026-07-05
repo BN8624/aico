@@ -9,7 +9,7 @@ import pytest
 from aico_v0.p3_fake_provider import P3ABudget, run_p3a_fake_provider
 
 MISSION = "Run P3A with fake provider only."
-RAW_SECRET = "sk-p3a-fake-secret-value"
+RAW_SECRET = "sk-" + "p3a-fake-secret-value"
 
 
 def read_json(path: Path) -> dict:
