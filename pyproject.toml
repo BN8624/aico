@@ -3,4 +3,5 @@ testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
   "live_provider: quarantined live provider tests; disabled by default and not used by P3E",
+  "live_smoke: quarantined first live smoke tests; disabled by default and not used for live execution in P3G",
 ]

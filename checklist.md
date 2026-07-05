@@ -90,3 +90,14 @@
 - [x] Map artifact safety scan missing to CONFIG_ERROR.
 - [x] Map artifact safety scan failed to SECURITY_BLOCKED.
 - [x] Record that P3G entry does not authorize live smoke.
+- [x] Implement first live smoke skeleton.
+- [x] Keep live smoke unexecuted in P3G.
+- [x] Keep `live_smoke_result` schema safe.
+- [x] Keep `artifact_safety_report` schema safe.
+- [x] Enforce single key_slot.
+- [x] Enforce `max_model_calls = 1`.
+- [x] Enforce retry count 0.
+- [x] Disable reserve for first live smoke skeleton.
+- [x] Keep raw output forbidden in first live smoke skeleton.
+- [x] Preserve default pytest offline-only policy after P3G.
+- [x] Defer actual live smoke after P3G.
