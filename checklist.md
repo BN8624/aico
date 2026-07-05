@@ -66,3 +66,5 @@
 - [x] Keep default pytest offline-only.
 - [x] Keep live_provider marker default-skip/non-executing.
 - [x] Defer actual live smoke to P3F or later approval phase after P3E.
+- [x] Complete P3E completion review.
+- [x] Record P3F entry decision.
