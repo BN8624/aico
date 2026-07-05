@@ -2,39 +2,55 @@
 
 ## Current Status
 
-- Current HEAD before this correction commit: `c0eb969`.
+- Current HEAD before this P3A commit: `211e40b`.
 - P2 V0 dry-run harness hardening is complete.
-- P3 Canon 보정 완료 여부: YES.
-- P3 구현 여부: NO.
-- P3 implementation entry 재판정: YES.
+- P3 Canon correction is complete.
+- P3A fake-provider API worker layer implementation is complete.
+- P3A actual API calls: NO.
+- P3A actual LLM calls: NO.
+- P3A fake provider usage: YES.
 
 ## This Work
 
-- Corrected `AICO_P3_CANON.md` document priority so P3 Canon is above V0 Canon for P3 implementation.
-- Clarified retry and reserve budget rules.
-- Clarified malformed provider response artifact behavior.
-- Expanded P3 Required Tests for document priority, reserve usage, retry/budget accounting, malformed responses, and unrecovered mid-flight API failure.
-- Did not implement P3 API worker, API client, provider connection, real key usage, model call, semantic_preflight, repair loop, dashboard, GitHub Issue integration, CLI agent orchestration, or harness changes.
+- Added provider interface concepts and a fake provider implementation.
+- Added P3A key_slot execution for `manager_1`, `worker_1` through `worker_4`, `auditor_1`, and `reserve_1`.
+- Added fake model call accounting with `max_model_calls=7`, `max_retries_per_call=1`, and `max_consecutive_model_errors=2`.
+- Implemented retry/reserve behavior for worker `MODEL_ERROR`.
+- Implemented failure separation for `MODEL_ERROR`, `SCHEMA_ERROR`, `WORKER_BAD_OUTPUT`, `SECURITY_BLOCKED`, `BUDGET_EXCEEDED`, and `REPORT_ERROR`.
+- Preserved `masked_raw_output`, `raw_output_saved=false`, and `mask_reason`.
+- Added P3A mid-flight failure handling with partial `worker_results.jsonl` preservation.
+- Added P3A tests using fake provider only.
+- Did not add real API client, provider adapter, real key loading, network calls, semantic_preflight, repair loop, GitHub Issue integration, dashboard, CLI agent orchestration, or worker shell/file edit capability.
 
-## Modified Files
+## Changed Files
 
-- `AICO_P3_CANON.md`
+- `aico_v0/__init__.py`
+- `aico_v0/p3_fake_provider.py`
+- `tests/test_p3_fake_provider.py`
 - `HANDOFF.md`
-- `P3_CANON_REVIEW.md`
 - `CONTEXT_NOTES.md`
+- `checklist.md`
 
 ## Test Result
 
-- Tests were not run for this documentation-only correction.
-- No source code or test code was changed.
+- `pytest -q` passed with `71 passed`.
+- Existing V0 tests passed.
+- P3A fake-provider tests passed.
+
+## P3 Implementation Progress
+
+- P3A fake-provider layer: complete.
+- Real provider/API worker implementation: not started.
+- Real key usage: not started.
+- Network/provider adapter tests: not started.
 
 ## Git Status
 
-- Status before editing: clean at `c0eb969`.
+- Status before editing: clean at `211e40b`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Wait for explicit instruction before P3 API worker implementation.
-- Before implementation, confirm `git status` is clean and `main == origin/main`.
-- P3 implementation must follow `AICO_MASTER_CANON.md` first, then corrected `AICO_P3_CANON.md`.
+- Review P3A fake-provider layer before real provider work.
+- Wait for explicit instruction before implementing real provider adapters.
+- Keep fake-provider tests as the safety baseline for P3B.

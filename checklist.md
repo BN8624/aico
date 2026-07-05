@@ -21,3 +21,7 @@
 - [x] Update handoff for P3 Canon documentation work.
 - [x] Review `AICO_P3_CANON.md` before P3 implementation.
 - [x] Document P3 implementation entry decision.
+- [x] Implement P3A fake-provider layer without real API calls.
+- [x] Add P3A fake-provider tests.
+- [x] Verify V0 and P3A tests pass.
+- [x] Update handoff for P3A.
