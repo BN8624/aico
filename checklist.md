@@ -119,3 +119,16 @@
 - [x] Make P3H/P3F conflict rule explicit.
 - [x] Record that P3H approval package is not live smoke authorization.
 - [x] Record that P3I entry does not authorize live smoke.
+- [x] Write P3I final preflight / approval review.
+- [x] Keep live smoke unexecuted in P3I.
+- [x] Keep provider, model, and key_slot as candidate-only values in P3I.
+- [x] Keep provider allowlist unopened in P3I.
+- [x] Keep provider SDK import disallowed in P3I.
+- [x] Keep key loading disallowed in P3I.
+- [x] Define artifact write preflight.
+- [x] Define artifact safety scan preflight.
+- [x] Keep `max_model_calls = 1`.
+- [x] Keep retry count 0.
+- [x] Keep reserve disabled.
+- [x] Keep `allow_raw_output=false`.
+- [x] Defer actual live smoke to P3J or a later explicit approval phase.
