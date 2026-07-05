@@ -2,31 +2,27 @@
 
 ## Current Status
 
-- Current HEAD before this P3A commit: `211e40b`.
+- Current HEAD before this review commit: `98717ea`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
-- P3A actual API calls: NO.
-- P3A actual LLM calls: NO.
-- P3A fake provider usage: YES.
+- P3A completion review is complete.
+- P3B entry decision: YES.
+- Actual API calls during this review: NO.
+- Actual LLM calls during this review: NO.
+- Real provider adapter implementation during this review: NO.
 
 ## This Work
 
-- Added provider interface concepts and a fake provider implementation.
-- Added P3A key_slot execution for `manager_1`, `worker_1` through `worker_4`, `auditor_1`, and `reserve_1`.
-- Added fake model call accounting with `max_model_calls=7`, `max_retries_per_call=1`, and `max_consecutive_model_errors=2`.
-- Implemented retry/reserve behavior for worker `MODEL_ERROR`.
-- Implemented failure separation for `MODEL_ERROR`, `SCHEMA_ERROR`, `WORKER_BAD_OUTPUT`, `SECURITY_BLOCKED`, `BUDGET_EXCEEDED`, and `REPORT_ERROR`.
-- Preserved `masked_raw_output`, `raw_output_saved=false`, and `mask_reason`.
-- Added P3A mid-flight failure handling with partial `worker_results.jsonl` preservation.
-- Added P3A tests using fake provider only.
-- Did not add real API client, provider adapter, real key loading, network calls, semantic_preflight, repair loop, GitHub Issue integration, dashboard, CLI agent orchestration, or worker shell/file edit capability.
+- Reviewed `aico_v0/p3_fake_provider.py`, `tests/test_p3_fake_provider.py`, `aico_v0/harness.py`, `tests/test_v0_harness.py`, `AICO_P3_CANON.md`, `AICO_V0_CANON.md`, and `HANDOFF.md`.
+- Verified P3A stays fake-provider only and does not add a real API client, real provider adapter, key loading, network path, semantic_preflight execution, repair loop, dashboard, GitHub Issue integration, CLI orchestration, or worker shell/file edit capability.
+- Mapped P3 Required Tests to existing P3A and V0 tests.
+- Reviewed key_slot and secret safety, failure boundaries, retry/reserve rules, artifact rules, and run_log rules.
+- Recorded P3B entry risks around response normalization, token accounting, retry ownership, and future key loading policy.
 
 ## Changed Files
 
-- `aico_v0/__init__.py`
-- `aico_v0/p3_fake_provider.py`
-- `tests/test_p3_fake_provider.py`
+- `P3A_COMPLETION_REVIEW.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
@@ -36,21 +32,24 @@
 - `pytest -q` passed with `71 passed`.
 - Existing V0 tests passed.
 - P3A fake-provider tests passed.
+- AGENTS/CLAUDE byte-identical check: SHA256 matched.
 
 ## P3 Implementation Progress
 
 - P3A fake-provider layer: complete.
+- P3A completion review: complete.
+- P3B entry: YES.
 - Real provider/API worker implementation: not started.
 - Real key usage: not started.
 - Network/provider adapter tests: not started.
 
 ## Git Status
 
-- Status before editing: clean at `211e40b`.
+- Status before editing: clean at `98717ea`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Review P3A fake-provider layer before real provider work.
-- Wait for explicit instruction before implementing real provider adapters.
-- Keep fake-provider tests as the safety baseline for P3B.
+- Wait for explicit P3B instruction.
+- Start P3B with provider adapter boundary, response normalization, token accounting, retry ownership, and key-loading policy.
+- Do not make live API calls or use real keys until explicitly authorized.

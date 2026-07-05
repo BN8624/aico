@@ -25,3 +25,5 @@
 - [x] Add P3A fake-provider tests.
 - [x] Verify V0 and P3A tests pass.
 - [x] Update handoff for P3A.
+- [x] Complete P3A completion review.
+- [x] Record P3B entry decision.
