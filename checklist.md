@@ -101,3 +101,6 @@
 - [x] Keep raw output forbidden in first live smoke skeleton.
 - [x] Preserve default pytest offline-only policy after P3G.
 - [x] Defer actual live smoke after P3G.
+- [x] Complete P3G completion review.
+- [x] Record P3H entry decision.
+- [x] Keep P3H limited to approval package or policy/preparation unless separately approved.
