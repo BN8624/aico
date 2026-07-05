@@ -169,3 +169,7 @@
 - [x] Keep network call count 0 in P3K.
 - [x] Keep live smoke count 0 in P3K.
 - [x] Defer actual first call to P3L or a later explicit approval phase.
+- [x] Complete P3K completion review.
+- [x] Record P3L entry decision.
+- [x] Limit P3L recommendation to SDK/key-loading boundary skeleton.
+- [x] Record that P3L entry does not authorize live smoke.
