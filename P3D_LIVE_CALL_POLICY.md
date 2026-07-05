@@ -105,6 +105,64 @@ A future live call is allowed only if all gates pass:
 
 If any gate fails, live call is forbidden.
 
+## Live-call Gate Failure Type Mapping
+
+Live-call gate failures must use existing canonical failure types only. No new `failure_type` is added by P3D.
+
+Mapping rules:
+
+- Human approval or judgment problem: `HUMAN_DECISION_REQUIRED`.
+- Missing or incomplete configuration: `CONFIG_ERROR`.
+- Security, permission, allowlist, SDK, network, or secret violation: `SECURITY_BLOCKED`.
+- Budget exceedance: `BUDGET_EXCEEDED`.
+- Report or mutually exclusive artifact generation failure: `REPORT_ERROR`.
+
+Required mappings:
+
+| Gate failure condition | Canonical failure_type |
+| --- | --- |
+| explicit approval missing | `HUMAN_DECISION_REQUIRED` |
+| approval phrase ambiguous | `HUMAN_DECISION_REQUIRED` |
+| provider not specified in approval | `HUMAN_DECISION_REQUIRED` |
+| key slots not specified in approval | `HUMAN_DECISION_REQUIRED` |
+| max_model_calls not specified in approval | `HUMAN_DECISION_REQUIRED` |
+| max_runtime_seconds not specified in approval | `HUMAN_DECISION_REQUIRED` |
+| required approval field missing | `HUMAN_DECISION_REQUIRED` |
+| `AICO_ENABLE_REAL_PROVIDER` missing | `CONFIG_ERROR` |
+| `AICO_ALLOW_LIVE_CALLS` missing | `CONFIG_ERROR` |
+| `AICO_ENABLE_REAL_PROVIDER=false` | `CONFIG_ERROR` |
+| `AICO_ALLOW_LIVE_CALLS=false` | `CONFIG_ERROR` |
+| live flag missing | `CONFIG_ERROR` |
+| live flag false | `CONFIG_ERROR` |
+| provider allowlist missing | `CONFIG_ERROR` |
+| provider allowlist empty | `CONFIG_ERROR` |
+| unknown provider requested | `SECURITY_BLOCKED` |
+| provider not in allowlist | `SECURITY_BLOCKED` |
+| unknown endpoint requested | `SECURITY_BLOCKED` |
+| arbitrary URL requested | `SECURITY_BLOCKED` |
+| key availability check failed | `CONFIG_ERROR` |
+| key slot missing | `CONFIG_ERROR` |
+| raw key leaked | `SECURITY_BLOCKED` |
+| env var value logged | `SECURITY_BLOCKED` |
+| env var value appears anywhere | `SECURITY_BLOCKED` |
+| budget missing | `CONFIG_ERROR` |
+| budget invalid | `CONFIG_ERROR` |
+| budget exceeded | `BUDGET_EXCEEDED` |
+| artifact safety scan missing | `CONFIG_ERROR` |
+| artifact safety scan internal failure | `CONFIG_ERROR` |
+| artifact safety scan failed | `SECURITY_BLOCKED` |
+| raw key found in artifact | `SECURITY_BLOCKED` |
+| unmasked raw provider output found in artifact | `SECURITY_BLOCKED` |
+| `raw_output_saved=True` detected | `SECURITY_BLOCKED` |
+| provider SDK import before approved phase | `SECURITY_BLOCKED` |
+| network call in default tests | `SECURITY_BLOCKED` |
+| live call attempted in default pytest | `SECURITY_BLOCKED` |
+| `ProviderResult` safety rule broken | `SECURITY_BLOCKED` |
+| `final_report.md` and `failed_draft.md` both generated | `REPORT_ERROR` |
+| `ceo_report.md` generation failed | `REPORT_ERROR` |
+
+Gate failure events must be recorded in `run_log.jsonl` when a run directory exists. If failure occurs before a run directory exists, the failure must be represented in the nearest available pre-run error result without raw secrets.
+
 ## Gate 1: Canon Approval
 
 - A Phase Canon or policy document that explicitly allows live calls must exist.
@@ -165,6 +223,22 @@ Rules:
 - Arbitrary URLs are forbidden.
 - Provider allowlist must be fixed in both documentation and code before activation.
 - P3D documents the allowlist requirement only and does not implement an allowlist.
+- P3D policy fix default allowlist is empty.
+- Empty allowlist means no live provider can be called.
+- Missing or empty allowlist is `CONFIG_ERROR`.
+- Unknown provider is `SECURITY_BLOCKED`.
+- Provider not in allowlist is `SECURITY_BLOCKED`.
+- Actual allowlist activation is only possible in P3E or a later explicit approval document.
+
+P3E first live smoke candidate metadata is non-authorizing:
+
+```text
+candidate_provider = google_gemini
+candidate_model = user-approved later
+candidate_key_slots = user-approved later
+```
+
+The candidate above is not an allowlist entry. It does not permit SDK import, key loading, network access, or live calls.
 
 ## Gate 6: Budget Limit
 
@@ -203,6 +277,33 @@ Rules:
 - If a raw key or unmasked provider response enters any artifact, the run becomes `SECURITY_BLOCKED`.
 - Artifact safety scan is required before any `final_report.md` promotion.
 - Debug raw dumps are forbidden.
+
+## Artifact Safety Scan Test Requirements
+
+Artifact safety scan is a P3E pre-activation implementation requirement. If the scan is missing, no later live smoke is allowed.
+
+Required tests before any live provider activation:
+
+- artifact safety scan detects raw key-like value.
+- artifact safety scan detects env var value pattern.
+- artifact safety scan detects bearer token pattern.
+- artifact safety scan detects private key block.
+- artifact safety scan detects unmasked raw provider output marker.
+- artifact safety scan detects `raw_output_saved=True`.
+- artifact safety scan passes `masked_raw_output`.
+- artifact safety scan allows `key_slot`.
+- artifact safety scan allows env var name.
+- artifact safety scan rejects `final_report.md` when raw secret is found.
+- artifact safety scan rejects `failed_draft.md` when raw secret is found.
+- artifact safety scan runs before `final_report.md` promotion.
+- artifact safety scan result is recorded in `run_log.jsonl`.
+
+Rules:
+
+- Missing artifact safety scan is `CONFIG_ERROR`.
+- Artifact safety scan internal failure is `CONFIG_ERROR`.
+- Artifact safety scan detection failure is `SECURITY_BLOCKED`.
+- Scan failure blocks `final_report.md` promotion.
 
 ## Gate 8: Test Isolation
 
@@ -349,22 +450,52 @@ Rules:
 - A live test file must not run under default `pytest -q`.
 - CI/default local test must never use actual API keys, provider SDKs, or network.
 
+## P3E Scope
+
+P3E is not full live provider activation.
+
+P3E is live-call activation preparation only.
+
+P3E may include:
+
+- live-call gate implementation preparation.
+- approval object/schema definition.
+- provider allowlist structure implementation.
+- artifact safety scan implementation.
+- default `pytest -q` offline-only guarantee.
+- live test marker default-skip structure design.
+- key loading isolation skeleton hardening.
+- provider SDK import allowance final decision documentation.
+
+P3E must exclude:
+
+- actual API calls.
+- actual LLM calls.
+- actual key use.
+- actual provider SDK imports.
+- actual network calls.
+- full manager/worker/auditor live run.
+- 22-key rotation.
+
+P3E does not authorize a live smoke. First live smoke is deferred to P3F or a later explicitly approved phase.
+
 ## P3E Entry Requirements
 
 P3E entry requires:
 
-1. `P3D_LIVE_CALL_POLICY.md` review complete.
-2. Live-call gate policy approved.
-3. Provider allowlist decided.
-4. Key loading isolation design complete.
-5. Live-call approval wording finalized.
-6. Live smoke budget finalized.
-7. Live tests default-skip policy finalized.
-8. Artifact safety scan tests finalized.
-9. Provider SDK import allowance decided.
-10. P3E entry decision recorded as YES.
+1. P3D completion review complete.
+2. Live-call gate `failure_type` mapping complete.
+3. Provider allowlist default policy decided.
+4. P3E scope limited to activation preparation.
+5. Artifact safety scan test requirements defined.
+6. Default `pytest -q` remains offline-only.
+7. Provider SDK import remains forbidden.
+8. Actual API, key, and network use remain forbidden.
+9. P3E entry decision recorded as YES.
 
-If any item is missing, P3E live activation work must not begin.
+If any item is missing, P3E work must not begin.
+
+P3E may prepare activation gates only. P3E must not perform live provider activation.
 
 ## Required Tests Before Live Provider Activation
 
@@ -384,7 +515,18 @@ Before P3E or any actual activation, tests must cover:
 - raw provider output is not saved.
 - `raw_output_saved=True` remains rejected.
 - artifact safety scan catches raw key-like value.
+- artifact safety scan detects env var value pattern.
+- artifact safety scan detects bearer token pattern.
+- artifact safety scan detects private key block.
 - artifact safety scan catches unmasked raw output.
+- artifact safety scan detects `raw_output_saved=True`.
+- artifact safety scan passes `masked_raw_output`.
+- artifact safety scan allows `key_slot`.
+- artifact safety scan allows env var name.
+- artifact safety scan rejects `final_report.md` when raw secret is found.
+- artifact safety scan rejects `failed_draft.md` when raw secret is found.
+- artifact safety scan runs before `final_report.md` promotion.
+- artifact safety scan result is recorded in `run_log.jsonl`.
 - first live smoke `max_model_calls = 1`.
 - budget exceeded becomes `BUDGET_EXCEEDED`.
 - timeout/429/500 become `MODEL_ERROR`.
@@ -395,18 +537,33 @@ Before P3E or any actual activation, tests must cover:
 
 Stop immediately if any condition occurs:
 
-- Raw key appears anywhere.
-- Unmasked raw provider output appears anywhere.
-- Unknown provider requested.
-- Provider allowlist missing.
-- Live flag missing.
 - Explicit approval missing.
+- Approval phrase ambiguous.
+- Required approval field missing.
+- Provider allowlist missing.
+- Provider allowlist empty.
+- Provider not in allowlist.
+- Unknown provider requested.
+- Arbitrary URL requested.
+- Live flag missing.
+- Live flag false.
+- Key availability check failed.
+- Key slot missing.
+- Raw key appears anywhere.
+- Env var value appears anywhere.
+- Unmasked raw provider output appears anywhere.
+- Artifact safety scan missing.
+- Artifact safety scan failed.
 - Budget missing.
+- Budget invalid.
 - Budget exceeded.
 - SDK import appears before approved phase.
 - Network call appears in default tests.
+- Live call appears in default pytest.
 - `ProviderResult` safety rules are broken.
 - `final_report.md` and `failed_draft.md` are both generated.
+
+Each stop condition must map to the canonical `failure_type` table in this policy. If a stop condition is not mapped, implementation must stop as `CONFIG_ERROR` until the policy is corrected.
 
 ## Final Rule
 
@@ -415,3 +572,5 @@ P3D does not authorize live calls.
 P3D only defines the gates required before future live calls.
 
 Any actual provider activation requires a later explicit phase, explicit user approval, passing tests, and clean git state.
+
+P3E is activation preparation only. Actual live smoke is deferred to P3F or a later explicitly approved phase.

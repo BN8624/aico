@@ -51,3 +51,10 @@
 - [x] Document default tests offline-only requirement.
 - [x] Complete P3D completion review.
 - [x] Record P3E entry decision.
+- [x] Complete live gate failure_type mapping.
+- [x] Decide provider allowlist policy.
+- [x] Set provider allowlist default empty.
+- [x] Limit P3E scope to activation preparation.
+- [x] Define artifact safety scan requirements.
+- [x] Preserve default pytest offline-only policy.
+- [x] Defer actual live smoke to P3F or later approval phase.

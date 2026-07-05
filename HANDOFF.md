@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this review commit: `dd7738e`.
+- Current HEAD before this policy fix commit: `a8ce1c5`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -16,24 +16,29 @@
 - P3D entry decision: YES.
 - P3D live-call gate policy documentation is complete.
 - P3D completion review is complete.
-- P3E entry decision: NO.
+- P3D policy fix is complete.
+- P3E entry decision after policy fix: YES.
+- P3E scope: activation preparation only.
 - P3D implementation status: NO code implementation.
 - Real provider default state: disabled.
-- Actual API calls during this review: NO.
-- Actual LLM calls during this review: NO.
-- Actual key usage during this review: NO.
-- Provider SDK import during this review: NO.
-- Network calls during this review: NO.
+- Actual API calls during this work: NO.
+- Actual LLM calls during this work: NO.
+- Actual key usage during this work: NO.
+- Provider SDK import during this work: NO.
+- Network calls during this work: NO.
 
 ## This Work
 
-- Reviewed `P3D_LIVE_CALL_POLICY.md` against Master/P3 Canon, P3C/P3B/P3A reviews, V0 Canon, provider boundary code, key registry, response normalizer, P3C/P3B/P3A/V0 tests, `HANDOFF.md`, `CONTEXT_NOTES.md`, and `checklist.md`.
-- Confirmed P3D is policy-only and does not authorize live calls.
-- Confirmed actual provider activation, API calls, LLM calls, key use, provider SDK imports, network calls, live-call flag implementation, provider adapter implementation, and harness changes remain forbidden.
-- Found P3E blockers: gate failure conditions need canonical `failure_type` mapping, provider allowlist is not decided, P3E scope must be clarified, and artifact safety scan tests are not finalized.
+- Fixed `P3D_LIVE_CALL_POLICY.md` blockers identified by `P3D_COMPLETION_REVIEW.md`.
+- Added live-call gate failure condition to canonical `failure_type` mapping.
+- Set P3D policy fix provider allowlist default to empty and recorded `google_gemini` only as a non-authorizing P3E candidate.
+- Clarified P3E scope as activation preparation only, with actual live smoke deferred to P3F or a later explicitly approved phase.
+- Added artifact safety scan test requirements and connected stop conditions to the failure mapping.
+- Confirmed no code, harness, provider adapter, live-call flag, key loading, SDK import, or network implementation was added.
 
 ## Changed Files
 
+- `P3D_LIVE_CALL_POLICY.md`
 - `P3D_COMPLETION_REVIEW.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
@@ -44,7 +49,7 @@
 - `pytest -q` passed with `109 passed`.
 - AGENTS/CLAUDE byte-identical check: SHA256 matched.
 - Runtime forbidden import check for `requests`, `httpx`, `urllib.request`, `socket`, `google`, `openai`, `anthropic`, `genai`, `dotenv`, `os.environ`, and `getenv` in `aico_v0`: no matches.
-- Code changes during this review: none.
+- Code changes during this work: none.
 
 ## P3 Implementation Progress
 
@@ -59,7 +64,9 @@
 - P3D entry: YES.
 - P3D live-call gate policy: complete.
 - P3D completion review: complete.
-- P3E entry: NO.
+- P3D policy fix: complete.
+- P3E entry: YES.
+- P3E scope: activation preparation only.
 - P3D implementation: NO.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
@@ -67,13 +74,12 @@
 
 ## Git Status
 
-- Status before editing: clean at `dd7738e`.
+- Status before editing: clean at `a8ce1c5`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Fix P3D/P3E policy blockers before P3E entry.
-- Add canonical `failure_type` mapping for live-call gate failures.
-- Decide the initial provider allowlist and clarify P3E scope.
-- Finalize artifact safety scan test requirements before any live provider activation work.
-- Do not make live API calls, use real keys, import provider SDKs, or add network transport until a later explicit phase and user approval authorize it.
+- Begin P3E as activation preparation only.
+- Implement or document approval object/schema, provider allowlist structure, artifact safety scan, default-skip live marker policy, and key loading isolation skeleton without live calls.
+- Keep provider allowlist default empty until a later explicit approval document activates a provider.
+- Do not make live API calls, use real keys, import provider SDKs, or add network transport until P3F or a later explicitly approved phase authorizes it.

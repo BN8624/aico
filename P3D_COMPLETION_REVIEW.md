@@ -367,3 +367,17 @@ Most stop conditions are testable in P3E with fake/stub boundaries and static im
 P3E entry: NO
 
 P3D is complete as a policy-only document, but P3E should not begin until the gate failure type mapping, provider allowlist, P3E scope, and artifact safety scan test requirements are clarified. Actual provider activation, real API calls, real key use, provider SDK imports, and network calls remain forbidden.
+
+## Post-fix Reassessment
+
+P3D policy fix completed the required policy blockers:
+
+- live-call gate failure condition to canonical `failure_type` mapping.
+- provider allowlist default policy set to empty.
+- P3E scope limited to activation preparation only.
+- artifact safety scan test requirements defined.
+- stop conditions connected to the failure mapping table.
+
+P3E entry after policy fix: YES.
+
+This YES is limited to activation preparation only. P3E still must not perform actual API calls, actual LLM calls, actual key use, provider SDK imports, network calls, or first live smoke. First live smoke remains deferred to P3F or a later explicitly approved phase.
