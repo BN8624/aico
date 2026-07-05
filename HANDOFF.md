@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- Current HEAD before this P3I documentation commit: `9cf4781`.
+- Current HEAD before this P3I completion review commit: `3e3847d`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
@@ -43,6 +43,9 @@
 - P3I meaning if later approved: final preflight / approval review package only, unless separately approved.
 - P3I final preflight / approval review documentation is complete.
 - P3I implementation: NO. This work is documentation only.
+- P3I completion review is complete.
+- P3J entry decision: YES.
+- P3J recommended meaning: live smoke execution skeleton / artifact write integration only, unless separately approved.
 - Real provider default state: disabled.
 - Actual API calls during this work: NO.
 - Actual LLM calls during this work: NO.
@@ -53,15 +56,14 @@
 
 ## This Work
 
-- Completed P3I final preflight / approval review documentation.
-- Created `P3I_FINAL_PREFLIGHT_APPROVAL_REVIEW.md`.
-- Defined provider/model/key_slot candidate review conditions before any future first live smoke.
-- Defined provider allowlist, SDK import, key loading, runtime flag, budget, prompt, artifact write, artifact safety scan, logging, failure mapping, stop condition, and rollback preflight rules.
-- Preserved the rule that P3I is not live smoke authorization and actual live smoke remains forbidden until P3J or a later explicit approval phase.
+- Completed P3I completion review.
+- Reviewed `P3I_FINAL_PREFLIGHT_APPROVAL_REVIEW.md` against P3H/P3F/P3D policy, P3G skeleton code, provider boundary code, offline test policy, and existing V0/P3 tests.
+- Reassessed P3J entry as YES for live smoke execution skeleton / artifact write integration only.
+- Preserved the rule that P3J entry is not live smoke authorization and actual live smoke remains forbidden unless separately approved.
 
 ## Changed Files
 
-- `P3I_FINAL_PREFLIGHT_APPROVAL_REVIEW.md`
+- `P3I_COMPLETION_REVIEW.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
 - `checklist.md`
@@ -69,7 +71,7 @@
 ## Test Result
 
 - Full `pytest -q` passed with `200 passed`.
-- `git status --short --branch` was checked during review and showed only the expected P3I documentation changes before commit.
+- `git status --short --branch` was checked during review and showed only the expected P3I completion review document changes before commit.
 - AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
 - Runtime forbidden import AST check for provider SDK/network/env-value imports in `aico_v0` passed with no violations.
 
@@ -111,6 +113,9 @@
 - P3I meaning: final preflight / approval review package only, unless separately approved.
 - P3I final preflight / approval review documentation: complete.
 - P3I implementation: NO.
+- P3I completion review: complete.
+- P3J entry: YES.
+- P3J recommended meaning: live smoke execution skeleton / artifact write integration only, unless separately approved.
 - Actual live smoke: not started.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
@@ -119,14 +124,14 @@
 
 ## Git Status
 
-- Status before editing: clean at `9cf4781`.
-- Current review worktree before commit contains only `P3I_FINAL_PREFLIGHT_APPROVAL_REVIEW.md`, `HANDOFF.md`, `CONTEXT_NOTES.md`, and `checklist.md`.
+- Status before editing: clean at `3e3847d`.
+- Current review worktree before commit contains only `P3I_COMPLETION_REVIEW.md`, `HANDOFF.md`, `CONTEXT_NOTES.md`, and `checklist.md`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Proceed only to P3I completion review or P3J policy/preparation work if requested.
-- Treat P3J as not automatically authorized for live smoke. P3J entry still requires review and explicit approval boundaries.
+- Proceed only to P3J live smoke execution skeleton / artifact write integration work if requested.
+- Treat P3J as skeleton/integration preparation unless a separate explicit approval phase authorizes live smoke.
 - Keep actual live smoke forbidden until a later explicit approval phase, passing tests, clean git state, and all gates are satisfied.
 - Keep provider allowlist default empty until a later explicit approval document activates a provider.
 - Do not make live API calls, use real keys, import provider SDKs, add network transport, implement live smoke tests, or run live smoke until a later explicitly approved phase authorizes it.

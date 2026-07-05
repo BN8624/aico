@@ -132,3 +132,7 @@
 - [x] Keep reserve disabled.
 - [x] Keep `allow_raw_output=false`.
 - [x] Defer actual live smoke to P3J or a later explicit approval phase.
+- [x] Complete P3I completion review.
+- [x] Record P3J entry decision.
+- [x] Limit P3J recommendation to live smoke execution skeleton / artifact write integration.
+- [x] Record that P3J entry does not authorize live smoke.
