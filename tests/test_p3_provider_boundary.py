@@ -1,6 +1,7 @@
 # P3B provider boundary skeleton과 key/normalization 규칙을 검증한다.
 from __future__ import annotations
 
+from dataclasses import asdict
 import inspect
 from pathlib import Path
 
@@ -37,6 +38,15 @@ def test_real_provider_disabled_error_contains_no_raw_key() -> None:
 
     assert raw_key not in str(exc_info.value)
     assert "worker_1" in str(exc_info.value)
+
+
+def test_invalid_key_slot_path_does_not_raise_type_error_and_maps_safely() -> None:
+    result = FakeProvider().call_model("invalid_slot", "fake-model", "prompt", {}, "happy")
+
+    assert result.status == "security_leak"
+    assert result.normalized_error == "invalid key slot"
+    assert result.raw_output_saved is False
+    assert normalize_provider_response(provider_status=result.status).failure_type == "SECURITY_BLOCKED"
 
 
 def test_key_slot_to_env_var_name_mapping_contains_required_slots() -> None:
@@ -83,6 +93,17 @@ def test_missing_key_is_represented_without_exposing_raw_key() -> None:
     assert raw_key not in repr(status)
 
 
+def test_key_registry_raw_key_access_is_disabled_without_exposing_key() -> None:
+    raw_key = "sk-" + "p3b-boundary-secret-value"
+    registry = KeyRegistry({"worker_1": True})
+
+    with pytest.raises(RuntimeError) as exc_info:
+        registry.raw_key_value("worker_1")
+
+    assert raw_key not in str(exc_info.value)
+    assert "worker_1" in str(exc_info.value)
+
+
 @pytest.mark.parametrize(
     ("provider_status", "failure_type"),
     [
@@ -123,6 +144,35 @@ def test_provider_result_token_fields_exist_and_may_be_null() -> None:
     assert result.input_tokens is None
     assert result.output_tokens is None
     assert result.raw_output_saved is False
+
+
+def test_provider_result_rejects_unknown_fields_and_raw_output() -> None:
+    with pytest.raises(TypeError):
+        ProviderResult("security_leak", error="invalid key slot")
+    with pytest.raises(TypeError):
+        ProviderResult("success", raw_output="unmasked output")
+
+    result = ProviderResult("success")
+    assert not hasattr(result, "raw_output")
+
+
+def test_provider_result_rejects_raw_output_saved_true() -> None:
+    with pytest.raises(ValueError, match="raw_output_saved"):
+        ProviderResult("success", raw_output_saved=True)
+
+
+def test_provider_result_masks_raw_key_in_repr_and_asdict() -> None:
+    raw_key = "sk-" + "p3b-boundary-secret-value"
+    result = ProviderResult(
+        "success",
+        content={"nested": ["token=" + raw_key]},
+        masked_raw_output="raw=" + raw_key,
+        normalized_error="error contained " + raw_key,
+    )
+    rendered = repr(result) + repr(asdict(result))
+
+    assert raw_key not in rendered
+    assert "[MASKED_SECRET]" in rendered
 
 
 def test_real_provider_boundary_has_no_forbidden_sdk_or_network_imports() -> None:

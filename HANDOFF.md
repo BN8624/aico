@@ -2,30 +2,34 @@
 
 ## Current Status
 
-- Current HEAD before this review commit: `4178da0`.
+- Current HEAD before this blocker fix commit: `571c0aa`.
 - P2 V0 dry-run harness hardening is complete.
 - P3 Canon correction is complete.
 - P3A fake-provider API worker layer implementation is complete.
 - P3A completion review is complete.
 - P3B provider boundary skeleton is complete.
 - P3B completion review is complete.
-- P3C entry decision: NO.
-- Actual API calls during this review: NO.
-- Actual LLM calls during this review: NO.
-- Actual key usage during this review: NO.
-- Provider SDK import during this review: NO.
-- Real provider connection during this review: NO.
+- P3B blocker fix is complete.
+- P3C entry decision: YES.
+- Actual API calls during this work: NO.
+- Actual LLM calls during this work: NO.
+- Actual key usage during this work: NO.
+- Provider SDK import during this work: NO.
+- Real provider connection during this work: NO.
 
 ## This Work
 
-- Reviewed `provider_base.py`, `p3_fake_provider.py`, `p3_real_provider.py`, `key_registry.py`, `response_normalizer.py`, `harness.py`, P3B/P3A/V0 tests, `AICO_P3_CANON.md`, and `HANDOFF.md`.
-- Confirmed P3B remains offline and does not add actual API calls, LLM calls, key value use, provider SDK imports, `.env` loading, network imports, semantic_preflight execution, repair loop execution, or real provider connection.
-- Found a blocking invalid key_slot branch in `FakeProvider.call_model`: it still calls `ProviderResult(..., error=...)`, but `ProviderResult` no longer accepts `error`.
-- Found that `ProviderResult` is safer than before but still needs a stricter construction policy before real provider adapter work.
-- Mapped P3B tests to required provider boundary coverage.
+- Fixed the invalid key_slot branch in `FakeProvider.call_model` so it returns a safe `security_leak` provider result with `normalized_error`.
+- Hardened `ProviderResult` construction with provider status validation, `raw_output_saved=True` rejection, and recursive secret masking for `content`, `masked_raw_output`, and `normalized_error`.
+- Kept `ProviderResult` free of `raw_output` and confirmed unknown fields such as `error` are rejected.
+- Added direct tests for invalid key_slot behavior, raw key access disablement, unknown field rejection, absent `raw_output`, default `raw_output_saved=false`, token field nullability, and repr/asdict masking.
+- Updated P3B completion review with blocker fix result and P3C entry redecision.
 
 ## Changed Files
 
+- `aico_v0/provider_base.py`
+- `aico_v0/p3_fake_provider.py`
+- `tests/test_p3_provider_boundary.py`
 - `P3B_COMPLETION_REVIEW.md`
 - `HANDOFF.md`
 - `CONTEXT_NOTES.md`
@@ -33,7 +37,7 @@
 
 ## Test Result
 
-- `pytest -q` passed with `91 passed`.
+- `pytest -q` passed with `96 passed`.
 - Existing V0 tests passed.
 - P3A fake-provider tests passed.
 - P3B provider boundary tests passed.
@@ -45,20 +49,19 @@
 - P3A completion review: complete.
 - P3B provider boundary skeleton: complete.
 - P3B completion review: complete.
-- P3C entry: NO.
+- P3B blocker fix: complete.
+- P3C entry: YES.
 - Real provider/API worker actual connection: not started.
 - Real key usage: not started.
 - Network/provider adapter tests: not started.
 
 ## Git Status
 
-- Status before editing: clean at `4178da0`.
+- Status before editing: clean at `571c0aa`.
 - Final git status must be checked after commit and push.
 
 ## Next Work
 
-- Fix the invalid key_slot `ProviderResult(error=...)` branch and add direct coverage.
-- Add direct `KeyRegistry.raw_key_value` disabled-access coverage.
-- Define stricter ProviderResult construction or normalizer-only policy before P3C.
-- Write P3C provider policy before any live provider work.
+- Begin P3C only as guarded real provider adapter policy and disabled-by-default implementation work.
+- Define `AICO_P3C_CANON.md` or `P3C_PROVIDER_POLICY.md` before any live provider work.
 - Do not make live API calls or use real keys until explicitly authorized.

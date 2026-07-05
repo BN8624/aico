@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -60,6 +61,15 @@ class ProviderResult:
     output_tokens: int | None = None
     normalized_error: str | None = None
 
+    def __post_init__(self) -> None:
+        if self.status not in PROVIDER_STATUSES:
+            raise ValueError(f"unknown provider status: {self.status}")
+        if self.raw_output_saved:
+            raise ValueError("raw_output_saved must remain false in P3B provider results")
+        object.__setattr__(self, "content", _mask_provider_value(self.content))
+        object.__setattr__(self, "masked_raw_output", _mask_provider_value(self.masked_raw_output))
+        object.__setattr__(self, "normalized_error", _mask_provider_value(self.normalized_error))
+
 
 class Provider(Protocol):
     def call_model(
@@ -82,3 +92,17 @@ def mask_secrets(text: str) -> str:
 
 def contains_secret(text: str) -> bool:
     return any(pattern.search(text) for pattern in SECRET_PATTERNS)
+
+
+def _mask_provider_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return mask_secrets(value)
+    if isinstance(value, Mapping):
+        return {_mask_provider_value(key): _mask_provider_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_mask_provider_value(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_mask_provider_value(item) for item in value)
+    if isinstance(value, set):
+        return {_mask_provider_value(item) for item in value}
+    return value

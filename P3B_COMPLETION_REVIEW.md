@@ -2,9 +2,9 @@
 
 ## Verdict
 
-P3C entry: NO
+P3C entry: YES
 
-P3B establishes the right provider boundary direction, but P3C should not start until the invalid key_slot path and ProviderResult safety boundary are hardened. The current test suite passes, but it does not exercise one broken fake-provider branch that would matter when guarded real adapter work begins.
+P3B blocker fixes are complete. The invalid key_slot path no longer raises `TypeError`, `ProviderResult` rejects unknown fields such as `error` and `raw_output`, provider-result content is masked before storage, and direct tests cover the formerly missing paths. P3C may begin as guarded real provider adapter policy and implementation work, but live API calls and real key use remain forbidden until explicitly authorized by the next phase policy.
 
 ## Reviewed Documents and Files
 
@@ -32,25 +32,28 @@ P3B establishes the right provider boundary direction, but P3C should not start 
 
 P3B added a shared provider interface, disabled real provider skeleton, key_slot to env-var-name registry, response normalizer, and dedicated provider boundary tests. It did not add live API calls, LLM calls, key value loading, provider SDK imports, network imports, `.env` loading, semantic preflight, repair loop, dashboard, Issue integration, or CLI orchestration.
 
-The implementation is mostly aligned with the P3B skeleton goal. `pytest -q` passes with 91 tests, and the V0 and P3A test suites still pass. The key blocker is that one invalid key_slot branch in `FakeProvider.call_model` still constructs `ProviderResult("security_leak", error="invalid key slot")`, but `ProviderResult` no longer accepts `error`. That branch would raise `TypeError` instead of returning a canonical `SECURITY_BLOCKED`-compatible result.
+The implementation is aligned with the P3B skeleton goal after blocker fixes. `pytest -q` passes with 96 tests, and the V0, P3A, and P3B provider boundary test suites pass. The former invalid key_slot branch now returns a safe `ProviderResult("security_leak", normalized_error="invalid key slot")`, which maps to `SECURITY_BLOCKED`.
 
 ## Critical Issues
 
-1. `aico_v0/p3_fake_provider.py` has a stale `ProviderResult(error=...)` call in the invalid key_slot branch.
+None after this blocker fix.
 
-   Impact: invalid key_slot handling can crash with `TypeError` instead of producing a safe provider result. The current tests do not cover this branch. This is a blocker before P3C because guarded real adapter work will increase reliance on key_slot validation behavior.
+Resolved blockers:
 
-2. `ProviderResult` is safer than before because it has no `raw_output` field, but it is not structurally impossible to place raw key or raw provider data in `content` or `masked_raw_output`.
-
-   Impact: P3C needs a stronger construction path or explicit adapter policy so real provider adapters cannot bypass masking by directly constructing `ProviderResult` with unsafe values.
+1. The invalid key_slot branch no longer passes an unknown `error` field to `ProviderResult`.
+2. `ProviderResult` now validates provider status, rejects `raw_output_saved=True`, has no `raw_output` field, rejects unknown constructor fields, and masks secret-like values in `content`, `masked_raw_output`, and `normalized_error`.
 
 ## Required Fixes Before P3C
 
-1. Fix the invalid key_slot branch in `FakeProvider.call_model` to use `normalized_error` or another valid safe field.
-2. Add a direct test for invalid key_slot behavior and assert it does not crash, does not retry through reserve, and maps to `SECURITY_BLOCKED`.
-3. Add a direct test for `KeyRegistry.raw_key_value` to confirm raw key access is disabled and the error message contains only key_slot.
-4. Define a safe ProviderResult construction rule before guarded real adapter work. Prefer a factory or normalizer path that always masks provider text and never exposes raw output.
-5. Decide whether unknown provider statuses in `normalize_provider_response` should become `MODEL_ERROR`, `SCHEMA_ERROR`, or an explicit blocked/config error before real provider integration.
+No blocking fixes remain before P3C.
+
+Completed in this blocker fix:
+
+1. Fixed invalid key_slot handling in `FakeProvider.call_model`.
+2. Added direct invalid key_slot coverage and canonical `SECURITY_BLOCKED` mapping assertion.
+3. Added direct `KeyRegistry.raw_key_value` disabled-access coverage.
+4. Added `ProviderResult` tests for unknown field rejection, absent `raw_output`, `raw_output_saved=false`, `raw_output_saved=True` rejection, token field nullability, and secret masking in `repr` and `asdict`.
+5. Added `ProviderResult` runtime masking and status validation.
 
 ## Non-blocking Recommendations
 
@@ -58,10 +61,11 @@ The implementation is mostly aligned with the P3B skeleton goal. `pytest -q` pas
 2. Add tests for provider status aliases `rate_limited_429`, `server_error_500`, and `provider unavailable` in addition to `429` and `500`.
 3. Consider centralizing run-log field schema so V0, P3A, and later P3C do not drift.
 4. Document the future real-provider enable flag before implementation. Recommended default: `AICO_ENABLE_REAL_PROVIDER=false`.
+5. Decide whether unknown statuses in `normalize_provider_response` should become `MODEL_ERROR`, `SCHEMA_ERROR`, or a config/security failure before any live provider calls.
 
 ## P3B Scope Compliance Review
 
-P3B mostly complies with the requested scope.
+P3B complies with the requested scope.
 
 - Actual API call path: none found.
 - Actual LLM call path: none found.
@@ -73,7 +77,7 @@ P3B mostly complies with the requested scope.
 - `semantic_preflight` execution: not introduced.
 - Repair loop execution: not introduced.
 
-The invalid key_slot branch is a correctness issue, not a scope violation.
+The blocker fix did not add any live provider capability.
 
 ## Provider Interface Review
 
@@ -86,11 +90,15 @@ Strengths:
 - `ProviderResult` removes the old raw output field and defaults `raw_output_saved=false`.
 - Provider-specific statuses can be mapped through `FAILURE_BY_PROVIDER_STATUS` and `response_normalizer.py`.
 
-Gaps before P3C:
+Safety properties now covered:
 
-- `ProviderResult` can still carry unsafe data through flexible `content` and `masked_raw_output` fields if a real adapter constructs it directly.
-- `ProviderResult` does not enforce that `status` is one of `PROVIDER_STATUSES`.
-- The invalid key_slot branch in `FakeProvider` is out of sync with the new `ProviderResult` field names.
+- `ProviderResult` rejects unknown fields such as `error`.
+- `ProviderResult` has no `raw_output` field and rejects attempts to pass one.
+- `ProviderResult` rejects `raw_output_saved=True`.
+- `ProviderResult` validates status against `PROVIDER_STATUSES`.
+- `ProviderResult` masks secret-like values in `content`, `masked_raw_output`, and `normalized_error`.
+
+Remaining P3C design point: real adapters should still prefer the normalizer path rather than constructing provider results ad hoc.
 
 ## Real Provider Skeleton Review
 
@@ -128,7 +136,7 @@ Safety review:
 - Logs and artifacts continue to use key_slot in P3A paths.
 - `SECURITY_BLOCKED` remains non-retryable in P3A.
 
-Gap before P3C: `raw_key_value` behavior is not directly tested.
+`raw_key_value` disabled-access behavior is now directly tested.
 
 ## Response Normalizer Review
 
@@ -148,7 +156,7 @@ Gap before P3C: `raw_key_value` behavior is not directly tested.
 
 The normalizer masks raw-ish output, sets `raw_output_saved=false`, provides `mask_reason`, carries token fields, and marks secret-like content as unsafe with `SECURITY_BLOCKED`.
 
-Gaps before P3C:
+Remaining P3C design points:
 
 - Unknown provider statuses currently produce `failure_type=None`.
 - The normalizer is not yet wired into `p3_fake_provider.py`; P3A still uses `FAILURE_BY_PROVIDER_STATUS` directly.
@@ -166,7 +174,7 @@ P3A compatibility is intact under the current tests.
 - `final_report.md` and `failed_draft.md` mutual exclusion still passes.
 - `ceo_report.md` or `REPORT_ERROR` behavior still passes.
 
-Compatibility caveat: invalid key_slot behavior is not covered and currently broken.
+Invalid key_slot behavior is now covered and maps safely to `SECURITY_BLOCKED`.
 
 ## V0 Harness Compatibility Review
 
@@ -188,7 +196,7 @@ V0 compatibility is intact.
 | real provider skeleton raises disabled/not implemented error | `test_real_provider_skeleton_is_disabled_and_performs_no_api_call` | Direct |
 | real provider skeleton error message contains no raw key | `test_real_provider_disabled_error_contains_no_raw_key` | Direct |
 | key_slot to env var name mapping includes all seven slots | `test_key_slot_to_env_var_name_mapping_contains_required_slots` | Direct |
-| key registry never returns/logs raw key in artifacts | `test_key_registry_describes_presence_without_raw_key_values` | Partial |
+| key registry never returns/logs raw key in artifacts | `test_key_registry_describes_presence_without_raw_key_values`, `test_key_registry_raw_key_access_is_disabled_without_exposing_key` | Direct |
 | env var names may be listed, env var values are not logged | `test_env_var_names_may_be_listed_but_values_are_not_logged` | Direct |
 | missing key is represented without exposing raw key | `test_missing_key_is_represented_without_exposing_raw_key` | Direct |
 | response normalizer maps timeout to MODEL_ERROR | `test_response_normalizer_maps_provider_status_to_failure_type` | Direct |
@@ -202,20 +210,25 @@ V0 compatibility is intact.
 | normalized malformed output is masked or marked unsafe | `test_normalized_malformed_output_is_masked_and_never_raw_saved` | Direct |
 | raw_output_saved is never true by default | `test_provider_result_token_fields_exist_and_may_be_null`, normalizer malformed test | Direct |
 | ProviderResult token fields exist and may be null | `test_provider_result_token_fields_exist_and_may_be_null` | Direct |
+| invalid key_slot path does not raise TypeError | `test_invalid_key_slot_path_does_not_raise_type_error_and_maps_safely` | Direct |
+| invalid key_slot path maps to canonical safe failure | `test_invalid_key_slot_path_does_not_raise_type_error_and_maps_safely` | Direct |
+| ProviderResult rejects unknown fields such as error | `test_provider_result_rejects_unknown_fields_and_raw_output` | Direct |
+| ProviderResult rejects or lacks raw_output | `test_provider_result_rejects_unknown_fields_and_raw_output` | Direct |
+| ProviderResult never exposes raw key through repr/asdict | `test_provider_result_masks_raw_key_in_repr_and_asdict` | Direct |
 | fake provider P3A tests still pass | `tests/test_p3_fake_provider.py` | Direct |
 | V0 tests still pass | `tests/test_v0_harness.py` | Direct |
 | AGENTS.md and CLAUDE.md remain byte-identical | `test_agents_and_claude_remain_byte_identical_for_p3b`, SHA256 check | Direct |
 
-Missing or insufficient tests before P3C:
+No blocking coverage gaps remain before P3C.
 
-- invalid key_slot path in fake provider.
-- direct `KeyRegistry.raw_key_value` disabled-access test.
+Non-blocking coverage to add before live provider calls:
+
 - unknown provider status normalization policy.
-- ProviderResult construction path that prevents unmasked provider text.
+- provider status aliases `rate_limited_429`, `server_error_500`, and `provider unavailable`.
 
 ## P3C Entry Risk Review
 
-P3C should not begin until the blocking fixes above are made.
+P3C may begin after this blocker fix, limited to guarded real provider adapter policy and implementation work. Live provider calls, real key use, `.env` value use, network calls, and provider SDK imports still require explicit next-phase authorization.
 
 Risks to settle before guarded real provider adapter implementation:
 
@@ -230,6 +243,6 @@ Risks to settle before guarded real provider adapter implementation:
 
 ## Final Decision
 
-P3C entry: NO
+P3C entry: YES
 
-P3B is directionally correct and offline-safe, but the invalid key_slot branch and ProviderResult safety boundary need hardening before guarded real provider adapter work starts.
+P3B blockers are resolved. P3C may proceed as guarded real provider adapter policy and disabled-by-default implementation work, with no live API calls or real key usage unless separately authorized.

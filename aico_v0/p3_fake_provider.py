@@ -62,7 +62,7 @@ class FakeProvider:
         scenario: str,
     ) -> ProviderResult:
         if key_slot not in KEY_SLOTS:
-            return ProviderResult("security_leak", error="invalid key slot")
+            return ProviderResult("security_leak", normalized_error="invalid key slot")
         call_number = 1 + sum(1 for call in self.calls if call["key_slot"] == key_slot)
         self.calls.append({"key_slot": key_slot, "call_number": call_number, "scenario": scenario})
 

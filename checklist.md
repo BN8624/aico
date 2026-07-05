@@ -32,3 +32,6 @@
 - [x] Verify V0, P3A, and P3B tests pass.
 - [x] Complete P3B completion review.
 - [x] Record P3C entry decision.
+- [x] Fix P3B invalid key_slot blocker.
+- [x] Harden ProviderResult safety policy.
+- [x] Re-record P3C entry decision after blocker fix.
