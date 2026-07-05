@@ -151,3 +151,7 @@
 - [x] Keep provider SDK import count 0 in P3J.
 - [x] Keep network call count 0 in P3J.
 - [x] Defer actual live smoke to P3K or a later explicit approval phase.
+- [x] Complete P3J completion review.
+- [x] Record P3K entry decision.
+- [x] Limit P3K recommendation to live provider activation skeleton / allowlist opening skeleton.
+- [x] Record that P3K entry does not authorize live smoke.
