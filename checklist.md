@@ -1,5 +1,37 @@
 # Checklist
 
+- [x] Implement P3X negative safety matrix.
+- [x] Verify bad opt-in blocks.
+- [x] Verify missing provider/model/key_slot blocks.
+- [x] Verify multiple provider/model/key_slot blocks.
+- [x] Verify reserve key blocks.
+- [x] Verify fallback provider blocks.
+- [x] Verify provider/key rotation blocks.
+- [x] Verify retry blocks.
+- [x] Verify second call blocks.
+- [x] Verify `max_model_calls > 1` blocks.
+- [x] Verify `raw_output_saved=true` blocks.
+- [x] Verify raw_output/provider_response/token_usage injection blocks.
+- [x] Verify raw key/env/bearer/private key injection blocks.
+- [x] Verify endpoint URL blocks.
+- [x] Verify worker orchestration blocks.
+- [x] Verify worker file write blocks.
+- [x] Verify worker shell blocks.
+- [x] Verify shell/web/repo/GitHub/parallel blocks.
+- [x] Verify tool/function/upload/vector/batch/long-running call blocks.
+- [x] Verify bad toy mission blocks.
+- [x] Verify P3W artifact regression passes.
+- [x] Keep actual live call not rerun in P3X.
+- [x] Keep no additional provider call in P3X.
+- [x] Keep no key value read in P3X.
+- [x] Keep no env value read in P3X.
+- [x] Keep no provider SDK import in P3X.
+- [x] Keep no network call in P3X.
+- [x] Keep default pytest no-live in P3X.
+- [x] Keep AGENTS/CLAUDE byte-identical in P3X targeted tests.
+- [x] Verify P3X targeted tests pass with `112 passed`.
+- [x] Verify full `pytest -q` passes with `1173 passed`.
+- [x] Verify P3X raw leak check passes.
 - [x] Complete P3W completion review.
 - [x] Review P3W actual single-call artifacts.
 - [x] Confirm P3W `actual_provider_call_count = 1`.
