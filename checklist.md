@@ -261,3 +261,23 @@
 - [x] Keep network call count 0 in P3P.
 - [x] Keep live smoke count 0 in P3P.
 - [x] Defer actual first call to P3Q or a later explicit approval phase.
+- [x] Implement P3Q no-call integration coordinator.
+- [x] Implement P3Q approval package controlled integration.
+- [x] Implement P3Q final gate linkage integration.
+- [x] Wire and keep disabled the P3Q provider activation guard.
+- [x] Wire and keep disabled the P3Q SDK activation guard.
+- [x] Wire and keep disabled the P3Q key loading activation guard.
+- [x] Wire and keep disabled the P3Q live call activation guard.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3Q.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3Q.
+- [x] Keep `live_call_allowed=false` in P3Q.
+- [x] Keep `model_call_count=0` in P3Q.
+- [x] Keep SDK import forbidden in P3Q.
+- [x] Keep key loading forbidden in P3Q.
+- [x] Keep provider activation forbidden in P3Q.
+- [x] Keep API call count 0 in P3Q.
+- [x] Keep LLM call count 0 in P3Q.
+- [x] Keep key read count 0 in P3Q.
+- [x] Keep network call count 0 in P3Q.
+- [x] Keep live smoke count 0 in P3Q.
+- [x] Defer actual first call to P3R or a later explicit approval phase.
