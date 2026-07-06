@@ -1,5 +1,54 @@
 # HANDOFF
 
+## P3W Gemma 4 31B IT Actual Single-call Completion Update
+
+- Current HEAD before this P3W Gemma actual completion commit: `9cfcaa4`.
+- P3W opt-in actual live smoke execution attempted with existing runner: YES.
+- Result: single_call_completed.
+- Official Google documentation model id applied: `gemma-4-31b-it`.
+- Actual provider call count: 1.
+- `call_model_count_before`: 0.
+- `call_model_count_after`: 1.
+- `model_call_count_before`: 0.
+- `model_call_count_after`: 1.
+- Provider safe id: `google_gemini`.
+- Model safe id: `gemma-4-31b-it`.
+- Key slot safe id: `worker_1`.
+- Selected source key variable: `GOOGLE_API_KEY_1`, mapped process-locally to `AICO_WORKER_1_API_KEY`.
+- Key fingerprint masked: `sha256:632b439d...e95e`.
+- Raw key persisted: NO.
+- Raw env value persisted: NO.
+- `.env` full dump performed: NO.
+- 11-key rotation: NO.
+- Reserve key read: NO.
+- Fallback key read: NO.
+- `retry_count`: 0.
+- `reserve_used`: false.
+- `fallback_used`: false.
+- `second_call_attempted`: false.
+- `raw_output_saved`: false.
+- Masked summary saved: true.
+- `call_attempt_summary.json` created in ignored run directory: YES.
+- `live_smoke_result.json` created in ignored run directory: YES.
+- `artifact_safety_report.json` created in ignored run directory: YES.
+- `final_live_gate_result.json` linkage created in ignored run directory: YES.
+- P3W run id: `20260706T123731Z`.
+- P3W run dir: `runs/p3w_20260706T123731Z`.
+- Artifact safety scan result: pass.
+- Artifact raw leak check: passed.
+- Worker orchestration: NO.
+- Worker file modification: NO.
+- Shell execution: NO.
+- Web access: NO.
+- Repo clone: NO.
+- GitHub integration: NO.
+- Parallel execution: NO.
+- Default pytest result before actual run: `pytest -q` passed with `1061 passed`.
+- Post-live pytest result: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical check passed.
+- Git status before documentation update: clean.
+- Next work: P3W completion review or a tightly scoped next phase. Do not interpret this as authorization for worker orchestration, retries, reserve/fallback, second calls, raw output persistence, shell/web/repo/GitHub access, or broader live operation.
+
 ## P3W Gemma 4 31B IT Opt-in Actual Run Attempt Update
 
 - Current HEAD before this P3W Gemma opt-in actual run attempt commit: `63e1f11`.

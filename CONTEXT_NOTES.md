@@ -1,5 +1,9 @@
 # CONTEXT_NOTES
 
+- 2026-07-06: P3W Gemma 4 31B IT actual single-call run completed with the existing runner. Official Google documentation model id `gemma-4-31b-it` was used with provider `google_gemini`, key_slot `worker_1`, and one process-local mapping from `GOOGLE_API_KEY_1` to `AICO_WORKER_1_API_KEY`.
+- 2026-07-06: The P3W actual run made exactly one provider call. Counts were `actual_provider_call_count=1`, `call_model_count_after=1`, and `model_call_count_after=1`; retry, reserve, fallback, and second call stayed at zero/false.
+- 2026-07-06: The P3W actual run did not dump `.env`, did not persist raw key/env/provider response/token usage/raw output, did not rotate 11 keys, and stored only masked summary plus safe artifacts under ignored `runs/p3w_20260706T123731Z`.
+- 2026-07-06: P3W success proves only the provider boundary one-call path. It does not authorize worker orchestration, shell/web/repo/GitHub access, retries, reserve/fallback, second calls, raw output persistence, or broader live operation.
 - 2026-07-06: P3W Gemma 4 31B IT opt-in actual run was attempted with the existing runner, but it safe-blocked before provider activation. `.env` exists, but required P3W opt-in values were absent, the exact Gemma 4 31B IT safe model id was not confirmed from repo registry or `.env` opt-in config, and no known non-reserve `key_registry` slot variable was found in `.env`.
 - 2026-07-06: The P3W Gemma attempt did not dump `.env`, did not print or persist any raw key, did not load 11 keys, did not rotate keys, did not read reserve/fallback keys, and did not perform a provider call. Counts stayed at `actual_provider_call_count=0`, `call_model_count_after=0`, and `model_call_count_after=0`.
 - 2026-07-06: A later P3W actual call still requires exact process opt-in values, one non-reserve key_slot known to `key_registry`, and an exact safe model id for Gemma 4 31B IT. AICO must not infer model ids or map arbitrary `.env` variables to key slots.

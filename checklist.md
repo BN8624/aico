@@ -1,5 +1,38 @@
 # Checklist
 
+- [x] Look up official Google documentation for Gemma 4 31B IT model id.
+- [x] Apply `gemma-4-31b-it` as the P3W model id.
+- [x] Attempt P3W Gemma 4 31B IT actual run with the existing runner.
+- [x] Use provider exactly one: `google_gemini`.
+- [x] Use model exactly one: `gemma-4-31b-it`.
+- [x] Use key_slot exactly one: `worker_1`.
+- [x] Read selected key value only inside the actual-run boundary.
+- [x] Map `GOOGLE_API_KEY_1` process-locally to `AICO_WORKER_1_API_KEY`.
+- [x] Do not persist raw key.
+- [x] Do not persist raw env value.
+- [x] Do not dump `.env`.
+- [x] Do not rotate 11 keys.
+- [x] Do not read reserve key.
+- [x] Do not read fallback key.
+- [x] Complete actual provider call count exactly 1.
+- [x] Keep `call_model_count_before = 0`.
+- [x] Keep `call_model_count_after = 1`.
+- [x] Keep `model_call_count_before = 0`.
+- [x] Keep `model_call_count_after = 1`.
+- [x] Keep `retry_count = 0`.
+- [x] Keep `reserve_used = false`.
+- [x] Keep `fallback_used = false`.
+- [x] Keep `second_call_attempted = false`.
+- [x] Keep `raw_output_saved = false`.
+- [x] Save masked summary only.
+- [x] Create actual-run `call_attempt_summary.json` in ignored run dir.
+- [x] Create actual-run `live_smoke_result.json` in ignored run dir.
+- [x] Create actual-run `artifact_safety_report.json` in ignored run dir.
+- [x] Verify artifact safety scan passes for actual run.
+- [x] Verify actual-run artifact raw leak check passes.
+- [x] Preserve worker orchestration as NO for actual run.
+- [x] Preserve worker file modification as NO for actual run.
+- [x] Preserve shell/web/repo/GitHub/parallel execution as NO for actual run.
 - [x] Attempt P3W Gemma 4 31B IT opt-in actual run with the existing runner.
 - [x] Confirm `.env` exists without dumping `.env` contents.
 - [x] Avoid printing or persisting raw key values.

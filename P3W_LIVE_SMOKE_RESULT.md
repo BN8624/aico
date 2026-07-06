@@ -2,11 +2,11 @@
 
 ## Verdict
 
-result: blocked
+result: single_call_completed
 
-The existing P3W runner was invoked once for the requested Gemma 4 31B IT opt-in actual run. The run stopped before provider call because the required P3W opt-in values were not present and no exact Gemma 4 31B IT safe model id was available from the repo registry or `.env` opt-in config.
+The existing P3W runner was invoked once for the requested Gemma 4 31B IT opt-in actual run. The provider boundary opened exactly once and stopped after one call.
 
-This is a safe pre-call block, not an actual provider-call completion.
+Official Google documentation identifies the Gemma 4 31B IT Gemini API model id as `gemma-4-31b-it`.
 
 ## Scope
 
@@ -25,21 +25,25 @@ controlled single-call live smoke only.
 
 ## Provider Boundary
 
-- provider: not activated because opt-in/provider selection was not complete.
-- requested provider family: `google_gemini` candidate only.
-- model: not activated because exact Gemma 4 31B IT safe model id was not confirmed from repo registry or `.env` opt-in config.
-- key_slot: not loaded because no P3W opt-in key_slot was configured and no known non-reserve `key_registry` slot variable was found in `.env`.
-- key_fingerprint_masked: null.
-- raw key read: NO.
+- provider: `google_gemini`.
+- model: `gemma-4-31b-it`.
+- key_slot: `worker_1`.
+- key_fingerprint_masked: `sha256:632b439d...e95e`.
+- selected source key variable: `GOOGLE_API_KEY_1`, mapped process-locally to `AICO_WORKER_1_API_KEY`.
+- raw key read scope: selected key only, memory only.
+- raw key persisted: NO.
 - `.env` dump: NO.
+- 11-key rotation: NO.
+- reserve key read: NO.
+- fallback key read: NO.
 
 ## Call Counts
 
-- actual_provider_call_count: 0.
+- actual_provider_call_count: 1.
 - call_model_count_before: 0.
-- call_model_count_after: 0.
+- call_model_count_after: 1.
 - model_call_count_before: 0.
-- model_call_count_after: 0.
+- model_call_count_after: 1.
 - max_model_calls: 1.
 
 ## Safety Flags
@@ -49,7 +53,7 @@ controlled single-call live smoke only.
 - fallback_used: false.
 - second_call_attempted: false.
 - raw_output_saved: false.
-- masked_summary_saved: false.
+- masked_summary_saved: true.
 - worker_orchestration: NO.
 - worker_file_modification: NO.
 - shell: NO.
@@ -60,28 +64,28 @@ controlled single-call live smoke only.
 
 ## Artifacts
 
-- run_id: `20260706T123224Z`.
-- run_dir: `runs/p3w_20260706T123224Z`.
+- run_id: `20260706T123731Z`.
+- run_dir: `runs/p3w_20260706T123731Z`.
 - call_attempt_summary.json: created in ignored run directory.
 - live_smoke_result.json: created in ignored run directory.
 - artifact_safety_report.json: created in ignored run directory.
 - final_live_gate_result.json: created in ignored run directory.
 - artifact_safety_scan: pass.
+- artifact_raw_leak_check: passed.
 
 ## Masked Output Summary
 
-- output_present: false.
-- output_length: 0.
-- output_preview_masked: empty.
-- contains_expected_phrase: false.
+- output_present: true.
+- output_length: 38.
+- output_preview_masked: `AICO live smoke boundary check passed.`
+- contains_expected_phrase: true.
 - secret_scan_passed: true.
 - raw_output_saved: false.
 
 ## Failure, if any
 
-- failure_type: `HUMAN_DECISION_REQUIRED`.
-- errors_safe_summary: human opt-in missing.
-- additional_safe_block_reason: exact Gemma 4 31B IT safe model id and selected known non-reserve P3W key_slot were not available from allowed configuration sources.
+- failure_type: null.
+- errors_safe_summary: none.
 
 ## Tests
 
@@ -92,12 +96,4 @@ controlled single-call live smoke only.
 
 ## Next Requirement
 
-To produce `single_call_completed` or `single_call_failed_safely`, a later run must provide exact P3W opt-in values and one configured non-reserve key slot using the repo's existing P3W/key-registry naming.
-
-- `AICO_P3W_LIVE_SMOKE=1`
-- `AICO_P3W_PROVIDER=google_gemini`
-- `AICO_P3W_MODEL=<exact_gemma_4_31b_it_safe_model_id_from_repo_or_allowed_config>`
-- `AICO_P3W_KEY_SLOT=<single_non_reserve_key_slot_known_to_key_registry>`
-- `AICO_P3W_CONFIRM=controlled-single-call`
-
-No provider/model/key_slot was guessed, no key rotation was attempted, no reserve or fallback key was read, no env dump was performed, and no key value was printed or persisted.
+P3W proves only the provider boundary one-call path. It does not authorize worker orchestration, file mutation, shell use, web access, repo or GitHub integration, retries, reserve keys, fallback providers, second calls, raw output persistence, or broader AICO live operation.
