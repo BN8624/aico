@@ -73,3 +73,9 @@
 - 2026-07-06: Actual first call remains deferred to P3T or a later explicit approval phase after P3S.
 - 2026-07-06: P3S implemented `pre_live_package_manifest.json` schema/helper, controlled package assembly, run_id/hash/ref consistency checks, pre/post artifact safety wiring, no-call invariant validation, and explicit-only manifest write helper.
 - 2026-07-06: P3S targeted tests passed with 56 tests. The default/runtime path still creates no approval package, no-call integration summary, call attempt summary, pre-live package manifest, or live smoke result.
+- 2026-07-06: P3T is final live approval packet review / human-confirmation-only no-call phase, not actual live smoke approval or execution.
+- 2026-07-06: P3T implemented `final_live_approval_packet.json` and `human_confirmation_checklist.json` safe schemas/helpers, no-call evidence summary, approval phrase reference guard, packet artifact reference guard, and next-step command skeleton guard.
+- 2026-07-06: P3T human confirmation statuses remain limited to `pending`, `review_required`, and `not_granted`. Statuses such as `approved`, `granted`, `confirmed`, `execution_approved`, and `live_approved` are blocked.
+- 2026-07-06: P3T packet validation keeps `execution_allowed=false`, `live_call_allowed=false`, `model_call_count=0`, `call_model_count=0`, and `raw_output_saved=false` even when the packet is ready for human review.
+- 2026-07-06: P3T default/runtime paths do not create approval package, no-call integration summary, call attempt summary, pre-live package manifest, final live approval packet, human confirmation checklist, or live smoke artifacts.
+- 2026-07-06: P3T keeps provider activation, SDK import, key loading, key reads, env value reads, API calls, LLM calls, network calls, `call_model`, and live smoke at zero. Actual first call remains deferred to P3U or a later explicit approval phase.

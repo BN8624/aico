@@ -332,3 +332,33 @@
 - [x] Keep network call count 0 in P3S.
 - [x] Keep live smoke count 0 in P3S.
 - [x] Defer actual first call to P3T or a later explicit approval phase.
+- [x] Implement P3T final live approval packet skeleton.
+- [x] Implement P3T human confirmation checklist skeleton.
+- [x] Implement P3T no-call evidence summary.
+- [x] Implement P3T approval phrase reference guard.
+- [x] Implement P3T packet artifact reference guard.
+- [x] Implement P3T next-step command skeleton guard.
+- [x] Keep P3T human confirmation statuses non-granted only.
+- [x] Block approved/granted/confirmed/live-approved statuses in P3T.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3T.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3T.
+- [x] Keep `call_attempt_summary.json` default/runtime creation at 0 in P3T.
+- [x] Keep `pre_live_package_manifest.json` default/runtime creation at 0 in P3T.
+- [x] Keep `final_live_approval_packet.json` default/runtime creation at 0 in P3T.
+- [x] Keep `human_confirmation_checklist.json` default/runtime creation at 0 in P3T.
+- [x] Keep `execution_allowed=false` in P3T.
+- [x] Keep `live_call_allowed=false` in P3T.
+- [x] Keep `model_call_count=0` in P3T.
+- [x] Keep `call_model_count=0` in P3T.
+- [x] Keep `raw_output_saved=false` in P3T.
+- [x] Keep `call_model` execution count 0 in P3T.
+- [x] Keep SDK import forbidden in P3T.
+- [x] Keep key loading forbidden in P3T.
+- [x] Keep provider activation forbidden in P3T.
+- [x] Keep API call count 0 in P3T.
+- [x] Keep LLM call count 0 in P3T.
+- [x] Keep key read count 0 in P3T.
+- [x] Keep env value read count 0 in P3T.
+- [x] Keep network call count 0 in P3T.
+- [x] Keep live smoke count 0 in P3T.
+- [x] Defer actual first call to P3U or a later explicit approval phase.
