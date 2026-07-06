@@ -5,7 +5,7 @@
 - Current HEAD before this P3W Gemma actual completion commit: `9cfcaa4`.
 - P3W opt-in actual live smoke execution attempted with existing runner: YES.
 - Result: single_call_completed.
-- Official Google documentation model id applied: `gemma-4-31b-it`.
+- Official Google documentation confirmed Gemma 4 31B family; actual Gemini API call validated model id `gemma-4-31b-it`.
 - Actual provider call count: 1.
 - `call_model_count_before`: 0.
 - `call_model_count_after`: 1.

@@ -6,7 +6,7 @@ result: single_call_completed
 
 The existing P3W runner was invoked once for the requested Gemma 4 31B IT opt-in actual run. The provider boundary opened exactly once and stopped after one call.
 
-Official Google documentation identifies the Gemma 4 31B IT Gemini API model id as `gemma-4-31b-it`.
+Official Google documentation confirms the Gemma 4 31B family. The actual Gemini API single-call run validated the model id `gemma-4-31b-it` for this boundary proof.
 
 ## Scope
 

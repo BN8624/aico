@@ -1,6 +1,6 @@
 # CONTEXT_NOTES
 
-- 2026-07-06: P3W Gemma 4 31B IT actual single-call run completed with the existing runner. Official Google documentation model id `gemma-4-31b-it` was used with provider `google_gemini`, key_slot `worker_1`, and one process-local mapping from `GOOGLE_API_KEY_1` to `AICO_WORKER_1_API_KEY`.
+- 2026-07-06: P3W Gemma 4 31B IT actual single-call run completed with the existing runner. Official Google documentation confirmed the Gemma 4 31B family, and the actual Gemini API call validated model id `gemma-4-31b-it` with provider `google_gemini`, key_slot `worker_1`, and one process-local mapping from `GOOGLE_API_KEY_1` to `AICO_WORKER_1_API_KEY`.
 - 2026-07-06: The P3W actual run made exactly one provider call. Counts were `actual_provider_call_count=1`, `call_model_count_after=1`, and `model_call_count_after=1`; retry, reserve, fallback, and second call stayed at zero/false.
 - 2026-07-06: The P3W actual run did not dump `.env`, did not persist raw key/env/provider response/token usage/raw output, did not rotate 11 keys, and stored only masked summary plus safe artifacts under ignored `runs/p3w_20260706T123731Z`.
 - 2026-07-06: P3W success proves only the provider boundary one-call path. It does not authorize worker orchestration, shell/web/repo/GitHub access, retries, reserve/fallback, second calls, raw output persistence, or broader live operation.
