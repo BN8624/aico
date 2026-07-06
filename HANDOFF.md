@@ -1,5 +1,47 @@
 # HANDOFF
 
+## P3W Opt-in Actual Execution Attempt Update
+
+- Current HEAD before this P3W opt-in actual execution attempt commit: `b7e6b68`.
+- P3W opt-in actual live smoke execution attempted: YES.
+- Result: blocked.
+- Blocked reason: required P3W opt-in values were missing from the process environment.
+- Actual provider call count: 0.
+- `call_model_count_before`: 0.
+- `call_model_count_after`: 0.
+- `model_call_count_before`: 0.
+- `model_call_count_after`: 0.
+- Provider safe id: not activated because opt-in was missing.
+- Model safe id: not activated because opt-in was missing.
+- Key slot safe id: not loaded because opt-in was missing.
+- Key fingerprint masked: null.
+- `retry_count`: 0.
+- `reserve_used`: false.
+- `fallback_used`: false.
+- `second_call_attempted`: false.
+- `raw_output_saved`: false.
+- Masked summary saved: false because no provider output existed.
+- `call_attempt_summary.json` created in ignored run directory: YES.
+- `live_smoke_result.json` created in ignored run directory: YES.
+- `artifact_safety_report.json` created in ignored run directory: YES.
+- `final_live_gate_result.json` linkage created in ignored run directory: YES.
+- Artifact safety scan result: pass.
+- Worker orchestration: NO.
+- Worker file modification: NO.
+- Shell execution: NO.
+- Web access: NO.
+- Repo clone: NO.
+- GitHub integration: NO.
+- Parallel execution: NO.
+- Default pytest result before opt-in attempt: `pytest -q` passed with `1061 passed`.
+- P3W opt-in attempt command: `python -m aico_v0.controlled_live_smoke`.
+- P3W run id: `20260706T122055Z`.
+- P3W artifact raw leak JSON check: passed.
+- Post-live pytest result: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
+- Git status before commit: only expected P3W opt-in actual execution result documentation changes.
+- Next work: rerun P3W only after exact opt-in values are supplied in the process environment. Do not infer provider/model/key_slot, do not load `.env`, do not retry automatically, and do not attempt a second live call from this blocked run.
+
 ## P3W Controlled Single-call Live Smoke Update
 
 - Current HEAD before this P3W commit: `885cba5`.

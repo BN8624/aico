@@ -491,3 +491,19 @@
 - [x] Keep P3W `fallback_used = false`.
 - [x] Keep P3W `second_call_attempted = false`.
 - [x] Keep P3W `raw_output_saved = false`.
+- [x] Attempt P3W opt-in actual run with existing runner.
+- [x] Block P3W opt-in actual run safely because opt-in values were missing.
+- [x] Keep P3W opt-in attempt provider count at 0 when opt-in is missing.
+- [x] Keep P3W opt-in attempt key load count at 0 when opt-in is missing.
+- [x] Keep P3W opt-in attempt `actual_provider_call_count <= 1`.
+- [x] Keep P3W opt-in attempt `call_model_count_after <= 1`.
+- [x] Keep P3W opt-in attempt `model_call_count_after <= 1`.
+- [x] Keep P3W opt-in attempt `retry_count = 0`.
+- [x] Keep P3W opt-in attempt `reserve_used = false`.
+- [x] Keep P3W opt-in attempt `fallback_used = false`.
+- [x] Keep P3W opt-in attempt `second_call_attempted = false`.
+- [x] Keep P3W opt-in attempt `raw_output_saved = false`.
+- [x] Safety check P3W opt-in attempt `call_attempt_summary.json`.
+- [x] Safety check P3W opt-in attempt `live_smoke_result.json`.
+- [x] Safety check P3W opt-in attempt `artifact_safety_report.json`.
+- [x] Keep post-live pytest no-live after P3W opt-in attempt.

@@ -1,19 +1,19 @@
 # P3W Live Smoke Result
 
-## Status
+## Verdict
 
 result: blocked
 
-P3W controlled single-call live smoke runner was implemented and invoked once through the P3W entrypoint. The run stopped before provider call because explicit opt-in values were not present.
+The existing P3W runner was invoked once for opt-in actual execution. The run stopped before provider call because required P3W opt-in values were not present in the process environment.
 
-This is a safe pre-call block, not a completed live provider call.
+This is a safe pre-call block, not an actual provider-call completion.
 
 ## Scope
 
-- P3W scope: controlled single-call live smoke boundary only.
+controlled single-call live smoke only.
+
 - Worker orchestration: NO.
 - Multi-agent run: NO.
-- Useful production task: NO.
 - Worker file modification: NO.
 - Worker shell execution: NO.
 - Web access: NO.
@@ -23,52 +23,72 @@ This is a safe pre-call block, not a completed live provider call.
 - Retry/reserve/fallback/second call: NO.
 - Raw output persistence: NO.
 
-## Run Summary
+## Provider Boundary
 
-- run_id: `20260706T120953Z`
-- run_dir: `runs/p3w_20260706T120953Z`
 - provider: not activated because opt-in was missing.
 - model: not activated because opt-in was missing.
 - key_slot: not loaded because opt-in was missing.
 - key_fingerprint_masked: null.
+
+## Call Counts
+
 - actual_provider_call_count: 0.
 - call_model_count_before: 0.
 - call_model_count_after: 0.
 - model_call_count_before: 0.
 - model_call_count_after: 0.
+- max_model_calls: 1.
+
+## Safety Flags
+
 - retry_count: 0.
 - reserve_used: false.
 - fallback_used: false.
 - second_call_attempted: false.
 - raw_output_saved: false.
 - masked_summary_saved: false.
-- artifact_safety_scan: pass.
-- failure_type: `HUMAN_DECISION_REQUIRED`.
-- safe block reason: human opt-in missing.
+- worker_orchestration: NO.
+- worker_file_modification: NO.
+- shell: NO.
+- web: NO.
+- repo_clone: NO.
+- github: NO.
+- parallel_execution: NO.
 
 ## Artifacts
 
-- `call_attempt_summary.json`: created inside `runs/p3w_20260706T120953Z`.
-- `live_smoke_result.json`: created inside `runs/p3w_20260706T120953Z`.
-- `artifact_safety_report.json`: created inside `runs/p3w_20260706T120953Z`.
-- `final_live_gate_result.json`: created inside `runs/p3w_20260706T120953Z`.
+- run_id: `20260706T122055Z`.
+- run_dir: `runs/p3w_20260706T122055Z`.
+- call_attempt_summary.json: created in ignored run directory.
+- live_smoke_result.json: created in ignored run directory.
+- artifact_safety_report.json: created in ignored run directory.
+- final_live_gate_result.json: created in ignored run directory.
+- artifact_safety_scan: pass.
 
-No raw key, raw env value, raw approval phrase, raw provider request, raw provider response, raw model output, raw headers, raw token usage dump, endpoint URL, bearer token, or private key block was stored.
+## Masked Output Summary
 
-## Verification
+- output_present: false.
+- output_length: 0.
+- output_preview_masked: empty.
+- contains_expected_phrase: false.
+- secret_scan_passed: true.
+- raw_output_saved: false.
 
-- P3W targeted tests: `pytest -q tests/test_p3w_controlled_live_smoke.py tests/test_p3w_single_call_boundary.py tests/test_p3w_live_artifact_safety.py tests/test_p3w_failure_safety.py` passed with `81 passed`.
-- Default pre-live test suite: `pytest -q` passed with `1061 passed`.
-- P3W entrypoint executed once: `python -m aico_v0.controlled_live_smoke`.
-- P3W artifact safety scan: passed.
-- P3W artifact raw leak JSON check: passed.
-- Post-run test suite: `pytest -q` passed with `1061 passed`.
-- AGENTS.md and CLAUDE.md byte-identical check: passed.
-- P3W/P3V/P3U/P3T/P3S/P3R boundary `call_model` string check: passed.
+## Failure, if any
+
+- failure_type: `HUMAN_DECISION_REQUIRED`.
+- errors_safe_summary: human opt-in missing.
+
+## Tests
+
+- default pytest: `pytest -q` passed with `1061 passed`.
+- post-live pytest: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical: passed.
+- git status before commit: only expected P3W opt-in result documentation changes.
 
 ## Next Requirement
 
-To get `single_call_completed` instead of `blocked`, a later run must provide exact P3W opt-in values and one configured key slot:
+To produce `single_call_completed` or `single_call_failed_safely`, a later run must provide exact P3W opt-in values in the process environment and one configured non-reserve key slot:
 
 - `AICO_P3W_LIVE_SMOKE=1`
 - `AICO_P3W_PROVIDER=<single_provider>`
@@ -76,4 +96,4 @@ To get `single_call_completed` instead of `blocked`, a later run must provide ex
 - `AICO_P3W_KEY_SLOT=<single_non_reserve_key_slot>`
 - `AICO_P3W_CONFIRM=controlled-single-call`
 
-That later run must still keep `max_model_calls=1`, `retry_count=0`, `reserve_used=false`, `fallback_used=false`, `second_call_attempted=false`, and `raw_output_saved=false`.
+No provider/model/key_slot was guessed, no `.env` file was created, no env dump was performed, and no key value was printed or persisted.
