@@ -1,5 +1,28 @@
 # Checklist
 
+- [x] Complete P3Z documentation consolidation / archive hygiene.
+- [x] Create `docs/archive/p3/`.
+- [x] Archive P3 evidence under `docs/archive/p3/`.
+- [x] Preserve P3 evidence without deletion.
+- [x] Reduce root P3 evidence docs to current entry points and archive paths.
+- [x] Create `DOCS_INDEX.md`.
+- [x] Update `HANDOFF.md`.
+- [x] Update `CONTEXT_NOTES.md`.
+- [x] Update `checklist.md`.
+- [x] Keep P3 closure YES.
+- [x] Keep P4 entry YES, no-call/data-only P4A only.
+- [x] Record recommended next phase as P4A mission_interview no-call implementation.
+- [x] Keep Canon unmodified.
+- [x] Keep code unmodified.
+- [x] Keep tests unmodified.
+- [x] Keep no additional live call during P3Z.
+- [x] Keep no key value read during P3Z.
+- [x] Keep no env value read during P3Z.
+- [x] Keep no provider SDK import during P3Z.
+- [x] Keep no network call during P3Z.
+- [x] Keep no `call_model` execution during P3Z.
+- [x] Verify `pytest -q` passes for P3Z.
+- [x] Verify AGENTS/CLAUDE byte-identical for P3Z.
 - [x] Complete P3Y final integration review.
 - [x] Integrate P3A-P3X evidence.
 - [x] Review P3 proof ladder.

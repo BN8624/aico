@@ -1,11 +1,48 @@
 # HANDOFF
 
+## P3Z Documentation Consolidation Update
+
+- Current HEAD before this P3Z documentation consolidation commit: `9b3764a`.
+- P3Z documentation consolidation / archive hygiene complete: YES.
+- P3 closure: YES.
+- P4 entry: YES, no-call/data-only P4A only.
+- Recommended next phase: P4A mission_interview no-call implementation.
+- P3 evidence archive path: `docs/archive/p3/`.
+- `DOCS_INDEX.md` is now the current documentation entry point.
+- Current entry docs:
+  - `DOCS_INDEX.md`
+  - `HANDOFF.md`
+  - `CONTEXT_NOTES.md`
+  - `checklist.md`
+  - `AICO_MASTER_CANON.md`
+  - `AICO_P3_CANON.md`
+  - `AICO_V0_CANON.md`
+  - `AICO_DIRECTION_DECISION.md`
+  - `AGENTS.md`
+  - `CLAUDE.md`
+- Archived P3 evidence summary: moved root `P3*.md` evidence documents into `docs/archive/p3/`, including P3A-P3Y completion/review/result/report/policy documents and `docs/archive/p3/P3_CANON_REVIEW.md`.
+- Canon modified: NO.
+- Code modified: NO.
+- Tests modified: NO.
+- Additional actual provider call during P3Z: NO.
+- Key value read during P3Z: NO.
+- Env value read during P3Z: NO.
+- Provider SDK import during P3Z: NO.
+- Network call during P3Z: NO.
+- `call_model` execution during P3Z: NO.
+- Retry/reserve/fallback/second call during P3Z: NO.
+- Raw leak during P3Z review: NO.
+- Test result: `pytest -q` passed with `1173 passed`.
+- AGENTS/CLAUDE byte-identical: YES.
+- Git status before commit: expected archive moves plus documentation entry point updates only.
+- Next work: P4A mission_interview no-call implementation. Do not open worker orchestration, run another live call, grant file write/shell authority, enable web/repo/GitHub/parallel execution, or modify Canon without a separate explicit phase.
+
 ## P3Y Final Integration Review Update
 
 - Current HEAD before this P3Y final integration review commit: `4d2c989`.
 - This work completed P3Y final integration review / P3 closure decision.
 - Created/modified files:
-  - `P3Y_FINAL_INTEGRATION_REVIEW.md`
+  - `docs/archive/p3/P3Y_FINAL_INTEGRATION_REVIEW.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -35,7 +72,7 @@
 - Current HEAD before this P3X completion review commit: `2c1d6bf`.
 - This work completed the P3X negative safety tests / bad-input blocking proof completion review.
 - Created/modified files:
-  - `P3X_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3X_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -78,7 +115,7 @@
   - `tests/test_p3x_raw_leak_injection.py`
   - `tests/test_p3x_worker_authority_blocks.py`
   - `tests/test_p3x_p3w_artifact_regression.py`
-  - `P3X_NEGATIVE_SAFETY_REPORT.md`
+  - `docs/archive/p3/P3X_NEGATIVE_SAFETY_REPORT.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -109,7 +146,7 @@
 - Current HEAD before this P3W completion review commit: `2b629ac`.
 - This work completed the P3W controlled single-call live smoke completion review.
 - Created/modified files:
-  - `P3W_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3W_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3W completion review complete: YES.
 - P3X entry decision: YES.
@@ -299,7 +336,7 @@
   - `tests/test_p3w_live_artifact_safety.py`
   - `tests/test_p3w_failure_safety.py`
   - `tests/test_p3e_offline_policy.py`
-  - `P3W_LIVE_SMOKE_RESULT.md`
+  - `docs/archive/p3/P3W_LIVE_SMOKE_RESULT.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -346,7 +383,7 @@
 - Current HEAD before this P3V completion review commit: `13ac4ce`.
 - This work completed the P3V final live-fire checklist / still-no-call review completion review.
 - Created/modified files:
-  - `P3V_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3V_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3V completion review complete: YES.
 - P3W entry decision: YES.
@@ -489,7 +526,7 @@
 - Current HEAD before this P3U completion review commit: `9d4e085`.
 - This work completed the P3U final explicit approval gate / armed-but-not-fired no-call phase completion review.
 - Created/modified files:
-  - `P3U_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3U_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3U completion review complete: YES.
 - P3V entry decision: YES.
@@ -583,7 +620,7 @@
 - Current HEAD before this P3T completion review commit: `ab7710b`.
 - This work completed the P3T final live approval packet review / human-confirmation-only no-call phase completion review.
 - Created/modified files:
-  - `P3T_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3T_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3T completion review complete: YES.
 - P3U entry decision: YES.
@@ -664,7 +701,7 @@
 - Current HEAD before this P3S completion review commit: `1d88fb4`.
 - This work completed the P3S final pre-live artifact generation skeleton / no-call package assembly completion review.
 - Created/modified files:
-  - `P3S_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3S_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3S completion review complete: YES.
 - P3T entry decision: YES.
@@ -744,7 +781,7 @@
 - Current HEAD before this P3R completion review commit: `13bb535`.
 - This work completed the P3R live execution boundary skeleton / single-call no-execute dry run completion review.
 - Created/modified files:
-  - `P3R_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3R_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3R completion review complete: YES.
 - P3S entry decision: YES.
@@ -812,7 +849,7 @@
 - Current HEAD before this P3Q completion review commit: `cba3fe0`.
 - This work completed the P3Q provider/key/SDK activation skeleton / no-call integration completion review.
 - Created/modified files:
-  - `P3Q_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3Q_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3Q completion review complete: YES.
 - P3R entry decision: YES.
@@ -873,7 +910,7 @@
 - Current HEAD before this P3P completion review commit: `3b642bf`.
 - This work completed the P3P code activation skeleton / no-call implementation completion review.
 - Created/modified files:
-  - `P3P_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3P_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3P completion review complete: YES.
 - P3Q entry decision: YES.
@@ -935,7 +972,7 @@
 - Current HEAD before this P3O completion review commit: `4d3fa33`.
 - This work completed the P3O execution plan review / explicit approval gate completion review.
 - Created/modified files:
-  - `P3O_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3O_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3O completion review complete: YES.
 - P3P entry decision: YES.
@@ -960,7 +997,7 @@
 - Current HEAD before this P3O execution plan review commit: `57df040`.
 - This work documented the P3O first live smoke execution plan review / explicit approval gate.
 - Created/modified files:
-  - `P3O_EXECUTION_PLAN_REVIEW.md`
+  - `docs/archive/p3/P3O_EXECUTION_PLAN_REVIEW.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -985,7 +1022,7 @@
 - Current HEAD before this P3N completion review commit: `c692bd6`.
 - This work completed the P3N dry authorization review completion review.
 - Created/modified files:
-  - `P3N_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3N_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3N completion review complete: YES.
 - P3O entry decision: YES.
@@ -1009,7 +1046,7 @@
 - Current HEAD before this P3N dry authorization review commit: `1b3526a`.
 - This work documented the P3N first live smoke final approval execution package / dry authorization review.
 - Created/modified files:
-  - `P3N_DRY_AUTHORIZATION_REVIEW.md`
+  - `docs/archive/p3/P3N_DRY_AUTHORIZATION_REVIEW.md`
   - `HANDOFF.md`
   - `CONTEXT_NOTES.md`
   - `checklist.md`
@@ -1034,7 +1071,7 @@
 - Current HEAD before this P3M completion review commit: `8dd0b16`.
 - This work completed the P3M final live-call gate implementation skeleton completion review.
 - Created/modified files:
-  - `P3M_COMPLETION_REVIEW.md`
+  - `docs/archive/p3/P3M_COMPLETION_REVIEW.md`
   - `HANDOFF.md`
 - P3M completion review complete: YES.
 - P3N entry decision: YES.
@@ -1050,7 +1087,7 @@
 - Test result: `pytest -q` passed with `391 passed`.
 - AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
 - Runtime forbidden SDK/network/env-value import AST check for `aico_v0` passed with no violations.
-- Git status before commit: only `P3M_COMPLETION_REVIEW.md` and `HANDOFF.md` changed.
+- Git status before commit: only `docs/archive/p3/P3M_COMPLETION_REVIEW.md` and `HANDOFF.md` changed.
 - Next work: P3N final approval package / dry authorization review only, unless separately approved. Do not run live smoke, activate providers, import provider SDKs, read real keys, enable network transport, call APIs, or call LLMs without a later explicit approval phase.
 
 ## Current Status
