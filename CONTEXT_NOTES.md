@@ -66,3 +66,10 @@
 - 2026-07-06: P3R no-execute dry run passing still means `live_call_allowed=false`, `model_call_count=0`, and no `call_model`, provider transport, SDK import, key loading, env value read, API call, LLM call, network call, or live smoke.
 - 2026-07-06: P3R keeps `approval_package.json`, `no_call_integration_summary.json`, and `call_attempt_summary.json` out of the default/runtime path. Helper writes are explicit only and limited to safe test/run directories.
 - 2026-07-06: Actual first call remains deferred to P3S or a later explicit approval phase after P3R.
+- 2026-07-06: P3S is final pre-live artifact generation skeleton / no-call package assembly only, not actual live smoke.
+- 2026-07-06: P3S will assemble approval package, no-call integration summary, call attempt summary, and final live gate result references with run_id, approval_phrase_hash, and artifact reference consistency checks.
+- 2026-07-06: P3S package assembly passing still means `live_call_allowed=false`, `model_call_count=0`, `call_model_count=0`, and no SDK import, key loading, provider activation, API call, LLM call, network call, or live smoke.
+- 2026-07-06: P3S pre-live artifacts must not be created by default/runtime paths. Explicit helper writes remain run_dir-contained and test-scoped unless a later approval phase changes that.
+- 2026-07-06: Actual first call remains deferred to P3T or a later explicit approval phase after P3S.
+- 2026-07-06: P3S implemented `pre_live_package_manifest.json` schema/helper, controlled package assembly, run_id/hash/ref consistency checks, pre/post artifact safety wiring, no-call invariant validation, and explicit-only manifest write helper.
+- 2026-07-06: P3S targeted tests passed with 56 tests. The default/runtime path still creates no approval package, no-call integration summary, call attempt summary, pre-live package manifest, or live smoke result.

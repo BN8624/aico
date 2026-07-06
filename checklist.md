@@ -303,3 +303,32 @@
 - [x] Keep network call count 0 in P3R.
 - [x] Keep live smoke count 0 in P3R.
 - [x] Defer actual first call to P3S or a later explicit approval phase.
+- [x] Implement P3S pre-live package assembly helper.
+- [x] Connect P3S approval_package controlled assembly.
+- [x] Connect P3S no_call_integration_summary controlled assembly.
+- [x] Connect P3S call_attempt_summary controlled assembly.
+- [x] Implement P3S pre_live_package_manifest schema/helper.
+- [x] Implement P3S run_id consistency validator.
+- [x] Implement P3S approval_phrase_hash consistency validator.
+- [x] Implement P3S artifact reference consistency validator.
+- [x] Implement P3S artifact safety pre-scan wiring.
+- [x] Implement P3S artifact safety post-scan wiring.
+- [x] Implement P3S no-call invariant validator.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3S.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3S.
+- [x] Keep `call_attempt_summary.json` default/runtime creation at 0 in P3S.
+- [x] Keep `pre_live_package_manifest.json` default/runtime creation at 0 in P3S.
+- [x] Keep `live_call_allowed=false` in P3S.
+- [x] Keep `model_call_count=0` in P3S.
+- [x] Keep `call_model_count=0` in P3S.
+- [x] Keep `call_model` execution count 0 in P3S.
+- [x] Keep SDK import forbidden in P3S.
+- [x] Keep key loading forbidden in P3S.
+- [x] Keep provider activation forbidden in P3S.
+- [x] Keep API call count 0 in P3S.
+- [x] Keep LLM call count 0 in P3S.
+- [x] Keep key read count 0 in P3S.
+- [x] Keep env value read count 0 in P3S.
+- [x] Keep network call count 0 in P3S.
+- [x] Keep live smoke count 0 in P3S.
+- [x] Defer actual first call to P3T or a later explicit approval phase.

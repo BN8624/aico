@@ -168,6 +168,7 @@ class LiveExecutionBoundarySummary:
     approval_package_ref: str
     final_gate_result_ref: str
     no_call_integration_ref: str
+    approval_phrase_hash: str
     artifact_safety_status: str
     rollback_plan_ref: str
     failure_type: str | None
@@ -326,6 +327,7 @@ def build_live_execution_boundary(
         approval_package_ref=_string(no_call.get("approval_package_ref")),
         final_gate_result_ref=_string(no_call.get("final_gate_result_ref")),
         no_call_integration_ref=NO_CALL_INTEGRATION_ARTIFACT_NAME,
+        approval_phrase_hash=_string(no_call.get("approval_phrase_hash")),
         artifact_safety_status=_string(no_call.get("artifact_safety_status")),
         rollback_plan_ref=_string(rollback_payload.get("rollback_plan_ref")),
         failure_type=None,
@@ -449,6 +451,7 @@ def validate_live_execution_boundary(summary: Mapping[str, Any]) -> None:
         "approval_package_ref",
         "final_gate_result_ref",
         "no_call_integration_ref",
+        "approval_phrase_hash",
         "artifact_safety_status",
         "rollback_plan_ref",
         "failure_type",
