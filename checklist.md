@@ -1,5 +1,24 @@
 # Checklist
 
+- [x] Complete P3Y final integration review.
+- [x] Integrate P3A-P3X evidence.
+- [x] Review P3 proof ladder.
+- [x] Review P3W actual single-call evidence.
+- [x] Review P3X negative safety evidence.
+- [x] Document P3 boundary status.
+- [x] Write remaining risk register.
+- [x] Record P3 closure verdict.
+- [x] Define P4 entry conditions.
+- [x] Record P4 first phase recommendation.
+- [x] Keep no additional live call during P3Y.
+- [x] Keep no key value read during P3Y.
+- [x] Keep no env value read during P3Y.
+- [x] Keep no provider SDK import during P3Y.
+- [x] Keep no network call during P3Y.
+- [x] Keep no `call_model` execution during P3Y.
+- [x] Keep no Canon modification during P3Y.
+- [x] Verify `pytest -q` passes with `1173 passed`.
+- [x] Verify AGENTS/CLAUDE byte-identical for P3Y.
 - [x] Complete P3X completion review.
 - [x] Review P3X scope compliance.
 - [x] Review P3X negative safety matrix.
