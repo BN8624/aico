@@ -1,5 +1,19 @@
 # Checklist
 
+- [x] Complete P3X completion review.
+- [x] Review P3X scope compliance.
+- [x] Review P3X negative safety matrix.
+- [x] Review bad opt-in blocking.
+- [x] Review multiple provider/model/key_slot blocking.
+- [x] Review retry/reserve/fallback/second-call blocking.
+- [x] Review raw output/provider response/token usage injection blocking.
+- [x] Review raw key/env/secret injection blocking.
+- [x] Review worker authority expansion blocking.
+- [x] Review shell/web/repo/GitHub/parallel blocking.
+- [x] Review tool/function/upload/vector/batch/long-running blocking.
+- [x] Review bad toy mission blocking.
+- [x] Review P3W artifact regression.
+- [x] Confirm P3Y entry is P3 final integration review / P3 closure decision only.
 - [x] Implement P3X negative safety matrix.
 - [x] Verify bad opt-in blocks.
 - [x] Verify missing provider/model/key_slot blocks.
