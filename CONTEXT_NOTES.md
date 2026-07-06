@@ -1,5 +1,8 @@
 # CONTEXT_NOTES
 
+- 2026-07-06: P4A completion review found no blocker. P4A mission_interview remains no-call/data-only and does not grant worker execution authority.
+- 2026-07-06: P4B entry is YES only for policy_pack data-only implementation. P4B must not open live calls, worker orchestration, file write authority, shell/web/repo/GitHub/parallel execution, key/env reads, provider SDK imports, network calls, retry/reserve/fallback, second calls, or `call_model`.
+- 2026-07-06: P4A review noted a non-blocking hardening item: URL-like output paths should return a domain-specific `MissionInterviewError` rather than an OS path error, and endpoint URL payload/path tests can be expanded.
 - 2026-07-06: P4A implements mission_interview as a no-call/data-only layer. It turns mission text into a normalized brief, clarification questions, and risk flags before any worker dispatch or live execution is considered.
 - 2026-07-06: P4A mission_interview keeps `no_call=true`, `worker_orchestration=false`, `live_call_allowed=false`, and `call_model_count=0` in all results.
 - 2026-07-06: P4A does not open live calls, key/env reads, provider SDK imports, network calls, worker orchestration, shell/web/repo/GitHub access, parallel execution, retry/reserve/fallback, or second calls.

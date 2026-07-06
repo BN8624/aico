@@ -1,5 +1,27 @@
 # Checklist
 
+- [x] Create P4A completion review.
+- [x] Review P4A no-call/data-only scope.
+- [x] Review P4A schema.
+- [x] Review normalized brief.
+- [x] Review clarification questions.
+- [x] Review risk flags.
+- [x] Review result decision rules.
+- [x] Review artifact writer.
+- [x] Review artifact safety.
+- [x] Review P4A tests.
+- [x] Review P4A regression status.
+- [x] Record P4B entry verdict.
+- [x] Keep no additional live call during P4A review.
+- [x] Keep no key value read during P4A review.
+- [x] Keep no env value read during P4A review.
+- [x] Keep no provider SDK import during P4A review.
+- [x] Keep no network call during P4A review.
+- [x] Keep no `call_model` execution during P4A review.
+- [x] Keep no worker orchestration during P4A review.
+- [x] Keep no shell/web/repo/GitHub/parallel during P4A review.
+- [x] Verify `pytest -q` passes for P4A completion review.
+- [x] Verify AGENTS/CLAUDE byte-identical for P4A completion review.
 - [x] Implement P4A mission_interview schema.
 - [x] Implement normalized mission brief.
 - [x] Implement clarification question builder.
