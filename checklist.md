@@ -1,5 +1,27 @@
 # Checklist
 
+- [x] Implement P4A mission_interview schema.
+- [x] Implement normalized mission brief.
+- [x] Implement clarification question builder.
+- [x] Implement risk flag detector.
+- [x] Implement result decision rules.
+- [x] Implement artifact writer.
+- [x] Connect artifact safety validation.
+- [x] Add clear mission ready test.
+- [x] Add vague mission clarification test.
+- [x] Add blocking risks tests.
+- [x] Add raw leak rejection tests.
+- [x] Add no-call invariants tests.
+- [x] Keep no additional live call during P4A.
+- [x] Keep no key value read during P4A.
+- [x] Keep no env value read during P4A.
+- [x] Keep no provider SDK import during P4A.
+- [x] Keep no network call during P4A.
+- [x] Keep no `call_model` execution during P4A.
+- [x] Keep no worker orchestration during P4A.
+- [x] Keep no shell/web/repo/GitHub/parallel during P4A.
+- [x] Verify `pytest -q` passes for P4A.
+- [x] Verify AGENTS/CLAUDE byte-identical for P4A.
 - [x] Complete P3Z documentation consolidation / archive hygiene.
 - [x] Create `docs/archive/p3/`.
 - [x] Archive P3 evidence under `docs/archive/p3/`.

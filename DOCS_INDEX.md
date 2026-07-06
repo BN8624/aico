@@ -9,12 +9,14 @@
 - `AICO_P3_CANON.md` — Phase 3 Canon
 - `AICO_V0_CANON.md` — v0 Canon
 - `AICO_DIRECTION_DECISION.md` — direction decision retained as standalone decision doc
+- `P4A_MISSION_INTERVIEW.md` — active P4A no-call mission interview design/implementation note
 
 ## Current Phase Status
 
 - P3 closure: YES
 - P4 entry: YES, no-call/data-only P4A only
-- Recommended next phase: P4A mission_interview no-call implementation
+- Current phase: P4A mission_interview no-call implementation
+- Recommended next step: P4A completion review
 
 ## P3 Evidence Archive
 

@@ -1,5 +1,10 @@
 # CONTEXT_NOTES
 
+- 2026-07-06: P4A implements mission_interview as a no-call/data-only layer. It turns mission text into a normalized brief, clarification questions, and risk flags before any worker dispatch or live execution is considered.
+- 2026-07-06: P4A mission_interview keeps `no_call=true`, `worker_orchestration=false`, `live_call_allowed=false`, and `call_model_count=0` in all results.
+- 2026-07-06: P4A does not open live calls, key/env reads, provider SDK imports, network calls, worker orchestration, shell/web/repo/GitHub access, parallel execution, retry/reserve/fallback, or second calls.
+- 2026-07-06: P4A artifacts are JSON no-call interview results guarded by artifact safety validation and forbidden raw-output/provider-response/token-usage fields.
+- 2026-07-06: P4A next step is completion review, not P4B implementation.
 - 2026-07-06: P3Z archives P3 evidence under `docs/archive/p3/` without deleting evidence. Root P3 review/report/result/policy documents were moved with Git history preserved.
 - 2026-07-06: `DOCS_INDEX.md` is the current documentation entry point for Canon, handoff, context, checklist, P3 archive, P3 proof ladder, and P4A guardrails.
 - 2026-07-06: P3 remains closed with verdict YES. P4 entry remains YES only for no-call/data-only P4A work, with P4A mission_interview no-call implementation as the recommended next phase.
