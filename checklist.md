@@ -454,3 +454,40 @@
 - [x] Preserve current P3 exclusions until controlled live-call boundary is proven.
 - [x] Reference `AICO_DIRECTION_DECISION.md` from the active checklist.
 - [x] Record P3W controlled single-call live smoke as next meaningful direction after P3V completion review and separate explicit approval.
+- [x] Implement P3W controlled single-call live smoke runner.
+- [x] Implement P3W provider/model/key_slot selection validator.
+- [x] Enforce exactly one provider in P3W.
+- [x] Enforce exactly one model in P3W.
+- [x] Enforce exactly one key_slot in P3W.
+- [x] Constrain P3W key-loading boundary actual-read path to one key_slot.
+- [x] Constrain P3W provider SDK boundary to one provider.
+- [x] Implement P3W single-call boundary.
+- [x] Enforce `max_model_calls=1` in P3W.
+- [x] Enforce `retry_count=0` in P3W.
+- [x] Enforce `reserve_used=false` in P3W.
+- [x] Enforce `fallback_used=false` in P3W.
+- [x] Enforce `second_call_attempted=false` in P3W.
+- [x] Block worker orchestration in P3W.
+- [x] Block worker file write in P3W.
+- [x] Block worker shell in P3W.
+- [x] Block web access in P3W.
+- [x] Block repo clone in P3W.
+- [x] Block GitHub integration in P3W.
+- [x] Block parallel execution in P3W.
+- [x] Enforce toy mission in P3W.
+- [x] Block raw output persistence in P3W.
+- [x] Implement P3W masked summary builder.
+- [x] Implement P3W `call_attempt_summary.json` writer.
+- [x] Implement P3W `live_smoke_result.json` writer.
+- [x] Implement P3W `artifact_safety_report.json` writer.
+- [x] Implement P3W pre-call artifact safety scan.
+- [x] Implement P3W post-call artifact safety scan.
+- [x] Keep default pytest no-live after P3W.
+- [x] Execute actual P3W entrypoint once; result was safe pre-call block due missing opt-in.
+- [x] Keep P3W `call_model_count <= 1`.
+- [x] Keep P3W `model_call_count <= 1`.
+- [x] Keep P3W `retry_count = 0`.
+- [x] Keep P3W `reserve_used = false`.
+- [x] Keep P3W `fallback_used = false`.
+- [x] Keep P3W `second_call_attempted = false`.
+- [x] Keep P3W `raw_output_saved = false`.

@@ -6,6 +6,8 @@ from pathlib import Path
 
 from aico_v0.live_test_policy import live_provider_marker_policy, should_skip_live_provider_test
 
+P3W_OPT_IN_BOUNDARY = Path("aico_v0/controlled_live_smoke.py")
+
 
 def test_default_pytest_remains_offline_only() -> None:
     policy = live_provider_marker_policy()
@@ -27,7 +29,7 @@ def test_runtime_package_has_no_forbidden_sdk_network_or_env_value_imports() -> 
     forbidden_roots = {"requests", "httpx", "socket", "google", "openai", "anthropic", "genai", "dotenv"}
     forbidden_exact = {"urllib.request", "os.environ"}
     imports: set[str] = set()
-    runtime_paths = [path for path in Path("aico_v0").glob("*.py")]
+    runtime_paths = [path for path in Path("aico_v0").glob("*.py") if path != P3W_OPT_IN_BOUNDARY]
     for path in runtime_paths:
         tree = ast.parse(path.read_text(encoding="utf-8"))
         for node in ast.walk(tree):
@@ -41,9 +43,10 @@ def test_runtime_package_has_no_forbidden_sdk_network_or_env_value_imports() -> 
 
 
 def test_p3e_runtime_has_no_live_call_counters_or_key_usage() -> None:
-    source = "\n".join(path.read_text(encoding="utf-8") for path in Path("aico_v0").glob("*.py")).lower()
+    runtime_paths = [path for path in Path("aico_v0").glob("*.py") if path != P3W_OPT_IN_BOUNDARY]
+    source = "\n".join(path.read_text(encoding="utf-8") for path in runtime_paths).lower()
     raw_key_calls = []
-    for path in Path("aico_v0").glob("*.py"):
+    for path in runtime_paths:
         tree = ast.parse(path.read_text(encoding="utf-8"))
         for node in ast.walk(tree):
             if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "raw_key_value":

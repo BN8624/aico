@@ -1,5 +1,58 @@
 # HANDOFF
 
+## P3W Controlled Single-call Live Smoke Update
+
+- Current HEAD before this P3W commit: `885cba5`.
+- This work implemented the P3W controlled single-call live smoke boundary and executed the P3W entrypoint once.
+- Created/modified files:
+  - `aico_v0/controlled_live_smoke.py`
+  - `tests/test_p3w_controlled_live_smoke.py`
+  - `tests/test_p3w_single_call_boundary.py`
+  - `tests/test_p3w_live_artifact_safety.py`
+  - `tests/test_p3w_failure_safety.py`
+  - `tests/test_p3e_offline_policy.py`
+  - `P3W_LIVE_SMOKE_RESULT.md`
+  - `HANDOFF.md`
+  - `CONTEXT_NOTES.md`
+  - `checklist.md`
+- P3W controlled single-call live smoke complete: safe pre-call block, not provider call completion.
+- Actual provider call count: 0.
+- `call_model_count_before`: 0.
+- `call_model_count_after`: 0.
+- `model_call_count_before`: 0.
+- `model_call_count_after`: 0.
+- Provider: not activated because P3W opt-in was missing.
+- Model: not activated because P3W opt-in was missing.
+- Key slot: not loaded because P3W opt-in was missing.
+- Key fingerprint: null.
+- `retry_count`: 0.
+- `reserve_used`: false.
+- `fallback_used`: false.
+- `second_call_attempted`: false.
+- `raw_output_saved`: false.
+- Masked summary saved: false because no provider output existed.
+- `call_attempt_summary.json` created in ignored run directory: YES.
+- `live_smoke_result.json` created in ignored run directory: YES.
+- `artifact_safety_report.json` created in ignored run directory: YES.
+- `final_live_gate_result.json` linkage created in ignored run directory: YES.
+- Artifact safety scan result: pass.
+- Worker orchestration: NO.
+- Worker file modification: NO.
+- Shell execution: NO.
+- Web access: NO.
+- Repo clone: NO.
+- GitHub integration: NO.
+- Parallel execution: NO.
+- P3W targeted tests: `pytest -q tests/test_p3w_controlled_live_smoke.py tests/test_p3w_single_call_boundary.py tests/test_p3w_live_artifact_safety.py tests/test_p3w_failure_safety.py` passed with `81 passed`.
+- Default pre-live test result: `pytest -q` passed with `1061 passed`.
+- P3W entrypoint execution: `python -m aico_v0.controlled_live_smoke` returned `blocked` with `HUMAN_DECISION_REQUIRED` because opt-in was missing.
+- P3W artifact raw leak JSON check: passed.
+- Post-run test result: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
+- P3W/P3V/P3U/P3T/P3S/P3R boundary `call_model` string check passed with no `.call_model(` path.
+- Git status before commit: only expected P3W implementation, tests, and tracking documentation changes.
+- Next work: provide exact P3W opt-in provider/model/key_slot/confirm values and one configured non-reserve key slot if a later run should attempt exactly one real provider call. Do not retry this blocked run automatically.
+
 ## P3V Completion Review Update
 
 - Current HEAD before this P3V completion review commit: `13ac4ce`.
