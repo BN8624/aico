@@ -443,3 +443,13 @@
 - [x] Keep network call count 0 in P3V.
 - [x] Keep live smoke count 0 in P3V.
 - [x] Defer actual first call to P3W or a later explicit approval phase.
+- [x] Record AICO direction decision as standalone documentation.
+- [x] Preserve AICO identity as AI work operating harness.
+- [x] Record that AICO decides when AI is allowed to be called.
+- [x] Record mission interview direction.
+- [x] Record skill registry as task templates, not executable plugins by default.
+- [x] Record policy packs as explicit data.
+- [x] Record acceptance ladder L1/L2/L3/L4.
+- [x] Record Ponytail-style overbuild/minimality audit direction.
+- [x] Preserve current P3 exclusions until controlled live-call boundary is proven.
+- [x] Record P3W controlled single-call live smoke as next meaningful direction after P3V completion review and separate explicit approval.

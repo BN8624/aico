@@ -1,5 +1,43 @@
 # HANDOFF
 
+## Direction Decision Update
+
+- Current HEAD before this direction decision commit: `f10eb7d`.
+- This work recorded the AICO direction decision as a standalone repository document.
+- Created/modified files:
+  - `AICO_DIRECTION_DECISION.md`
+  - `HANDOFF.md`
+  - `CONTEXT_NOTES.md`
+  - `checklist.md`
+- Direction decision complete: YES.
+- AICO identity: AI work operating harness, not a vibe-coding skill pack or generic multi-agent starter.
+- Core rule: AICO is not a system for calling more AI; AICO is a system for deciding when AI is allowed to be called.
+- Extracted reference ideas:
+  - VibeLabs: mission interview and tasking UX.
+  - multi-agent-starter: file-based handoff, re-entry, adapter registry, acceptance ladder.
+  - Ponytail: overbuild/minimality audit.
+- Future structures recorded: `mission_interview`, `skill_registry`, `policy_pack`, `acceptance_ladder`, `ponytail_audit`.
+- P3W direction recorded: controlled single-call live smoke only after P3V completion review and separate explicit approval.
+- Actual API calls during this work: NO.
+- Actual LLM calls during this work: NO.
+- Actual key usage during this work: NO.
+- Env value reads during this work: NO.
+- Provider SDK import during this work: NO.
+- Network calls during this work: NO.
+- Live smoke during this work: NO.
+- `call_model` execution during this work: NO.
+- `execution_allowed` changed during this work: NO.
+- `live_call_allowed` changed during this work: NO.
+- `model_call_count` during this work: 0.
+- `call_model_count` during this work: 0.
+- Test result: `pytest -q` passed with `980 passed`.
+- AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
+- Runtime forbidden SDK/network/env-value import AST check passed with no violations.
+- Forbidden import/env-read string search passed with no runtime violations.
+- P3V/P3U/P3T/P3S/P3R boundary `call_model` string check passed with no execution call path.
+- Git status before commit: only expected direction decision documentation changes.
+- Next work: P3V completion review, then P3W controlled single-call live smoke planning/approval only if separately requested and explicitly approved.
+
 ## P3V Final Live-fire Checklist Update
 
 - Current HEAD before this P3V final live-fire checklist commit: `99fc61d`.
