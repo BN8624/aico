@@ -1,5 +1,58 @@
 # HANDOFF
 
+## P3U Final Explicit Approval Gate Update
+
+- Current HEAD before this P3U final explicit approval gate commit: `2c54c7d`.
+- This work implemented the P3U final explicit approval gate / armed-but-not-fired no-call phase.
+- Created/modified files:
+  - `aico_v0/explicit_approval_gate.py`
+  - `tests/test_p3u_explicit_approval_gate.py`
+  - `tests/test_p3u_armed_state.py`
+  - `tests/test_p3u_no_call_gate_safety.py`
+  - `HANDOFF.md`
+  - `CONTEXT_NOTES.md`
+  - `checklist.md`
+- P3U final explicit approval gate / armed-but-not-fired no-call phase complete: YES.
+- Explicit human approval gate skeleton complete: YES.
+- Armed-but-not-fired state model complete: YES.
+- One-shot budget lock skeleton complete: YES.
+- Single-call / no-retry / no-reserve / no-fallback / no-second-call policy locks complete: YES.
+- Final approval packet to execution boundary linkage complete: YES.
+- Gate-level no-call invariant validator complete: YES.
+- Armed state artifact safety pre/post scan wiring complete: YES.
+- P3U scope: armed-but-not-fired no-call phase.
+- `approval_package.json` default/runtime creation during this work: NO.
+- `no_call_integration_summary.json` default/runtime creation during this work: NO.
+- `call_attempt_summary.json` default/runtime creation during this work: NO.
+- `pre_live_package_manifest.json` default/runtime creation during this work: NO.
+- `final_live_approval_packet.json` default/runtime creation during this work: NO.
+- `human_confirmation_checklist.json` default/runtime creation during this work: NO.
+- `explicit_approval_gate.json` default/runtime creation during this work: NO.
+- `armed_state.json` default/runtime creation during this work: NO.
+- Actual API calls during this work: NO.
+- Actual LLM calls during this work: NO.
+- Actual key usage during this work: NO.
+- Env value reads during this work: NO.
+- Provider SDK import during this work: NO.
+- Network calls during this work: NO.
+- Live smoke during this work: NO.
+- `call_model` execution during this work: NO.
+- `fired` during this work: NO.
+- `execution_allowed` during this work: NO.
+- `live_call_allowed` during this work: NO.
+- `model_call_count` during this work: 0.
+- `call_model_count` during this work: 0.
+- `explicit_approval_status` allowed series remains `pending` / `review_required` / `not_granted`.
+- `armed_state` during this work: `armed_not_fired`.
+- P3U targeted test result: `pytest -q tests/test_p3u_explicit_approval_gate.py tests/test_p3u_armed_state.py tests/test_p3u_no_call_gate_safety.py` passed with `117 passed`.
+- Full test result: `pytest -q` passed with `875 passed`.
+- AGENTS/CLAUDE byte-identical check passed. SHA256 matched: `DAC7930298926462597B29A5CF95384EBA6D7C4C15CF6831B7953E2567BD8FCF`.
+- Runtime forbidden SDK/network/env-value import AST check passed with no violations.
+- Forbidden import/env-read string search passed with no runtime violations.
+- P3U/P3T/P3S/P3R boundary `call_model` string check passed with no execution call path.
+- Git status before commit: only expected P3U code, tests, and tracking documentation changes.
+- Next work: P3U completion review or P3V planning only, unless separately approved. Do not run live smoke, activate providers, import provider SDKs, read real keys, read env var values, enable network transport, create default/runtime approval or armed artifacts, set `fired=true`, set `execution_allowed=true`, set `live_call_allowed=true`, set `model_call_count=1`, set `call_model_count=1`, call APIs, call LLMs, or execute `call_model` without a later explicit approval phase.
+
 ## P3T Completion Review Update
 
 - Current HEAD before this P3T completion review commit: `ab7710b`.

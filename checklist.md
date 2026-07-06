@@ -362,3 +362,43 @@
 - [x] Keep network call count 0 in P3T.
 - [x] Keep live smoke count 0 in P3T.
 - [x] Defer actual first call to P3U or a later explicit approval phase.
+- [x] Implement P3U explicit human approval gate skeleton.
+- [x] Implement P3U armed-but-not-fired state model.
+- [x] Implement P3U one-shot budget lock skeleton.
+- [x] Implement P3U single-call policy lock.
+- [x] Implement P3U no-retry policy lock.
+- [x] Implement P3U no-reserve policy lock.
+- [x] Implement P3U no-fallback policy lock.
+- [x] Implement P3U no-second-call policy lock.
+- [x] Implement P3U final approval packet to execution boundary linkage.
+- [x] Implement P3U explicit approval phrase hash/ref validator.
+- [x] Implement P3U gate-level no-call invariant validator.
+- [x] Implement P3U armed state artifact reference validator.
+- [x] Implement P3U artifact safety pre-scan wiring.
+- [x] Implement P3U artifact safety post-scan wiring.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3U.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3U.
+- [x] Keep `call_attempt_summary.json` default/runtime creation at 0 in P3U.
+- [x] Keep `pre_live_package_manifest.json` default/runtime creation at 0 in P3U.
+- [x] Keep `final_live_approval_packet.json` default/runtime creation at 0 in P3U.
+- [x] Keep `human_confirmation_checklist.json` default/runtime creation at 0 in P3U.
+- [x] Keep `explicit_approval_gate.json` default/runtime creation at 0 in P3U.
+- [x] Keep `armed_state.json` default/runtime creation at 0 in P3U.
+- [x] Keep armed state as armed-but-not-fired only in P3U.
+- [x] Keep `fired=false` in P3U.
+- [x] Keep `execution_allowed=false` in P3U.
+- [x] Keep `live_call_allowed=false` in P3U.
+- [x] Keep `model_call_count=0` in P3U.
+- [x] Keep `call_model_count=0` in P3U.
+- [x] Keep `call_model` execution count 0 in P3U.
+- [x] Keep SDK import forbidden in P3U.
+- [x] Keep key loading forbidden in P3U.
+- [x] Keep provider activation forbidden in P3U.
+- [x] Keep API call count 0 in P3U.
+- [x] Keep LLM call count 0 in P3U.
+- [x] Keep key read count 0 in P3U.
+- [x] Keep env value read count 0 in P3U.
+- [x] Keep network call count 0 in P3U.
+- [x] Keep live smoke count 0 in P3U.
+- [x] Keep explicit approval status limited to pending/review_required/not_granted in P3U.
+- [x] Defer actual first call to P3V or a later explicit approval phase.
