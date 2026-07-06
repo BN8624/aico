@@ -1,5 +1,8 @@
 # CONTEXT_NOTES
 
+- 2026-07-06: P3W Gemma 4 31B IT opt-in actual run was attempted with the existing runner, but it safe-blocked before provider activation. `.env` exists, but required P3W opt-in values were absent, the exact Gemma 4 31B IT safe model id was not confirmed from repo registry or `.env` opt-in config, and no known non-reserve `key_registry` slot variable was found in `.env`.
+- 2026-07-06: The P3W Gemma attempt did not dump `.env`, did not print or persist any raw key, did not load 11 keys, did not rotate keys, did not read reserve/fallback keys, and did not perform a provider call. Counts stayed at `actual_provider_call_count=0`, `call_model_count_after=0`, and `model_call_count_after=0`.
+- 2026-07-06: A later P3W actual call still requires exact process opt-in values, one non-reserve key_slot known to `key_registry`, and an exact safe model id for Gemma 4 31B IT. AICO must not infer model ids or map arbitrary `.env` variables to key slots.
 - 2026-07-05: `AICO_MASTER_CANON.md` has highest priority, followed by `AICO_V0_CANON.md`.
 - 2026-07-05: v0 must stay fully offline with zero API calls and zero LLM calls.
 - 2026-07-05: `semantic_preflight`, repair loops, worker file edits, and worker shell execution are explicitly out of scope.

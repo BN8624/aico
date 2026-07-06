@@ -1,5 +1,30 @@
 # Checklist
 
+- [x] Attempt P3W Gemma 4 31B IT opt-in actual run with the existing runner.
+- [x] Confirm `.env` exists without dumping `.env` contents.
+- [x] Avoid printing or persisting raw key values.
+- [x] Avoid loading or rotating 11 keys.
+- [x] Avoid reserve key read.
+- [x] Avoid fallback key read.
+- [x] Safe-block when required P3W opt-in values are missing.
+- [x] Safe-block when exact Gemma 4 31B IT safe model id is not confirmed from repo registry or allowed config.
+- [x] Safe-block when no known non-reserve `key_registry` slot variable is available.
+- [x] Keep actual provider call count at 0 for this blocked attempt.
+- [x] Keep `call_model_count_after <= 1`.
+- [x] Keep `model_call_count_after <= 1`.
+- [x] Keep `retry_count = 0`.
+- [x] Keep `reserve_used = false`.
+- [x] Keep `fallback_used = false`.
+- [x] Keep `second_call_attempted = false`.
+- [x] Keep `raw_output_saved = false`.
+- [x] Create safe blocked `call_attempt_summary.json` in ignored run dir.
+- [x] Create safe blocked `live_smoke_result.json` in ignored run dir.
+- [x] Create `artifact_safety_report.json` in ignored run dir.
+- [x] Verify artifact safety scan passes for the blocked attempt.
+- [x] Verify post-live `pytest -q` passes without a second live call.
+- [x] Preserve worker orchestration as NO.
+- [x] Preserve worker file modification as NO.
+- [x] Preserve shell/web/repo/GitHub/parallel execution as NO.
 - [x] Initialize local git repository on `main`.
 - [x] Create public GitHub repository `BN8624/aico`.
 - [x] Connect `origin` and push only `main`.

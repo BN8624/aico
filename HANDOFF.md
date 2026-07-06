@@ -1,5 +1,54 @@
 # HANDOFF
 
+## P3W Gemma 4 31B IT Opt-in Actual Run Attempt Update
+
+- Current HEAD before this P3W Gemma opt-in actual run attempt commit: `63e1f11`.
+- P3W opt-in actual live smoke execution attempted with existing runner: YES.
+- Result: blocked.
+- Blocked reason: required P3W opt-in values were missing, exact Gemma 4 31B IT safe model id was not confirmed from repo registry or `.env` opt-in config, and no known non-reserve `key_registry` slot variable was found in `.env`.
+- `.env` exists: YES.
+- `.env` full dump performed: NO.
+- Raw key value read: NO.
+- 11-key rotation: NO.
+- Reserve key read: NO.
+- Fallback key read: NO.
+- Actual provider call count: 0.
+- `call_model_count_before`: 0.
+- `call_model_count_after`: 0.
+- `model_call_count_before`: 0.
+- `model_call_count_after`: 0.
+- Provider safe id: `google_gemini` candidate only, not activated.
+- Model safe id: not activated because exact Gemma 4 31B IT safe id was not confirmed.
+- Key slot safe id: not loaded because no configured single P3W key_slot was available.
+- Key fingerprint masked: null.
+- `retry_count`: 0.
+- `reserve_used`: false.
+- `fallback_used`: false.
+- `second_call_attempted`: false.
+- `raw_output_saved`: false.
+- Masked summary saved: false because no provider output existed.
+- `call_attempt_summary.json` created in ignored run directory: YES.
+- `live_smoke_result.json` created in ignored run directory: YES.
+- `artifact_safety_report.json` created in ignored run directory: YES.
+- `final_live_gate_result.json` linkage created in ignored run directory: YES.
+- P3W run id: `20260706T123224Z`.
+- P3W run dir: `runs/p3w_20260706T123224Z`.
+- Artifact safety scan result: pass.
+- Worker orchestration: NO.
+- Worker file modification: NO.
+- Shell execution: NO.
+- Web access: NO.
+- Repo clone: NO.
+- GitHub integration: NO.
+- Parallel execution: NO.
+- Default pytest result before attempt: `pytest -q` passed with `1061 passed`.
+- P3W safe `.env` metadata check: only opt-in names and key_slot variable-name presence were inspected; no values were printed.
+- P3W opt-in attempt command: `python -m aico_v0.controlled_live_smoke`.
+- Post-live pytest result: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical check passed.
+- Git status before documentation update: clean.
+- Next work: provide exact P3W opt-in values, including the exact Gemma 4 31B IT safe model id and one non-reserve key_slot known to `key_registry`, before attempting a real provider call. Do not infer model ids, do not rotate keys, and do not retry this blocked run automatically.
+
 ## P3W Opt-in Actual Execution Attempt Update
 
 - Current HEAD before this P3W opt-in actual execution attempt commit: `b7e6b68`.

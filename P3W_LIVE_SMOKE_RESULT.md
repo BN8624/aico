@@ -4,7 +4,7 @@
 
 result: blocked
 
-The existing P3W runner was invoked once for opt-in actual execution. The run stopped before provider call because required P3W opt-in values were not present in the process environment.
+The existing P3W runner was invoked once for the requested Gemma 4 31B IT opt-in actual run. The run stopped before provider call because the required P3W opt-in values were not present and no exact Gemma 4 31B IT safe model id was available from the repo registry or `.env` opt-in config.
 
 This is a safe pre-call block, not an actual provider-call completion.
 
@@ -25,10 +25,13 @@ controlled single-call live smoke only.
 
 ## Provider Boundary
 
-- provider: not activated because opt-in was missing.
-- model: not activated because opt-in was missing.
-- key_slot: not loaded because opt-in was missing.
+- provider: not activated because opt-in/provider selection was not complete.
+- requested provider family: `google_gemini` candidate only.
+- model: not activated because exact Gemma 4 31B IT safe model id was not confirmed from repo registry or `.env` opt-in config.
+- key_slot: not loaded because no P3W opt-in key_slot was configured and no known non-reserve `key_registry` slot variable was found in `.env`.
 - key_fingerprint_masked: null.
+- raw key read: NO.
+- `.env` dump: NO.
 
 ## Call Counts
 
@@ -57,8 +60,8 @@ controlled single-call live smoke only.
 
 ## Artifacts
 
-- run_id: `20260706T122055Z`.
-- run_dir: `runs/p3w_20260706T122055Z`.
+- run_id: `20260706T123224Z`.
+- run_dir: `runs/p3w_20260706T123224Z`.
 - call_attempt_summary.json: created in ignored run directory.
 - live_smoke_result.json: created in ignored run directory.
 - artifact_safety_report.json: created in ignored run directory.
@@ -78,22 +81,23 @@ controlled single-call live smoke only.
 
 - failure_type: `HUMAN_DECISION_REQUIRED`.
 - errors_safe_summary: human opt-in missing.
+- additional_safe_block_reason: exact Gemma 4 31B IT safe model id and selected known non-reserve P3W key_slot were not available from allowed configuration sources.
 
 ## Tests
 
 - default pytest: `pytest -q` passed with `1061 passed`.
 - post-live pytest: `pytest -q` passed with `1061 passed`.
 - AGENTS/CLAUDE byte-identical: passed.
-- git status before commit: only expected P3W opt-in result documentation changes.
+- git status before documentation update: clean.
 
 ## Next Requirement
 
-To produce `single_call_completed` or `single_call_failed_safely`, a later run must provide exact P3W opt-in values in the process environment and one configured non-reserve key slot:
+To produce `single_call_completed` or `single_call_failed_safely`, a later run must provide exact P3W opt-in values and one configured non-reserve key slot using the repo's existing P3W/key-registry naming.
 
 - `AICO_P3W_LIVE_SMOKE=1`
-- `AICO_P3W_PROVIDER=<single_provider>`
-- `AICO_P3W_MODEL=<single_model>`
-- `AICO_P3W_KEY_SLOT=<single_non_reserve_key_slot>`
+- `AICO_P3W_PROVIDER=google_gemini`
+- `AICO_P3W_MODEL=<exact_gemma_4_31b_it_safe_model_id_from_repo_or_allowed_config>`
+- `AICO_P3W_KEY_SLOT=<single_non_reserve_key_slot_known_to_key_registry>`
 - `AICO_P3W_CONFIRM=controlled-single-call`
 
-No provider/model/key_slot was guessed, no `.env` file was created, no env dump was performed, and no key value was printed or persisted.
+No provider/model/key_slot was guessed, no key rotation was attempted, no reserve or fallback key was read, no env dump was performed, and no key value was printed or persisted.
