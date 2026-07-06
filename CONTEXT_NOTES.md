@@ -61,3 +61,8 @@
 - 2026-07-06: P3Q is provider/key/SDK activation skeleton / no-call integration review only. It connects approval package, final gate result, linkage, artifact safety, and activation guards as a no-call integration path.
 - 2026-07-06: P3Q integration pass must still keep `live_call_allowed=false`, `model_call_count=0`, `approval_package.json` default/runtime creation disabled, and `no_call_integration_summary.json` default/runtime creation disabled.
 - 2026-07-06: P3Q must not open provider activation, SDK import, key loading, key reads, env value reads, API calls, LLM calls, network calls, or live smoke. Actual first call remains deferred to P3R or a later explicit approval phase.
+- 2026-07-06: P3R is live execution boundary skeleton / single-call no-execute dry run only, not actual live smoke.
+- 2026-07-06: P3R will add a single-call execution boundary, call attempt state machine, pre-call / blocked-call / post-boundary safety wiring, and rollback plan skeleton while keeping all execution paths no-call.
+- 2026-07-06: P3R no-execute dry run passing still means `live_call_allowed=false`, `model_call_count=0`, and no `call_model`, provider transport, SDK import, key loading, env value read, API call, LLM call, network call, or live smoke.
+- 2026-07-06: P3R keeps `approval_package.json`, `no_call_integration_summary.json`, and `call_attempt_summary.json` out of the default/runtime path. Helper writes are explicit only and limited to safe test/run directories.
+- 2026-07-06: Actual first call remains deferred to P3S or a later explicit approval phase after P3R.

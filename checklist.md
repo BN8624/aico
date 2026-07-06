@@ -281,3 +281,25 @@
 - [x] Keep network call count 0 in P3Q.
 - [x] Keep live smoke count 0 in P3Q.
 - [x] Defer actual first call to P3R or a later explicit approval phase.
+- [x] Implement P3R live execution boundary skeleton.
+- [x] Implement P3R single-call attempt state machine.
+- [x] Implement P3R no-execute dry run coordinator.
+- [x] Implement P3R pre-call safety wiring.
+- [x] Implement P3R blocked-call safety wiring.
+- [x] Implement P3R post-boundary safety wiring.
+- [x] Implement P3R rollback plan skeleton.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3R.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3R.
+- [x] Keep `call_attempt_summary.json` default/runtime creation at 0 in P3R.
+- [x] Keep `live_call_allowed=false` in P3R.
+- [x] Keep `model_call_count=0` in P3R.
+- [x] Keep `call_model` execution count 0 in P3R.
+- [x] Keep SDK import forbidden in P3R.
+- [x] Keep key loading forbidden in P3R.
+- [x] Keep provider activation forbidden in P3R.
+- [x] Keep API call count 0 in P3R.
+- [x] Keep LLM call count 0 in P3R.
+- [x] Keep key read count 0 in P3R.
+- [x] Keep network call count 0 in P3R.
+- [x] Keep live smoke count 0 in P3R.
+- [x] Defer actual first call to P3S or a later explicit approval phase.
