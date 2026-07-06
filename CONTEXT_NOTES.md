@@ -1,5 +1,7 @@
 # CONTEXT_NOTES
 
+- 2026-07-06: P3W completion review found no blocker. The actual single-call artifacts prove one provider call, counters 0 -> 1, retry/reserve/fallback/second-call all zero/false, raw output not saved, masked summary saved, and artifact safety scan pass.
+- 2026-07-06: P3X entry is YES only for negative safety tests / bad-input blocking proof. P3X should not run another live call by default; it should use fake provider, blocked paths, and artifact injection to prove bad inputs cannot cause second call, retry, reserve/fallback, raw leak, or worker authority expansion.
 - 2026-07-06: P3W Gemma 4 31B IT actual single-call run completed with the existing runner. Official Google documentation confirmed the Gemma 4 31B family, and the actual Gemini API call validated model id `gemma-4-31b-it` with provider `google_gemini`, key_slot `worker_1`, and one process-local mapping from `GOOGLE_API_KEY_1` to `AICO_WORKER_1_API_KEY`.
 - 2026-07-06: The P3W actual run made exactly one provider call. Counts were `actual_provider_call_count=1`, `call_model_count_after=1`, and `model_call_count_after=1`; retry, reserve, fallback, and second call stayed at zero/false.
 - 2026-07-06: The P3W actual run did not dump `.env`, did not persist raw key/env/provider response/token usage/raw output, did not rotate 11 keys, and stored only masked summary plus safe artifacts under ignored `runs/p3w_20260706T123731Z`.

@@ -1,5 +1,17 @@
 # Checklist
 
+- [x] Complete P3W completion review.
+- [x] Review P3W actual single-call artifacts.
+- [x] Confirm P3W `actual_provider_call_count = 1`.
+- [x] Confirm P3W `call_model_count_after = 1`.
+- [x] Confirm P3W `model_call_count_after = 1`.
+- [x] Confirm P3W retry/reserve/fallback/second-call stayed zero/false.
+- [x] Confirm P3W `raw_output_saved = false`.
+- [x] Confirm P3W `masked_summary_saved = true`.
+- [x] Confirm P3W artifact safety scan pass.
+- [x] Confirm no raw key/env/output/provider response/token usage leak in reviewed P3W artifacts and docs.
+- [x] Confirm P3W remained provider boundary proof, not worker orchestration.
+- [x] Record P3X entry as negative safety tests / bad-input blocking proof only.
 - [x] Look up official Google documentation for Gemma 4 31B IT model id.
 - [x] Apply `gemma-4-31b-it` as the P3W model id.
 - [x] Attempt P3W Gemma 4 31B IT actual run with the existing runner.

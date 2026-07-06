@@ -1,5 +1,49 @@
 # HANDOFF
 
+## P3W Completion Review Update
+
+- Current HEAD before this P3W completion review commit: `2b629ac`.
+- This work completed the P3W controlled single-call live smoke completion review.
+- Created/modified files:
+  - `P3W_COMPLETION_REVIEW.md`
+  - `HANDOFF.md`
+- P3W completion review complete: YES.
+- P3X entry decision: YES.
+- P3X recommended meaning: negative safety tests / bad-input blocking proof only.
+- P3W actual single-call proof review result: pass.
+- Actual provider call count reviewed: 1.
+- `call_model_count_before`: 0.
+- `call_model_count_after`: 1.
+- `model_call_count_before`: 0.
+- `model_call_count_after`: 1.
+- Provider safe id: `google_gemini`.
+- Model safe id: `gemma-4-31b-it`.
+- Key slot safe id: `worker_1`.
+- Key fingerprint masked: `sha256:632b439d...e95e`.
+- `retry_count`: 0.
+- `reserve_used`: false.
+- `fallback_used`: false.
+- `second_call_attempted`: false.
+- `raw_output_saved`: false.
+- Masked summary saved: true.
+- `call_attempt_summary.json` reviewed: YES.
+- `live_smoke_result.json` reviewed: YES.
+- `artifact_safety_report.json` reviewed: YES.
+- `final_live_gate_result.json` reviewed: YES.
+- Artifact safety scan result: pass.
+- Raw key/env/output/provider response/token usage leak: NO.
+- Worker orchestration: NO.
+- Worker file modification: NO.
+- Shell execution: NO for live path.
+- Web access: NO.
+- Repo clone: NO.
+- GitHub integration: NO.
+- Parallel execution: NO.
+- Default pytest result during review: `pytest -q` passed with `1061 passed`.
+- AGENTS/CLAUDE byte-identical: YES.
+- Git status before commit: only expected P3W completion review documentation changes.
+- Next work: P3X negative safety tests / bad-input blocking proof. Do not run another live call by default; use fake provider, blocked paths, and artifact injection to prove bad inputs never trigger second call, retry, fallback, reserve, raw leak, or worker authority expansion.
+
 ## P3W Gemma 4 31B IT Actual Single-call Completion Update
 
 - Current HEAD before this P3W Gemma actual completion commit: `9cfcaa4`.
