@@ -452,4 +452,5 @@
 - [x] Record acceptance ladder L1/L2/L3/L4.
 - [x] Record Ponytail-style overbuild/minimality audit direction.
 - [x] Preserve current P3 exclusions until controlled live-call boundary is proven.
+- [x] Reference `AICO_DIRECTION_DECISION.md` from the active checklist.
 - [x] Record P3W controlled single-call live smoke as next meaningful direction after P3V completion review and separate explicit approval.
