@@ -402,3 +402,44 @@
 - [x] Keep live smoke count 0 in P3U.
 - [x] Keep explicit approval status limited to pending/review_required/not_granted in P3U.
 - [x] Defer actual first call to P3V or a later explicit approval phase.
+- [x] Implement P3V final live-fire checklist skeleton.
+- [x] Implement P3V last-stop guard skeleton.
+- [x] Implement P3V one-shot fire plan skeleton.
+- [x] Implement P3V expected observable artifacts schema/helper.
+- [x] Implement P3V fire readiness state model.
+- [x] Implement P3V fire readiness validator.
+- [x] Implement P3V rollback/no-retry/no-reserve/no-fallback confirmation.
+- [x] Implement P3V final artifact reference consistency validator.
+- [x] Implement P3V still-no-call invariant validator.
+- [x] Implement P3V artifact safety pre-scan wiring.
+- [x] Implement P3V artifact safety post-scan wiring.
+- [x] Keep `approval_package.json` default/runtime creation at 0 in P3V.
+- [x] Keep `no_call_integration_summary.json` default/runtime creation at 0 in P3V.
+- [x] Keep `call_attempt_summary.json` default/runtime creation at 0 in P3V.
+- [x] Keep `pre_live_package_manifest.json` default/runtime creation at 0 in P3V.
+- [x] Keep `final_live_approval_packet.json` default/runtime creation at 0 in P3V.
+- [x] Keep `human_confirmation_checklist.json` default/runtime creation at 0 in P3V.
+- [x] Keep `explicit_approval_gate.json` default/runtime creation at 0 in P3V.
+- [x] Keep `armed_state.json` default/runtime creation at 0 in P3V.
+- [x] Keep `live_fire_checklist.json` default/runtime creation at 0 in P3V.
+- [x] Keep `last_stop_guard.json` default/runtime creation at 0 in P3V.
+- [x] Keep `one_shot_fire_plan.json` default/runtime creation at 0 in P3V.
+- [x] Keep `expected_live_artifacts.json` default/runtime creation at 0 in P3V.
+- [x] Allow `fire_ready=true` only as no-execution checklist readiness in P3V.
+- [x] Allow `armed=true` only as no-execution readiness in P3V.
+- [x] Keep `fired=false` in P3V.
+- [x] Keep `execution_allowed=false` in P3V.
+- [x] Keep `live_call_allowed=false` in P3V.
+- [x] Keep `model_call_count=0` in P3V.
+- [x] Keep `call_model_count=0` in P3V.
+- [x] Keep `call_model` execution count 0 in P3V.
+- [x] Keep SDK import forbidden in P3V.
+- [x] Keep key loading forbidden in P3V.
+- [x] Keep provider activation forbidden in P3V.
+- [x] Keep API call count 0 in P3V.
+- [x] Keep LLM call count 0 in P3V.
+- [x] Keep key read count 0 in P3V.
+- [x] Keep env value read count 0 in P3V.
+- [x] Keep network call count 0 in P3V.
+- [x] Keep live smoke count 0 in P3V.
+- [x] Defer actual first call to P3W or a later explicit approval phase.
